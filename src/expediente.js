@@ -5,10 +5,42 @@ import axios from '../node_modules/axios';
 import { NabvarRe } from './component/Navbar';
 import Documents from './component/Documents';
 
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
+import {ThreeDots } from  'react-loader-spinner'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './App.css';
+
+import Modal from 'react-modal';
+ 
+const customStyles = {
+	content: {
+	  top: '50%',
+	  left: '50%',
+	  right: 'auto',
+	  bottom: 'auto',
+	  marginRight: '-50%',
+	  transform: 'translate(-50%, -50%)',
+	},
+  };
 
 function Expediente(props) {
 
+	function openModalLoad() { 
+		setIsOpenLoad(true); 
+	}  
+	   
+	function closeModalLoad() { 
+		setIsOpenLoad(false); 
+	}
+
+    function notify(message){
+		toast(message);
+	}
+    
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 
 	const [couno, setCouno] = useState([]);
 	const [codos, setCodos] = useState([]);
@@ -48,7 +80,7 @@ function Expediente(props) {
 		fd.append("name", document.getElementById("slc-solicita").value)
 		// console.log(folio + document.getElementById("slc-solicita").value);
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
-		alert(res.data.trim());
+		notify(res.data.trim());
 		verRequisicion(folio);
 
 	}
@@ -61,7 +93,7 @@ function Expediente(props) {
 		fd.append("name", document.getElementById("slc-revisa").value)
 		// console.log(folio + document.getElementById("slc-revisa").value);
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
-		alert(res.data.trim());
+		notify(res.data.trim());
 		verRequisicion(folio);
 
 	}
@@ -74,7 +106,7 @@ function Expediente(props) {
 		fd.append("name", document.getElementById("slc-realiza").value)
 		// console.log(folio + document.getElementById("slc-realiza").value);
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
-		alert(res.data.trim());
+		notify(res.data.trim());
 		verRequisicion(folio);
 
 	}
@@ -87,7 +119,7 @@ function Expediente(props) {
 		fd.append("name", document.getElementById("slc-autoriza").value)
 		// console.log(folio + document.getElementById("slc-autoriza").value);
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
-		alert(res.data.trim());
+		notify(res.data.trim());
 		verRequisicion(folio);
 
 	}
@@ -124,15 +156,15 @@ function Expediente(props) {
 				if (contador >= 1) {
 					const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
 					getRequisiciones();
-					alert(res.data.trim());
+					notify(res.data.trim());
 				} else {
-					alert("Seleccione Almenos Una Opción");
+					notify("Seleccione Almenos Una Opción");
 				}
 			} else {
-				alert("Seleccione una requisición");
+				notify("Seleccione una requisición");
 			}
 		} else {
-			alert("Click en ver está requisición para generar orden de compra");
+			notify("Click en ver está requisición para generar orden de compra");
 		}
 	}
 
@@ -160,7 +192,7 @@ function Expediente(props) {
 			}
 		});
 		//verRequisicion(id);
-		alert(res.data);
+		notify(res.data);
 		//getOrdenes();
 	}
 
@@ -205,7 +237,7 @@ function Expediente(props) {
 			fd.append("nvoestado", rw)
 			const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
 			// console.log(res.data);
-			alert(res.data);
+			notify(res.data);
 			getRequisiciones();
 		}
 	}

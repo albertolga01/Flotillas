@@ -5,10 +5,10 @@ import Expediente from '../expediente';
 import Seguros from '../seguros';
 import Refacciones from '../refacciones';
 import Rendimiento from '../rendimiento';
-import { FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye, FaTruck, FaAssistiveListeningSystems, FaWhmcs, FaUser, FaGasPump, FaFileArchive, FaFileUpload } from 'react-icons/fa'
 import NvaRequisicion from '../Nvarequisicion';
 import Ordenes from '../Ordenes';
 
+import OpcionesMenu from './OpcionesMenu'; 
 export default function SideMenu(props) {
 
     const [selected, setSelect] = useState(props.selected);
@@ -42,8 +42,17 @@ export default function SideMenu(props) {
         getDepartamentos();
     }, [])
 
+    const [isMenuOpen1, SetIsMenuOpen1] = useState(true);
+
     function logOut() {
         window.location.reload();
+    }
+
+    function cambiarSelected(selected){ 
+        setSelect(selected);
+        if(isMenuOpen1 == true){
+            SetIsMenuOpen1(false);
+        }
     }
 
     function getDepartamentos() {
@@ -71,76 +80,8 @@ export default function SideMenu(props) {
 
         <div style={{ height: '100vh', width: '100vw', position: 'sticky', top: '0', display: 'flex', overflowX: 'auto' }}>
 
-            <div id="sidepanel">
-                <img id="sidepanel-logo" alt="Logo" />
-
-                <span style={{ textAlign: 'center', color: 'white', fontSize: '12px', paddingBottom: '.4rem', paddingTop: '.4rem', borderBottom: '2px solid white' }}>
-                    <b>Bienvenido:</b> {props.name}
-                </span>
-
-            
-                
-                {(props.tipo != "2") ?
-                <div id="sidebtn" onClick={() => { setSelect("3"); }}>
-                    <img id="sideimg3" alt="" />
-                    <span>Nuevo Vehiculo</span>
-                </div>
-                    :
-                    <label></label>
-                }
-                {(props.tipo != "2") ?
-                <div id="sidebtn" onClick={() => { setSelect("2"); }}>
-                    <FaTruck style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
-                    <span>Placas</span>
-                </div>
-                    :
-                    <label></label>
-                }
-                {(props.tipo != "2") ?
-                <div id="sidebtn" onClick={() => { setSelect("7"); }}>
-                <FaFileUpload style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
-                <span>Expediente</span>
-            </div>
-                    :
-                    <label></label>
-                }
-                {(props.tipo != "2") ?
-                <div id="sidebtn" onClick={() => { setSelect("4"); }}>
-                <img id="sideimg2" alt="" />
-                <span>Seguros</span>
-                 </div>
-
-                    :
-                    <label></label>
-                }
-
-<div id="sidebtn" onClick={() => { setSelect("5"); }}>
-                    <FaWhmcs style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
-                    <span>Refacciones</span>
-                </div>
-                <div id="sidebtn" onClick={() => { setSelect("6"); }}>
-                    <FaGasPump style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
-                    <span>Rendimiento</span>
-                </div>
-
-                {(props.tipo != "2") ?
-                                               <div id="sidebtn" onClick={() => { setSelect("1"); }}>
-                                               <FaUser style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
-                                               <span>Usuarios</span>
-                                           </div>
-
-                    :
-                    <label></label>
-                }
-                
-                
-     
-                <div id="sidebtn" onClick={() => logOut()}>
-                    <img id="sideimg5" alt="" />
-                    <span>Cerrar sesión</span>
-                </div>
-
-            </div>
+       
+<OpcionesMenu dptoid={props.dptoid} unmount={cambiarSelected} admin={props.admin} name={props.name} isMenuOpen1={isMenuOpen1}></OpcionesMenu>
 
             <Element selected={selected} />
 

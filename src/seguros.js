@@ -5,6 +5,24 @@ import axios from '../node_modules/axios';
 import {NabvarRe} from './component/Navbar'; 
 import Modal from 'react-modal';
 import './App.css'; 
+
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
+import {ThreeDots } from  'react-loader-spinner'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const customStylesD = {
+	content: {
+	  top: '50%',
+	  left: '50%',
+	  right: 'auto',
+	  bottom: 'auto',
+	  marginRight: '-50%',
+	  transform: 'translate(-50%, -50%)',
+	},
+  };
+
 const customStyles = {
 	content: {
 	  top: '50%',
@@ -16,6 +34,20 @@ const customStyles = {
 	},
   };
 function Seguros(props) {
+
+	function openModalLoad() { 
+		setIsOpenLoad(true); 
+	}  
+	   
+	function closeModalLoad() { 
+		setIsOpenLoad(false); 
+	}
+
+    function notify(message){
+		toast(message);
+	}
+    
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
  
  
 	const [couno, setCouno] =  useState([]);  
@@ -32,13 +64,10 @@ function Seguros(props) {
   
 
   useEffect(() => {
-	getPlacas();
-}, [])
-useEffect(() => {
+	getSeguros();
 	getPlacasV();
-}, [])
-
-async function getPlacas() {
+}, [])  
+async function getSeguros() {
 	var id = "getSeguros";
 	const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
 	setListaP(res.data);
@@ -70,6 +99,8 @@ async function getPlacasV() {
 	var compania = document.getElementById("compania").value;
 	var fechainicial = document.getElementById("fechainicial").value;
 	var fechafinal = document.getElementById("fechafinal").value; 
+	var documentoseguro = document.getElementById("documentoseguro"); 
+
 	
 	let fd = new FormData()
 		fd.append("id", "addSeguro")
@@ -78,15 +109,15 @@ async function getPlacasV() {
 		fd.append("compania", compania) 
 		fd.append("fechainicial", fechainicial)
 		fd.append("fechafinal", fechafinal)
+		fd.append("documentoseguro", documentoseguro.files[0])
 
+openModalLoad();
 	const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+	 closeModalLoad();
+	notify(res.data.trim());
 	 
-	alert(res.data.trim());
-	if(res.data.trim() == "Placa agregada correctamente"){
-	 
-		 // getPlacas()
-
-	}
+	getSeguros();
+	getPlacasV();
 }
    
 async function verSeguro(vehiculoid) {
@@ -187,9 +218,12 @@ function format(todayy){
       <br></br>
 	  <input id="compania" placeholder="Compañia" className="form-control" type="password "></input>
 	  <br></br>
-      <input id="fechainicial" placeholder="Fecha Alta" className="form-control" type="password "></input>
+      <input id="fechainicial" placeholder="Fecha Alta" className="form-control" type="date"></input>
 	  <br></br>
-      <input id="fechafinal" placeholder="Fecha Vencimiento" className="form-control" type="password "></input>
+      <input id="fechafinal" placeholder="Fecha Vencimiento" className="form-control" type="date"></input>
+      <br></br> 
+	  <span>Imagen:</span> 
+	  <input id="documentoseguro" type="file" style={{ height: '50px'}} />
       <br></br> 
       <button  className="btn btn-outline-success btn-sm" 	 onClick={() => addSeguro()} >Agregar <FaCheckCircle /></button> 
     </div> 
@@ -345,6 +379,20 @@ function format(todayy){
 		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      </Modal>
  
+	 <ToastContainer 
+				progressClassName="toastProgress"
+				position="top-center"
+				/>
+
+			<Modal 
+					isOpen={modalIsOpenLoad}  
+					onRequestClose={closeModalLoad}   
+					style={customStylesD}> 
+					<div style={{width:'100%'}}>  
+					<ThreeDots color="#0071ce" height={80} width={80} /> 
+					</div>  
+			</Modal>
+
       </div>
        
               

@@ -7,6 +7,23 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import './App.css'; 
 
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
+import {ThreeDots } from  'react-loader-spinner'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const customStylesD = {
+	content: {
+	  top: '50%',
+	  left: '50%',
+	  right: 'auto',
+	  bottom: 'auto',
+	  marginRight: '-50%',
+	  transform: 'translate(-50%, -50%)',
+	},
+  };
+
 const customStyles = {
 	content: {
 	  top: '50%',
@@ -19,6 +36,20 @@ const customStyles = {
   };
 
 function Rendimiento(props) {
+
+	function openModalLoad() { 
+		setIsOpenLoad(true); 
+	}  
+	   
+	function closeModalLoad() { 
+		setIsOpenLoad(false); 
+	}
+
+    function notify(message){
+		toast(message);
+	}
+    
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 
 	const [listav, setListaV] = useState([]);
 	
@@ -47,7 +78,7 @@ function Rendimiento(props) {
 
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
 		 
-		alert(res.data.trim());
+		notify(res.data.trim());
 		if(res.data.trim() == "Carga agregada correctamente"){
 			closeModal();
   getCargas()
@@ -327,6 +358,19 @@ function Rendimiento(props) {
 		<button onClick={closeModal1} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      </Modal>
  
+	 <ToastContainer 
+				progressClassName="toastProgress"
+				position="top-center"
+				/>
+
+			<Modal 
+					isOpen={modalIsOpenLoad}  
+					onRequestClose={closeModalLoad}   
+					style={customStylesD}> 
+					<div style={{width:'100%'}}>  
+					<ThreeDots color="#0071ce" height={80} width={80} /> 
+					</div>  
+			</Modal>
 
         </div>
  

@@ -5,9 +5,39 @@ import axios from '../node_modules/axios';
 import { Nabvar } from './component/Navbar';
 import { Nabvar2, NabvarP } from './component/Navbar';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './App.css';
 
+import Modal from 'react-modal';
+
+const customStyles = {
+	content: {
+	  top: '50%',
+	  left: '50%',
+	  right: 'auto',
+	  bottom: 'auto',
+	  marginRight: '-50%',
+	  transform: 'translate(-50%, -50%)',
+	},
+  };
+
 function App(props) {
+
+	function openModalLoad() { 
+		setIsOpenLoad(true); 
+	}  
+	   
+	function closeModalLoad() { 
+		setIsOpenLoad(false); 
+	}
+
+    function notify(message){
+		toast(message);
+	}
+    
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 	const [listausuario, setListausuario] = useState([]);
 	const [listadepartamento, setListadepartamento] = useState([]);
 	const [lista, setLista] = useState([]);
@@ -77,7 +107,7 @@ function App(props) {
 		document.getElementById("newuser-user").value = "";
 		document.getElementById("newuser-password").value = "";
 		document.getElementById("name").value = "";
-		alert(res.data.msg);
+		notify(res.data.msg);
 	}
 
 	async function deleteUsuario(id) {
@@ -88,7 +118,7 @@ function App(props) {
 			const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
 			getUsuarios();
 			// console.log(res.data);
-			alert(res.data.msg);
+			notify(res.data.msg);
 		}
 	}
 
@@ -126,7 +156,7 @@ function App(props) {
 			const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
 			getUsuarios();
 			// console.log(res.data);
-			alert(res.data.trim());
+			notify(res.data.trim());
 		}
 	}
 

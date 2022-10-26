@@ -3,9 +3,27 @@ import React, { useState, useEffect } from 'react';
 import { FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye } from 'react-icons/fa'
 import axios from '../node_modules/axios';
 import { NabvarRe } from './component/Navbar';
+import './App.css';
 import Modal from 'react-modal';
 
-import './App.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
+import {ThreeDots } from  'react-loader-spinner'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const customStylesD = {
+	content: {
+	  top: '50%',
+	  left: '50%',
+	  right: 'auto',
+	  bottom: 'auto',
+	  marginRight: '-50%',
+	  transform: 'translate(-50%, -50%)',
+	},
+  };
+
+
 const customStyles = {
 	content: {
 	  top: '50%',
@@ -18,6 +36,9 @@ const customStyles = {
   };
 
 function Placas(props) { 
+
+	
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 	const [listav, setListaV] = useState([]);  
 	const [listap, setListaP] = useState([]);  
 	const [listapv, setListaPV] = useState([]);
@@ -25,7 +46,22 @@ function Placas(props) {
 	
 	
 	let subtitle;
+
+
 	const [modalIsOpen, setIsOpen] = React.useState(false);
+
+	function openModalLoad() { 
+		setIsOpenLoad(true); 
+	}  
+	   
+	function closeModalLoad() { 
+		setIsOpenLoad(false); 
+	}
+
+    function notify(message){
+		toast(message);
+	}
+    
   
 	function openModal() {
 	  setIsOpen(true);
@@ -89,6 +125,7 @@ function Placas(props) {
 		var placas = document.getElementById("placas").value;
 		var fechainicial = document.getElementById("fechainicial").value;
 		var fechafinal = document.getElementById("fechafinal").value; 
+		var placadocumento = document.getElementById("placadocumento"); 
 		
 		let fd = new FormData()
 			fd.append("id", "addPlacas")
@@ -96,15 +133,14 @@ function Placas(props) {
 			fd.append("placas", placas) 
 			fd.append("fechainicial", fechainicial)
 			fd.append("fechafinal", fechafinal)
-
+			fd.append("placadocumento", placadocumento.files[0])
+		openModalLoad();
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+		closeModalLoad();
+		notify(res.data.trim());
 		 
-		alert(res.data.trim());
-		if(res.data.trim() == "Placa agregada correctamente"){
-		 
- 			// getPlacas()
+		getPlacas();
 
-		}
 	}
 	 
   
@@ -136,9 +172,9 @@ function Placas(props) {
 			<input id='input-cotizacion' type='file' style={{ display: 'none' }} ></input>
 			<NabvarRe titulo="Placas" />
 			<div className="row p-3">
-				<div style={{ width: '30%' }}>
-					<style>{style}</style>
-					<div className="card p-2 mt-2 border-secondary" style={{ height:'350px'}}>
+				<div style={{ width: '30%'}}>
+					 
+					<div className="card p-2 mt-2 border-secondary" style={{ overflow:'scroll'}}>
 						<h5>Placas</h5>
 						<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{listav.map(item => ( 
@@ -147,17 +183,28 @@ function Placas(props) {
 						))}
 						</select>
 						<span>Placas:</span>
-						<input id="placas" placeholder="Placas" className="form-control"></input>						
+						<input id="placas" placeholder="Placas" className="form-control"></input>
+						<br></br> 
+						
+						<h5>Tarjeta de circulación</h5> 
 						<span>Fecha:</span>
 						<input id="fechainicial" placeholder="Fecha Alta"  className="form-control" type="date"></input>						
+						<br></br> 
+						
 						<span>Vencimiento:</span>
 						<input id="fechafinal" placeholder="Fecha Vencimiento" className="form-control" type="date"></input>
+						<br></br> 
+					 
+						<span>Imagen:</span> 
+						<input id="placadocumento" type="file" style={{ height: '50px'}} />
+						<br></br> 
+							 
 						<button className="btn btn-outline-success btn-sm" onClick={() => addPlacas()}>Agregar <FaCheckCircle /></button>
 					</div>
 				</div>
 
 				<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'230px'}}>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'230px', overflow:'scroll'}}>
 						<h5>Historial de placas</h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
@@ -278,6 +325,21 @@ function Placas(props) {
 <br></br>
 		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      </Modal>
+
+	 <ToastContainer 
+				progressClassName="toastProgress"
+				position="top-center"
+				/>
+
+			<Modal 
+					isOpen={modalIsOpenLoad}  
+					onRequestClose={closeModalLoad}   
+					style={customStylesD}> 
+					<div style={{width:'100%'}}>  
+					<ThreeDots color="#0071ce" height={80} width={80} /> 
+					</div>  
+			</Modal>
+
 		</div>
 	);
 }

@@ -7,10 +7,45 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
 import './App.css'; 
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
+import {ThreeDots } from  'react-loader-spinner'
+import Modal from 'react-modal';
+
+
+
+const customStyles = {
+	content: {
+	  top: '50%',
+	  left: '50%',
+	  right: 'auto',
+	  bottom: 'auto',
+	  marginRight: '-50%',
+	  transform: 'translate(-50%, -50%)',
+	},
+  };
+
 function Ordenes(props)  {
 
  
-    
+    function openModalLoad() { 
+		setIsOpenLoad(true); 
+	}  
+	   
+	function closeModalLoad() { 
+		setIsOpenLoad(false); 
+	}
+
+    function notify(message){
+		toast(message);
+	}
+
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
+
+
+
     const [isr, setIsr] =  useState([]); 
     const [isr1, setIsr1] =  useState([]); 
 
@@ -143,12 +178,12 @@ function Ordenes(props)  {
             const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd); 
             getOrdenes();
             // console.log(res.data);
-            alert(res.data.trim());
+            notify(res.data.trim());
             verOrden(id); 
     
 
         }else{
-            alert("No es posible autorizar");
+            notify("No es posible autorizar");
         }
 
 
@@ -164,7 +199,7 @@ function Ordenes(props)  {
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd); 
 		getOrdenes();
 		// console.log(res.data);
-        alert(res.data.trim());
+        notify(res.data.trim());
         verOrden(id); 
 
     }
@@ -186,7 +221,7 @@ function Ordenes(props)  {
         var firmaautoriza = document.getElementById("firmaautoriza");
         const res = await axios.get('https://compras.grupopetromar.com/apirest/?id='+id+'&idorden='+idorden);
         //console.log(res.data);
-       // alert(res.data[0]);
+       // notify(res.data[0]);
         if(res.data[0] != null){
             if(res.data[0].tipo == "1"){
             firmasolicita.src = "data:image/png;base64,"+res.data[0].imagen;
@@ -248,19 +283,19 @@ function Ordenes(props)  {
         
 		if(pro != ""){ 
             if(est != ""){ 
-        //alert(idrequisicion + "  " + props.userid + "   " + tipo);
+        //notify(idrequisicion + "  " + props.userid + "   " + tipo);
 		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);  
      //   console.log(res.data);
-        alert(res.data.trim());
+        notify(res.data.trim());
 
 ////////
 verOrden(idd);
 
                 }else{
-                    alert("Seleccione estación");
+                    notify("Seleccione estación");
                 }
         }else{
-            alert("Ingrese datos del proveedor");
+            notify("Ingrese datos del proveedor");
         }
     }
 
@@ -301,7 +336,7 @@ verOrden(idd);
     }
 
         function a(){
-            alert("a");
+            notify("a");
         }
     
 
@@ -538,7 +573,7 @@ verOrden(idd);
             fd.append("nvoestado", rw)
             const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd); 
             // console.log(res.data);
-            alert(res.data);
+            notify(res.data);
             getOrdenes();
         }
     }
@@ -844,6 +879,19 @@ verOrden(idd);
     </script>
             </div>
         </div>
+        <ToastContainer 
+				progressClassName="toastProgress"
+				position="top-center"
+				/>
+
+			<Modal 
+					isOpen={modalIsOpenLoad}  
+					onRequestClose={closeModalLoad}   
+					style={customStyles}> 
+					<div style={{width:'100%'}}>  
+					<ThreeDots color="#0071ce" height={80} width={80} /> 
+					</div>  
+			</Modal>
     </div>
     );   
 

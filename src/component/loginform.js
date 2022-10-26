@@ -3,6 +3,10 @@ import './styles-login.css';
 import axios from '../../node_modules/axios';
 import logocamion from './Camion.svg';
 import SideMenu from './SideMenu';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+ 
 
 	const Login = (isLoggedIna) => {
 	const [usuario, setUsuario] = useState("null");
@@ -24,6 +28,19 @@ import SideMenu from './SideMenu';
 			getImagenes(event);
 		}
 	}
+	function openModalLoad() { 
+		setIsOpenLoad(true); 
+	}  
+	   
+	function closeModalLoad() { 
+		setIsOpenLoad(false); 
+	}
+
+    function notify(message){
+		toast(message);
+	}
+    
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 
 	async function getDepartamentos() {
 		var id = "3";
@@ -56,7 +73,7 @@ import SideMenu from './SideMenu';
 			setDepartamento(res.data[0].departamento);
 			setTipo(res.data[0].tipo);
 		} else {
-			alert("Datos de acceso incorrectos");
+			notify("Datos de acceso incorrectos");
 		}
 		// console.log(res.data);
 	}
@@ -79,6 +96,12 @@ import SideMenu from './SideMenu';
 						{ }
 					</div>
 				</div>
+				<ToastContainer 
+				progressClassName="toastProgress"
+				position="top-center"
+				/>
+
+		 
 			</div>
 		);
 	} else {

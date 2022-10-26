@@ -1,5 +1,10 @@
 import {useState} from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+function notify(message){
+    toast(message);
+}
 export default function Documents() {
     const styles = `
         #add-form{
@@ -27,7 +32,7 @@ export default function Documents() {
             body: reqbody
         })
         .then(response => response.json())
-        .then(data => alert(data));
+        .then(data => notify(data));
     }
 
     const handleSubmit = async e => {
@@ -66,6 +71,10 @@ export default function Documents() {
                 
                 <button type="submit" class="btn btn-outline-success btn-sm">ACEPTAR</button>
             </form>
+            <ToastContainer 
+				progressClassName="toastProgress"
+				position="top-center"
+				/>
         </div>
     )
 }
