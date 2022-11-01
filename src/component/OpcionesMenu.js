@@ -46,7 +46,7 @@ export default function OpcionesMenu(props) {
                     <b>Bienvenido:</b> {props.name}
                 </span>
 
-            
+              
                 
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("3"); }}>
@@ -56,6 +56,12 @@ export default function OpcionesMenu(props) {
                     :
                     <label></label>
                 }
+
+                  <div id="sidebtn" onClick={() => { Seleccionar("Vehiculos"); }}>
+                    <img id="sideimg3" alt="" />
+                    <span>Vehiculos</span>
+                </div>
+
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("2"); }}>
                     <FaTruck style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
@@ -72,6 +78,14 @@ export default function OpcionesMenu(props) {
                     :
                     <label></label>
                 }
+                  <div id="sidebtn" onClick={() => { Seleccionar("Servicios"); }}>
+                    <img id="sideimg3" alt="" />
+                    <span>Servicios</span>
+                </div>
+                <div id="sidebtn" onClick={() => { Seleccionar("Dictamenes"); }}>
+                    <img id="sideimg3" alt="" />
+                    <span>Dictamenes</span>
+                </div>
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("4"); }}>
                 <img id="sideimg2" alt="" />

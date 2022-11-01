@@ -175,7 +175,7 @@ function Ordenes(props)  {
             fd.append("idrequisicion", id)
             fd.append("userid", props.userid)
             fd.append("tipo", tipo) 
-            const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd); 
+            const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
             getOrdenes();
             // console.log(res.data);
             notify(res.data.trim());
@@ -196,7 +196,7 @@ function Ordenes(props)  {
 		fd.append("idrequisicion", id)
         fd.append("userid", props.userid)
         fd.append("tipo", tipo) 
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd); 
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 		getOrdenes();
 		// console.log(res.data);
         notify(res.data.trim());
@@ -284,7 +284,7 @@ function Ordenes(props)  {
 		if(pro != ""){ 
             if(est != ""){ 
         //notify(idrequisicion + "  " + props.userid + "   " + tipo);
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);  
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
      //   console.log(res.data);
         notify(res.data.trim());
 
@@ -312,7 +312,7 @@ verOrden(idd);
         fd.append("id", "11")
         fd.append("idorden", id)
         fd.append("file", document.getElementById("input-cotizacion").files[0]) 
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/',  fd, {
+		const res = await axios.post(process.env.REACT_APP_API_URL,  fd, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -571,7 +571,7 @@ verOrden(idd);
             fd.append("id", "12")
             fd.append("idorden", id)
             fd.append("nvoestado", rw)
-            const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd); 
+            const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
             // console.log(res.data);
             notify(res.data);
             getOrdenes();

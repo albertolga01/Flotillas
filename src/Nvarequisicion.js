@@ -52,7 +52,7 @@ function NvaRequisicion(props) {
 
 	async function getTipos() {
 		var id = "10";
-		const rese = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setDeptos(rese.data);
 		//console.log(rese.data);
 		//var Data = JSON.stringify(rese.data);
@@ -61,7 +61,7 @@ function NvaRequisicion(props) {
 
 	async function getEmpresas() {
 		var id = "getEmpresas";
-		const rese = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setEmpresas(rese.data);
 		//console.log(rese.data);
 		//var Data = JSON.stringify(rese.data);
@@ -93,7 +93,7 @@ function NvaRequisicion(props) {
 			fd.append("empresa", empresa)
 			fd.append("numvehiculo", numvehiculo)
 			openModalLoad();
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 closeModalLoad();
 		if (res.data == "1") {
 			//notify("Nuevo vehiculo agregado correctamente");
@@ -121,7 +121,7 @@ function NvaRequisicion(props) {
 
 	async function getUsuarios() {
 		var id = "2";
-		const rese = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		// console.log(rese.data);
 		//notify(rese.data);
 		setValue(rese.data);

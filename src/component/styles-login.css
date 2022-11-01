@@ -27,10 +27,11 @@ body{
 #div-img{
     display: flex; 
     flex: 1; 
-    background-color: white; 
+    background-color: rgb(0 113 206); 
     justify-content: center; 
     padding: 2vmax;
 }
+ 
 
 #div-img img{
     content: url("./Camion.svg");

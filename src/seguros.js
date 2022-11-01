@@ -69,13 +69,13 @@ function Seguros(props) {
 }, [])  
 async function getSeguros() {
 	var id = "getSeguros";
-	const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 	setListaP(res.data);
 	console.log(res.data);
 }
 async function getPlacasV() {
 	var id = "getSegurosProximo";
-	const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 	setListaPV(res.data);
 	console.log(res.data);
 }
@@ -86,7 +86,7 @@ async function getPlacasV() {
 
   async function getVehiculos(){
 	var id = "11";
-	const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id='+id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
 	setListaV(res.data);
 	//console.log(res.data);
 
@@ -112,7 +112,7 @@ async function getPlacasV() {
 		fd.append("documentoseguro", documentoseguro.files[0])
 
 openModalLoad();
-	const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+	const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 	 closeModalLoad();
 	notify(res.data.trim());
 	 
@@ -123,7 +123,7 @@ openModalLoad();
 async function verSeguro(vehiculoid) {
 	 
 	var id = "verSeguro";
-	const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id+'&vehiculoid='+vehiculoid);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&vehiculoid='+vehiculoid);
 	
 	setListaVer(res.data); 
 	 openModal();
@@ -185,7 +185,7 @@ function format(todayy){
 
   async function getUsuarios(){
     var id = "2";
-    const rese = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id='+id); 
+    const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+id); 
     // console.log(rese.data);
     setValue(rese.data);    
   }

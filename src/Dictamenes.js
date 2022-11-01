@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye } from 'react-icons/fa'
-import axios from '../node_modules/axios';
+import axios from 'axios';
 import { NabvarRe } from './component/Navbar';
-import Documents from './component/Documents';
+import DocumentsDictamenes from './component/DocumentsDictamenes';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
@@ -26,7 +26,7 @@ const customStyles = {
 	},
   };
 
-function Expediente(props) {
+function Dictamenes(props) {
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -67,14 +67,26 @@ function Expediente(props) {
 
 	const [lista, setLista] = useState([]);
 	const [value, setValue] = useState([]);
+
+    const [listas, setListaS] = useState([]);  
+
 	let id = 0;
 	let tipo = 0;
 	 let subtitle;
 
 	useEffect(() => {
 		getVehiculos();
+		getDictamenes();
+		 
 	}, [])
 
+	async function getDictamenes() {
+		var id = "getDictamenesVehiculo";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		setListaS(res.data);
+		//console.log(res.data);  process.env.REACT_APP_API_URL
+
+	}
 	async function getVehiculos() {
 		var id = "11";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
@@ -82,7 +94,6 @@ function Expediente(props) {
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 
 	}
-
  
 
 
@@ -97,12 +108,13 @@ function Expediente(props) {
  		openModal();
 */
 		//getDocumentos(id);
+		 
 		setListaVer([]);
 		openModal();
 		let formData = new FormData();
-            formData.append("id", "getExpediente");
-			formData.append("IDvehiculo", vehiculoid)
-		openModalLoad();
+            formData.append("id", "getDictamenesVehiculo2");
+			formData.append("vehiculoid", vehiculoid)
+		
         return fetch(process.env.REACT_APP_API_URL, {
             method: 'POST',
             mode: 'cors',
@@ -111,13 +123,14 @@ function Expediente(props) {
 		.then(response => response.json())
         .then(data => {
 			setListaVer(data);
-			closeModalLoad();
+			 
 		})
 			
 	}
 
 
- 
+	 
+
 
 	function format(todayy){
 		var today = new Date(todayy);
@@ -134,6 +147,7 @@ function Expediente(props) {
 	useEffect(() => {
 		getUsuarios();
 		getDocumentosTodos();
+		//getServicios();
 	}, [])
 
 
@@ -171,7 +185,7 @@ function Expediente(props) {
 	return (
 
 		<div className="container ">
-		 	<NabvarRe titulo="Expediente" />
+		 	<NabvarRe titulo="Dictámenes" />
 			<div className="row p-3">
 				<div style={{ width: '30%' }}>
 						<div className="card p-2 mt-2 border-secondary">
@@ -192,16 +206,16 @@ function Expediente(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<Documents />
+							<DocumentsDictamenes />
 						</div> 
 				</div>
 
 				<div style={{ width: '70%' }}>
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'340px'}} >
-						<h5>Expediente</h5>
+						<h5>Dictámenes</h5>
 						
 						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
-							<h6>Vehiculo: {lista}</h6>
+							<h6>Vehículo: {lista}</h6>
  
 									<h6 id="id-displayexp" style={{fontWeight:"400"}}>{docsVehi.descripcion}</h6>
 								 
@@ -213,17 +227,21 @@ function Expediente(props) {
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr>
-									<th>Nombre</th>
-									<th>Descripción</th>
-									<th>Fecha</th>
-									<th>Archivo</th>
+									<th style={{textAlign:'center'}}>Dictamen</th>
+									<th style={{textAlign:'center'}}>Tipo Dictamen</th>
+									<th style={{textAlign:'center'}}>Descripción</th>
+									<th style={{textAlign:'center'}}>Vehículo</th>
+									<th style={{textAlign:'center'}}>Fecha Dictamen</th>
+									<th style={{textAlign:'center'}}>Archivo</th>
 								</tr>
-								{docsVehi.map(item => (
+								{listas.map(item => (
 								<tr>
-									<td>{item.Filename}</td>
-									<td>{item.FileDesc}</td>
-									<td>{item.UploadDate}</td>
-									<td><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.FilePath}>{item.FilePath}</a></td>
+									<td style={{textAlign:'center'}}>{item.id}</td>
+									<td style={{textAlign:'center'}}>{item.nombre}</td>
+									<td style={{textAlign:'center'}}>{item.descripcion}</td>
+									<td style={{textAlign:'center'}}>{item.vehiculo}</td>
+									<td style={{textAlign:'center'}}>{item.fecha}</td>
+									<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 								</tr>
 								))}
 							</table>
@@ -249,7 +267,7 @@ function Expediente(props) {
 										 }
 									</div>
 
-									<button className="Bttn" onClick={() => verVehiculo(item.vehiculoid, item.descripcion)}
+									<button className="Bttn" onClick={() => verVehiculo(item.vehiculoid, item.id)}
 									><FaEye /> ver 
 									</button>
 								</div>
@@ -274,24 +292,26 @@ function Expediente(props) {
 							style={customStyles}
 							contentLabel="Example Modal"
 						>
-							<label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Expediente del vehículo</label>
+							<label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Dictámenes del vehículo</label>
 							<br></br>
 							<br></br>
 							<table id="productstable"  style={{width:'500px'}}> 
 										<tr>
 											<th>Vehículo</th>
-											<th>Nombre Archivo</th>
+											<th>Descripción</th>
 											<th>Fecha</th>
-											<th>Vencimiento</th>  
+											<th>Nombre Dictamen</th>
+											<th>Documento</th>  
 										</tr>
 
 										{  
 										listaver.map(item => ( 
 										<tr>
-										<td>{item.descvehiculo}</td>
-										<td className='id-orden' >{item.Filename}</td>
-										<td>{format(item.UploadDate)}</td> 
-										<td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.FilePath}>{item.FilePath}</a></td>
+										<td style={{textAlign:'center'}}>{item.vehiculo}</td>
+										<td style={{textAlign:'center'}} >{item.descripcion}</td> 
+										<td style={{textAlign:'center'}}>{format(item.fecha)}</td> 
+										<td style={{textAlign:'center'}}>{item.nombre}</td> 
+										<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 							
 									
 										
@@ -314,4 +334,4 @@ function Expediente(props) {
 
 
 
-export default Expediente;
+export default Dictamenes;

@@ -76,7 +76,7 @@ function Rendimiento(props) {
 			fd.append("litros", litros)
 			fd.append("importe", importe)
 
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 
 		notify(res.data.trim());
 		if(res.data.trim() == "Carga agregada correctamente"){
@@ -89,7 +89,7 @@ function Rendimiento(props) {
 
 	async function getVehiculos() {
 		var id = "11";
-		const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setListaV(res.data);
 		console.log(res.data);
 	} 
@@ -127,7 +127,7 @@ function Rendimiento(props) {
 		async function verRendimiento(vehiculoid) {
 	 
 			var id = "verRendimiento";
-			const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id+'&vehiculoid='+vehiculoid);
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&vehiculoid='+vehiculoid);
 			
 			setListaVer(res.data); 
 			 openModal1();
@@ -172,7 +172,7 @@ function Rendimiento(props) {
 
   async function getCargas(){
 	var id = "getCargas";
-	const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id='+id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
  
 	setLista(res.data);
 	
@@ -184,7 +184,7 @@ function Rendimiento(props) {
 	   
 	var id = "getCargasDia";
 	var fecha = document.getElementById("input-fecha").value;
-	const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id='+id+'&fecha='+fecha);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha);
     setLista(res.data);
 	
 	console.log(res.data);

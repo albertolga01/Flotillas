@@ -44,7 +44,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 	async function getDepartamentos() {
 		var id = "3";
-		const rese = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setDeptos(rese.data);
 		// console.log(rese.data);
 		var Data = JSON.stringify(rese.data);
@@ -63,7 +63,7 @@ import 'react-toastify/dist/ReactToastify.css';
 		fd.append("user", user)
 		fd.append("pass", pass)
 		fd.append("id", id);
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		//console.log(res.data);
 		if (res.data[0].res == "1") {
 			setisLoggedIn(false);
@@ -82,8 +82,8 @@ import 'react-toastify/dist/ReactToastify.css';
 		return (
 			<div>
 				<div id="body-content">
-					<div>
-						<img alt="logo" class="responsive" style={{backgroundColor:'white'}} src={logocamion}></img>
+					<div id="div-img">
+						<img alt="logo" class="responsive"   src={logocamion}></img>
 					</div>
 					
 					<div id="div-form">

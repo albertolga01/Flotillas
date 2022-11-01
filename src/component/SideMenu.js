@@ -6,7 +6,10 @@ import Seguros from '../seguros';
 import Refacciones from '../refacciones';
 import Rendimiento from '../rendimiento';
 import NvaRequisicion from '../Nvarequisicion';
-import Ordenes from '../Ordenes';
+import Listavehiculos from '../Listavehiculos';
+import Servicios from '../Servicios';
+import Dictamenes from '../Dictamenes';
+
 
 import OpcionesMenu from './OpcionesMenu'; 
 export default function SideMenu(props) {
@@ -32,6 +35,12 @@ export default function SideMenu(props) {
             return <Rendimiento tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '7') {
             return <Expediente tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        } else if (selected == 'Vehiculos') {
+            return <Listavehiculos tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'Servicios') {
+            return <Servicios tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'Dictamenes') {
+            return <Dictamenes tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else {
             return (<div style={{ width: '100%', textAlign: 'center', backgroundColor: '', margin: 'auto' }}><h1>Error al Cargar</h1></div>);

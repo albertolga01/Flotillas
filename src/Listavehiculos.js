@@ -1,7 +1,7 @@
  
 import React,{useState, useEffect} from 'react';  
 import  {FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye} from 'react-icons/fa'
-import axios from '../node_modules/axios'; 
+import axios from 'axios'; 
 import {NabvarRe} from './component/Navbar'; 
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
@@ -36,7 +36,7 @@ const customStyles = {
 	},
   };
 
-function Refacciones(props) {
+function Listavehiculos(props) {
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -50,7 +50,7 @@ function Refacciones(props) {
 		toast(message);
 	}
     
-    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
+    const [modalIsOpenLoad, setIsOpenLoad] = useState(false);
 
 	const [listav, setListaV] = useState([]);
 	
@@ -93,21 +93,14 @@ function Refacciones(props) {
 		getRefacciones();
 	}
 
-
-	async function verRefeccion(vehiculoid) {
-	 
-		var id = "verRefacciones";
-		openModalLoad();
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&vehiculoid='+vehiculoid);
-		closeModalLoad();
-		setListaVer(res.data); 
-		 openModal1();
-	}
+ 
 
 	async function getVehiculos() {
 		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		openModalLoad();
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id=' + id);
 		setListaV(res.data);
+		closeModalLoad();
 		console.log(res.data);
 	} 
 
@@ -208,20 +201,13 @@ function Refacciones(props) {
   
     <div className="container ">
      
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Refacciones"/>    
+<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Vehículos"/>    
 <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
 
 
      
 	 
-<div style={{width:'100%'}}>
-<label>Filtrar por fecha de compra: </label> 
-
-&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getRefaccionesDia()} style={{width: '12vw', fontSize: '12px', cursor: 'pointer'}}/>
-</div>
-<div style={{width:'100%'}} align="right">
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>
-      
+<div style={{width:'100%'}} align="right"> 
 		  <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -263,29 +249,32 @@ function Refacciones(props) {
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th>Folio</th>
-                        <th>Fecha Compra</th>
+                        <th>Descripcion</th>
                         <th>Fecha Captura</th>
-                        <th>Vehiculo</th>
-                        <th>Proveedor</th>
-                        <th>Refacción</th>
-                        <th>Descripcion</th> 
-                        <th>Precio</th>
-                        <th>Documento</th>
+                        <th>Observaciones</th>
+                        <th>Serie Vehículo</th>
+                        <th>Serie Motor</th>
+                        <th>Tipo Uso</th> 
+                        <th>Empresa</th>
+                        <th>Número Vehículo</th>
+                        <th>Foto</th>
 
                     </tr>
 
                     {  
-                    lista.map(item => ( 
+                    listav.map(item => ( 
                      <tr>
-                    <td className='id-orden' >{item.folio}</td>
-                    <td>{format(item.fechacompra)}</td>
-                    <td>{format(item.fecha)}</td>
-                    <td>{item.vehiculo}</td>
-                    <td>{item.proveedor}</td>
-                    <td>{item.refaccion}</td>
+                    <td className='id-orden' >{item.vehiculoid}</td>
                     <td>{item.descripcion}</td>
-                    <td>{formatNumber(item.precio)}</td>
-                    <td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
+                    <td>{format(item.fechacaptura)}</td>
+                    <td>{item.observaciones}</td>
+                    <td>{item.serievehiculo}</td>
+                    <td>{item.seriemotor}</td>
+                    <td>{item.tipouso}</td>
+                    <td>{item.empresa}</td>
+                    <td>{item.numvehiculo}</td>
+                    <td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/" + item.icon}>{item.icon}</a></td>
+                   
 
                     
                 </tr>
@@ -296,34 +285,7 @@ function Refacciones(props) {
 	 </div>
  
  
-
-	 <div style={{ margin: 'auto' }} >
-					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
-						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
-								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
-									<div>
-									<b><label ></label></b> <label className="text-primary">{item.descripcion + " -"+ item.vehiculoid}</label> &nbsp;&nbsp; 
-										{(item.icon == null)  ?
-										<img src={'http://flotillas.grupopetromar.com/default.jpg'} style={{ height: '100px', width: '140px' }}></img>  
-										:
-										<img src={'http://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/'+item.icon} style={{ height: '100px', width: '140px' }}></img> 
-										 }
-										
-									
-									</div>
-
-									<button className="btn btn-outline-success btn-sm" 
-									onClick={() => verRefeccion(item.vehiculoid)} >
-										<FaEye /> ver
-									</button>
-								</div>
-							))}
-						</div>
-					</div>
-				</div>
  
-
 
 				<Modal
         isOpen={modalIsOpen1}
@@ -400,4 +362,4 @@ function Refacciones(props) {
 
 
 
-export default Refacciones;
+export default Listavehiculos;

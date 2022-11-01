@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from '../../node_modules/axios';
+import axios from 'axios';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
 
@@ -35,9 +35,18 @@ export default function Documents() {
     `
 
     const [Filename, setFilename] = useState();
-    const [Filedesc, setFiledesc] = useState(); 
+    const [Filedesc, setFiledesc] = useState();
+
+    const [servicio, setservicio] = useState();
+    const [odometro, setodometro] = useState();
+    const [descripcion, setdescripcion] = useState(); 
+    const [fechainicial, setfechainicial] = useState(); 
+
    
     const [listav, setListaV] = useState([]);  
+    const [listaDictamen, setListaDic] = useState([]);  
+
+    const [listas, setListaS] = useState([]);  
     const [modalIsOpenLoad, setIsOpenLoad] = useState(false);
 
     function openModalLoad() { 
@@ -53,7 +62,9 @@ export default function Documents() {
 
 
     useEffect(() => {
-		getVehiculos();
+		getServicios();
+        getVehiculos();
+        
 	}, [])
 
     
@@ -67,32 +78,46 @@ export default function Documents() {
             //headers: {'Content-Type': 'multipart/form-data'},
             body: reqbody
         })
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
+            
             notify(data)
             closeModalLoad()
+            getServicios();
+           
         });
     }
 
+    async function getServicios() {
+		var id = "getServicios";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		setListaS(res.data); 
+	}
     async function getVehiculos() {
 		var id = "11";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setListaV(res.data);
-	}
+		//console.log(res.data);  process.env.REACT_APP_API_URL
 
+	}
+     
+
+   
 
     const handleSubmit = async e => {
         e.preventDefault();
-        var IDvehiInput = document.getElementById("IDvehi-input");
-        var filedoc = document.getElementById("fileinput");
+        var IDvehiInput = document.getElementById("IDvehiculo");
+        var filedoc = document.getElementById("documentodictamen");
         let formData = new FormData();
-            formData.append("id", 15);
-            formData.append("Filename", Filename);
-            formData.append("Filedesc", Filedesc);
+            formData.append("id", "cargarDictamenes");
+            formData.append("fecha", document.getElementById("fechainicial").value);
+            formData.append("dictamen", document.getElementById("dictamen").value); 
+            formData.append("descripcion", document.getElementById("descripcion").value);
             formData.append("IDvehiculo", IDvehiInput.value);
-            formData.append("file", filedoc.files[0]);
+            formData.append("documentodictamen", filedoc.files[0]);
 
             await FormRequest(formData); 
+            getServicios();
     }
         /**  PARA AÑADIR CAMPO CREAR "const[]=useState()" PARA EL DATO, PONER ATTRIB "onChange" EN HTML COMO LOS OTROS INPUTS, Y AÑADIRLO AL "formData"   **/
     return(
@@ -103,24 +128,33 @@ export default function Documents() {
 
             <form id="add-form" onSubmit={handleSubmit}>
                 <h6>Vehiculo</h6>
-                <select  id="IDvehi-input"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+                <select  id="IDvehiculo"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{listav.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
 
 						))}
 						</select>
-                 
-                <h6>Nombre</h6>
-                <input type="text" onChange={e => setFilename(e.target.value)}></input>
                 
+                <h6>Fecha</h6>
+                <input id="fechainicial" placeholder="Fecha Servicio" className="form-control" type="date"></input>
+                 
+                <h6>Dictamen</h6>
+                 
+                <select  id="dictamen"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+                            <option value="Dictamen Humo">Humo</option>
+                            <option value="Dictamen Fisico Mecanico">Físico mecánico NOM 007</option>
+                            <option value="Dictamen Calibración Pemex">Dictamen de calibración Pemex</option>
+                             
+						</select>
+                  
                 <h6>Descripción</h6>
-                <input type="text" onChange={e => setFiledesc(e.target.value)}></input>
+                <input type="text" id="descripcion"  ></input>
                 
                 <h6>Archivo</h6>
-                <input id="fileinput" type="file" style={{display: "none"}}></input>
-                <input type="button" class="btn btn-outline-success btn-sm" value="Elegir archivo" onClick={() => {document.getElementById('fileinput').click()}}></input>
+                <input id="documentodictamen" type="file" style={{display: "none"}}></input>
+                <input type="button" id="documentodictamen" class="btn btn-outline-success btn-sm" value="Elegir archivo" onClick={() => {document.getElementById('documentodictamen').click()}}></input>
                 
-                <button type="submit" class="btn btn-outline-success btn-sm">ACEPTAR</button>
+                <button type="submit" class="btn btn-outline-success btn-sm">Cargar</button>
             </form>
             <ToastContainer 
 				progressClassName="toastProgress"

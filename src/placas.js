@@ -80,32 +80,29 @@ function Placas(props) {
 	 
 	useEffect(() => {
 		getVehiculos();
-	}, [])
- 
-	 
-	useEffect(() => {
 		getPlacas();
-	}, [])
-	useEffect(() => {
 		getPlacasV();
 	}, [])
  
+	  
 	async function getPlacas() {
 		var id = "getPlacas";
-		const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		openModalLoad();
+		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id);
+		closeModalLoad();
 		setListaP(res.data);
 		console.log(res.data);
 	}
 	async function getPlacasV() {
 		var id = "getPlacasProximo";
-		const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setListaPV(res.data);
 		console.log(res.data);
 	}
 
 	async function getVehiculos() {
 		var id = "11";
-		const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setListaV(res.data);
 	}
 
@@ -113,7 +110,7 @@ function Placas(props) {
 	async function verVehiculo(vehiculoid) {
 	 
 		var id = "verVehiculo";
-		const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id+'&vehiculoid='+vehiculoid);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&vehiculoid='+vehiculoid);
 		
 		setListaVer(res.data); 
  		openModal();
@@ -135,7 +132,7 @@ function Placas(props) {
 			fd.append("fechafinal", fechafinal)
 			fd.append("placadocumento", placadocumento.files[0])
 		openModalLoad();
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		closeModalLoad();
 		notify(res.data.trim());
 		 
@@ -155,7 +152,7 @@ function Placas(props) {
 	  
 	  today = dd + '/' + mm + '/' + yyyy;
 	   return today;
-		}
+	}
  
 
    

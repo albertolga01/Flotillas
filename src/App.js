@@ -70,7 +70,7 @@ function App(props) {
 
 	async function getUsuarios() {
 		var id = "2";
-		const rese = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		 //console.log(rese.data);
 		setValue(rese.data);
 	}
@@ -80,13 +80,13 @@ function App(props) {
 
 	async function getImagenes() {
 		var id = "1";
-		const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setLista(res.data);
 	}
 
 	async function getProveedores() {
 		var id = "12";
-		const res = await axios.get('https://flotillas.grupopetromar.com/apirestflotilla/?id=' + id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		// console.log(res.data);
 		setListaP(res.data);
 	}
@@ -101,7 +101,7 @@ function App(props) {
 		fd.append("user", document.getElementById("newuser-user").value)
 		fd.append("password", document.getElementById("newuser-password").value)
 
-		const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		getUsuarios();
 		// console.log(res.data);
 		document.getElementById("newuser-user").value = "";
@@ -115,7 +115,7 @@ function App(props) {
 			let fd = new FormData()
 			fd.append("id", "4")
 			fd.append("idusuario", id)
-			const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 			getUsuarios();
 			// console.log(res.data);
 			notify(res.data.msg);
@@ -153,7 +153,7 @@ function App(props) {
 			fd.append("once", +once)
 			fd.append("doce", +doce)
 
-			const res = await axios.post('https://flotillas.grupopetromar.com/apirestflotilla/', fd);
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 			getUsuarios();
 			// console.log(res.data);
 			notify(res.data.trim());
