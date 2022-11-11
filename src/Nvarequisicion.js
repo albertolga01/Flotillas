@@ -80,8 +80,11 @@ function NvaRequisicion(props) {
 		var tipouso = document.getElementById("tipouso").value;
 		var empresa = document.getElementById("empresa").value;
 		var numvehiculo = document.getElementById("numvehiculo").value;
+		var responsable = document.getElementById("responsable").value;
+		var modelo = document.getElementById("modelo").value;
+		var gps = document.getElementById("gps").value;
 		let fd = new FormData()
-			fd.append("id", "6")
+			fd.append("id", "InsertVehiculo")
 			fd.append("userid", userid)
 			fd.append("observaciones", observaciones)
 			fd.append("descripcion", descripcion)
@@ -92,6 +95,10 @@ function NvaRequisicion(props) {
 			fd.append("tipouso", tipouso)
 			fd.append("empresa", empresa)
 			fd.append("numvehiculo", numvehiculo)
+			fd.append("responsable", responsable)
+			fd.append("modelo", modelo)
+			fd.append("gps", gps)
+
 			openModalLoad();
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 closeModalLoad();
@@ -151,7 +158,20 @@ function NvaRequisicion(props) {
 									</select>
 								</td>
 							</tr>
-
+							<tr>
+								<td><label>Modelo (Año):</label><br /><input id="modelo" style={{ width: '556px', height: '20px' }} /></td>
+								 
+							</tr>
+							<tr>
+								<td><label>Responsable:</label><br /><input id="responsable" style={{ width: '556px', height: '20px' }} /></td>
+								 
+							</tr>
+							<tr>
+								<td>
+									<label>Número de vehículo</label><br />
+									<input id="numvehiculo" style={{ width: '556px', height: '20px' }}   />
+								</td> 
+							</tr>
 							<tr>
 								<td> 
 									<label>Serie del vehículo:</label><br />
@@ -184,13 +204,17 @@ function NvaRequisicion(props) {
 								</td> 
 							</tr>
 
-							<tr>
-								<td>
-									<label>Número de vehículo</label><br />
-									<input id="numvehiculo" style={{ width: '556px', height: '20px' }}   />
-								</td> 
-							</tr>
+							
 
+							<tr>
+								<td><label>Descripcion:</label><br /><input id="descripcion" style={{ width: '556px', height: '20px' }} /></td>
+								<td><input value={props.dptoid} hidden="hidden" /></td>
+							</tr>
+							
+							<tr>
+								<td><label>GPS:</label><br /><input id="gps" style={{ width: '556px', height: '20px' }} /></td>
+								 
+							</tr>
 							<tr>
 								<td>
 									<label>Guardado por:</label><br />
@@ -201,18 +225,12 @@ function NvaRequisicion(props) {
 							</tr>
 
 							<tr>
-								<td><label>Descripcion:</label><br /><input id="descripcion" style={{ width: '556px', height: '20px' }} /></td>
-								<td><input value={props.dptoid} hidden="hidden" /></td>
-							</tr>
-							
-							
-
-							<tr>
 								<td>
 									<label>Imagen:</label><br />
 									<input id="img-vehi" type="file" style={{ width: '556px'}} />
 								</td>
 							</tr>
+							
 						</table>
 
 						<table>

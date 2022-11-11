@@ -206,7 +206,7 @@ function Servicios(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<DocumentsServicio />
+							<DocumentsServicio getServicios={getServicios}/>
 						</div> 
 				</div>
 
@@ -287,7 +287,7 @@ function Servicios(props) {
 							isOpen={modalIsOpen}
 							onAfterOpen={afterOpenModal}
 							onRequestClose={closeModal}
-							style={customStyles}
+							style={{customStyles, overflowY: 'scroll'}}
 							contentLabel="Example Modal"
 						>
 							<label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Servicios del vehículo</label>

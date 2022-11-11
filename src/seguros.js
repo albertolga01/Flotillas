@@ -229,10 +229,10 @@ function format(todayy){
     </div> 
 	</div>
 
-	<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'230px'}}>
+	<div style={{ width: '70%', overflow: "scroll"}}>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'230px',overflow: "scroll"}}>
 						<h5>Historial de seguros</h5>
-						<table id="productstable"  style={{width:'100%'}}> 
+						<table id="productstable"  style={{width:'100%' }}> 
                     <tr> 
                         <th>Vehiculo</th>
                         <th>No. Seguro</th>
@@ -290,17 +290,6 @@ function format(todayy){
 					</div>
 				</div>
 				</div>
-
-	
-
-
-	<div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%'}}>
-  
- 
-    
-				</div>
-
-
                 <div   style={{margin:'auto'}} >  
 		
 

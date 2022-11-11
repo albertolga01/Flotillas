@@ -184,7 +184,7 @@ function Placas(props) {
 						<br></br> 
 						
 						<h5>Tarjeta de circulación</h5> 
-						<span>Fecha:</span>
+						<span>Emisión:</span>
 						<input id="fechainicial" placeholder="Fecha Alta"  className="form-control" type="date"></input>						
 						<br></br> 
 						
@@ -228,7 +228,7 @@ function Placas(props) {
 
 					<div style={{ width: '100%' }}>
 					<div className="card p-2 mt-2 border-secondary"  style={{ height:'110px', overflow:'scroll'}}>
-						<h5>Proximo a vencer (6 meses)</h5>
+						<h5>Proximo a vencer  </h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th>Placas</th>

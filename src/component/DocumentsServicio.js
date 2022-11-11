@@ -20,7 +20,7 @@ const customStyles = {
   };
 
 
-export default function Documents() {
+export default function Documents(props) {
     const styles = `
         #add-form{
             display: flex;
@@ -59,8 +59,7 @@ export default function Documents() {
     }
 
 
-    useEffect(() => {
-		getServicios();
+    useEffect(() => { 
         getVehiculos();
 	}, [])
 
@@ -79,16 +78,12 @@ export default function Documents() {
         .then(data => {
             
             notify(data)
-            closeModalLoad()
-            getServicios();
+            closeModalLoad() 
+            props.getServicios();
         });
     }
 
-    async function getServicios() {
-		var id = "getServicios";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
-		setListaS(res.data); 
-	}
+    
     async function getVehiculos() {
 		var id = "11";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
@@ -113,7 +108,7 @@ export default function Documents() {
             formData.append("documentoservicio", filedoc.files[0]);
 
             await FormRequest(formData); 
-            getServicios();
+           
     }
         /**  PARA AÑADIR CAMPO CREAR "const[]=useState()" PARA EL DATO, PONER ATTRIB "onChange" EN HTML COMO LOS OTROS INPUTS, Y AÑADIRLO AL "formData"   **/
     return(

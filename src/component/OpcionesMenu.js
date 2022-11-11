@@ -51,7 +51,7 @@ export default function OpcionesMenu(props) {
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("3"); }}>
                     <img id="sideimg3" alt="" />
-                    <span>Nuevo Vehiculo</span>
+                    <span>Nuevo Vehículo</span>
                 </div>
                     :
                     <label></label>
@@ -59,7 +59,7 @@ export default function OpcionesMenu(props) {
 
                   <div id="sidebtn" onClick={() => { Seleccionar("Vehiculos"); }}>
                     <img id="sideimg3" alt="" />
-                    <span>Vehiculos</span>
+                    <span>Vehículos</span>
                 </div>
 
                 {(props.tipo != "2") ?
@@ -84,7 +84,7 @@ export default function OpcionesMenu(props) {
                 </div>
                 <div id="sidebtn" onClick={() => { Seleccionar("Dictamenes"); }}>
                     <img id="sideimg3" alt="" />
-                    <span>Dictamenes</span>
+                    <span>Dictámenes</span>
                 </div>
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("4"); }}>

@@ -7,6 +7,7 @@ import {ThreeDots } from  'react-loader-spinner'
 
 
 import Modal from 'react-modal';
+import { defaultProps } from "react-select/dist/Select-fd7cb895.cjs.prod";
  
 const customStyles = {
 	content: {
@@ -20,7 +21,7 @@ const customStyles = {
   };
 
 
-export default function Documents() {
+export default function Documents(props) {
     const styles = `
         #add-form{
             display: flex;
@@ -62,7 +63,7 @@ export default function Documents() {
 
 
     useEffect(() => {
-		getServicios();
+		//getDictamenesVehiculo();
         getVehiculos();
         
 	}, [])
@@ -83,16 +84,17 @@ export default function Documents() {
             
             notify(data)
             closeModalLoad()
-            getServicios();
+            props.getDictamenes();
+           // getDictamenesVehiculo();
            
         });
     }
-
-    async function getServicios() {
-		var id = "getServicios";
+/*
+    async function getDictamenesVehiculo() {
+		var id = "getDictamenesVehiculo";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setListaS(res.data); 
-	}
+	}*/
     async function getVehiculos() {
 		var id = "11";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
@@ -111,13 +113,14 @@ export default function Documents() {
         let formData = new FormData();
             formData.append("id", "cargarDictamenes");
             formData.append("fecha", document.getElementById("fechainicial").value);
+            formData.append("fechafinal", document.getElementById("fechafinal").value);
             formData.append("dictamen", document.getElementById("dictamen").value); 
             formData.append("descripcion", document.getElementById("descripcion").value);
             formData.append("IDvehiculo", IDvehiInput.value);
             formData.append("documentodictamen", filedoc.files[0]);
 
             await FormRequest(formData); 
-            getServicios();
+        //    getDictamenesVehiculo();
     }
         /**  PARA AÑADIR CAMPO CREAR "const[]=useState()" PARA EL DATO, PONER ATTRIB "onChange" EN HTML COMO LOS OTROS INPUTS, Y AÑADIRLO AL "formData"   **/
     return(
@@ -136,13 +139,18 @@ export default function Documents() {
 						</select>
                 
                 <h6>Fecha</h6>
-                <input id="fechainicial" placeholder="Fecha Servicio" className="form-control" type="date"></input>
+                <input id="fechainicial" placeholder="Fecha Dictamen" className="form-control" type="date"></input>
+                
+                <h6>Fecha Vencimiento</h6>
+                <input id="fechafinal" placeholder="Fecha Vencimiento" className="form-control" type="date"></input>
                  
                 <h6>Dictamen</h6>
                  
                 <select  id="dictamen"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
                             <option value="Dictamen Humo">Humo</option>
                             <option value="Dictamen Fisico Mecanico">Físico mecánico NOM 007</option>
+                            <option value="Dictamen Fisico Mecanico">Dictamen NOM 001 Tanques</option>
+                            <option value="Dictamen Fisico Mecanico">Dictamen Ultrasonido de tanque</option>
                             <option value="Dictamen Calibración Pemex">Dictamen de calibración Pemex</option>
                              
 						</select>

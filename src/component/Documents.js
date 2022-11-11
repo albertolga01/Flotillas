@@ -7,6 +7,7 @@ import {ThreeDots } from  'react-loader-spinner'
 
 
 import Modal from 'react-modal';
+import { defaultProps } from "react-select/dist/Select-92d95971.cjs.dev";
  
 const customStyles = {
 	content: {
@@ -20,7 +21,7 @@ const customStyles = {
   };
 
 
-export default function Documents() {
+export default function Documents(props) {
     const styles = `
         #add-form{
             display: flex;
@@ -71,6 +72,7 @@ export default function Documents() {
         .then(data => {
             notify(data)
             closeModalLoad()
+            props.getDocumentosTodos();
         });
     }
 

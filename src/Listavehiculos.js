@@ -249,15 +249,18 @@ function Listavehiculos(props) {
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th>Folio</th>
-                        <th>Descripcion</th>
-                        <th>Fecha Captura</th>
-                        <th>Observaciones</th>
+                        <th>Vehículo</th>
+                        <th>Modelo</th> 
+                        <th>Responsable</th> 
                         <th>Serie Vehículo</th>
                         <th>Serie Motor</th>
                         <th>Tipo Uso</th> 
                         <th>Empresa</th>
+                        <th>Placa</th>
+                        <th>Gps</th>
                         <th>Número Vehículo</th>
                         <th>Foto</th>
+                        <th>PerNota</th>
 
                     </tr>
 
@@ -266,15 +269,17 @@ function Listavehiculos(props) {
                      <tr>
                     <td className='id-orden' >{item.vehiculoid}</td>
                     <td>{item.descripcion}</td>
-                    <td>{format(item.fechacaptura)}</td>
-                    <td>{item.observaciones}</td>
+                    <td>{item.modelo}</td>
+                    <td>{item.responsable}</td>
                     <td>{item.serievehiculo}</td>
                     <td>{item.seriemotor}</td>
                     <td>{item.tipouso}</td>
                     <td>{item.empresa}</td>
+                    <td>-----</td>
+                    <td>{item.gps}</td>
                     <td>{item.numvehiculo}</td>
                     <td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/" + item.icon}>{item.icon}</a></td>
-                   
+					<td>-----</td>
 
                     
                 </tr>

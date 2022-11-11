@@ -158,6 +158,7 @@ function Expediente(props) {
         .then(data => {
 			setDocsVehi(data);
 			closeModalLoad();
+			
 		}
 			
 		)
@@ -192,7 +193,7 @@ function Expediente(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<Documents />
+							<Documents getDocumentosTodos={getDocumentosTodos} />
 						</div> 
 				</div>
 
