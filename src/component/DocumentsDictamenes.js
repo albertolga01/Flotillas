@@ -34,20 +34,7 @@ export default function Documents(props) {
             margin-bottom: 8px;
         }
     `
-
-    const [Filename, setFilename] = useState();
-    const [Filedesc, setFiledesc] = useState();
-
-    const [servicio, setservicio] = useState();
-    const [odometro, setodometro] = useState();
-    const [descripcion, setdescripcion] = useState(); 
-    const [fechainicial, setfechainicial] = useState(); 
-
-   
-    const [listav, setListaV] = useState([]);  
-    const [listaDictamen, setListaDic] = useState([]);  
-
-    const [listas, setListaS] = useState([]);  
+ 
     const [modalIsOpenLoad, setIsOpenLoad] = useState(false);
 
     function openModalLoad() { 
@@ -63,13 +50,12 @@ export default function Documents(props) {
 
 
     useEffect(() => {
-		//getDictamenesVehiculo();
-        getVehiculos();
+		 
+       
         
 	}, [])
 
-    
-    //const [file, setFile] = useState();
+     
 
     async function FormRequest(reqbody) {
        openModalLoad();
@@ -89,19 +75,7 @@ export default function Documents(props) {
            
         });
     }
-/*
-    async function getDictamenesVehiculo() {
-		var id = "getDictamenesVehiculo";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
-		setListaS(res.data); 
-	}*/
-    async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
-		setListaV(res.data);
-		//console.log(res.data);  process.env.REACT_APP_API_URL
-
-	}
+ 
      
 
    
@@ -132,7 +106,7 @@ export default function Documents(props) {
             <form id="add-form" onSubmit={handleSubmit}>
                 <h6>Vehiculo</h6>
                 <select  id="IDvehiculo"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-						{listav.map(item => ( 
+						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
 
 						))}

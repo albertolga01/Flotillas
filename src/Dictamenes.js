@@ -69,6 +69,8 @@ function Dictamenes(props) {
 	const [value, setValue] = useState([]);
 
     const [listas, setListaS] = useState([]);  
+    const [listasd, setListaSD] = useState([]);  
+    const [listasvd, setListaVd] = useState([]);  
     const [listaVencimiento, setListaVencimiento] = useState([]);  
 
 	let id = 0;
@@ -85,6 +87,7 @@ function Dictamenes(props) {
 		var id = "getDictamenesVehiculo";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setListaS(res.data);
+		setListaSD(res.data); 
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 
 	}
@@ -92,6 +95,34 @@ function Dictamenes(props) {
 	async function getVencimietosD(){
 
 	}
+
+
+
+	function filterDictamenTipo() {
+		var tipo = document.getElementById('dictamenf').value;  
+		var result = listasd.filter((x) => (x.nombre === tipo)); 
+		setListaS(result); 
+		
+	}
+
+	function filterDictamenVehiculo() {
+		var tipo = document.getElementById('vehiculof').value;  
+		var result = listasd.filter((x) => (x.vehiculoid === tipo)); 
+		setListaS(result); 
+		
+	}
+
+
+
+	function filterDictamenVencimiento() { 
+		var meses = document.getElementById('vigenciaf').value;   
+		var dt = new Date();
+         dt.setMonth( dt.getMonth() + parseInt(meses) ); 
+	 
+		var result = listasd.filter((x) => (new Date(x.fechafinal).getTime() < dt.getTime())); 
+		setListaVd(result);
+	}
+
 	async function getVehiculos() {
 		var id = "11";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
@@ -211,7 +242,7 @@ function Dictamenes(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<DocumentsDictamenes getDictamenes={getDictamenes}/>
+							<DocumentsDictamenes vehiculos={listav} getDictamenes={getDictamenes}/>
 						</div> 
 				</div>
 
@@ -219,12 +250,20 @@ function Dictamenes(props) {
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'850px'}} >
 						<h5>Dictámenes</h5>
 						<h6>Tipo Dictamen</h6>
-						<select  id="dictamen"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						<select  id="dictamenf"  onChange={() => filterDictamenTipo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
                             <option value="Dictamen Humo">Humo</option>
                             <option value="Dictamen Fisico Mecanico">Físico mecánico NOM 007</option>
                             <option value="Dictamen Fisico Mecanico">Dictamen NOM 001 Tanques</option>
                             <option value="Dictamen Fisico Mecanico">Dictamen Ultrasonido de tanque</option>
                             <option value="Dictamen Calibración Pemex">Dictamen de calibración Pemex</option>
+                             
+						</select>
+						<h6>Vehiculo</h6>
+						<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						{listav.map(item => ( 
+									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+
+						))}
                              
 						</select>
 						
@@ -243,6 +282,7 @@ function Dictamenes(props) {
 									<th style={{textAlign:'center'}}>Descripción</th>
 									<th style={{textAlign:'center'}}>Vehículo</th>
 									<th style={{textAlign:'center'}}>Fecha Dictamen</th>
+									<th style={{textAlign:'center'}}>Fecha Final</th>
 									<th style={{textAlign:'center'}}>Archivo</th>
 								</tr>
 								{listas.map(item => (
@@ -252,6 +292,7 @@ function Dictamenes(props) {
 									<td style={{textAlign:'center'}}>{item.descripcion}</td>
 									<td style={{textAlign:'center'}}>{item.vehiculo}</td>
 									<td style={{textAlign:'center'}}>{item.fecha}</td>
+									<td style={{textAlign:'center'}}>{item.fechafinal}</td>
 									<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 								</tr>
 								))}
@@ -261,6 +302,15 @@ function Dictamenes(props) {
 						<br></br> 
 
 						<h6>Proximo a vencer (6 meses, 1 año, 3 años, 5 años, 10 años)</h6>
+						<h6>Vigencia</h6>
+						<select  id="vigenciaf"  onChange={() => filterDictamenVencimiento()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+                            <option value="6">6 Meses</option>
+                            <option value="12">1 año</option>
+                            <option value="36">3 años</option>
+                            <option value="60">5 años</option>
+                            <option value="120">10 años</option>
+                             
+						</select>
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr>
@@ -269,15 +319,17 @@ function Dictamenes(props) {
 									<th style={{textAlign:'center'}}>Descripción</th>
 									<th style={{textAlign:'center'}}>Vehículo</th>
 									<th style={{textAlign:'center'}}>Fecha Dictamen</th>
+									<th style={{textAlign:'center'}}>Fecha Final</th>
 									<th style={{textAlign:'center'}}>Archivo</th>
 								</tr>
-								{listas.map(item => (
+								{listasvd.map(item => (
 								<tr>
 									<td style={{textAlign:'center'}}>{item.id}</td>
 									<td style={{textAlign:'center'}}>{item.nombre}</td>
 									<td style={{textAlign:'center'}}>{item.descripcion}</td>
 									<td style={{textAlign:'center'}}>{item.vehiculo}</td>
 									<td style={{textAlign:'center'}}>{item.fecha}</td>
+									<td style={{textAlign:'center'}}>{item.fechafinal}</td>
 									<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 								</tr>
 								))}
