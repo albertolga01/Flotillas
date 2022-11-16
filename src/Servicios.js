@@ -231,7 +231,8 @@ function Servicios(props) {
 									<th style={{textAlign:'center'}}>Odomentro</th>
 									<th style={{textAlign:'center'}}>Vehículo</th>
 									<th style={{textAlign:'center'}}>Fecha Servicio</th>
-									<th style={{textAlign:'center'}}>Archivo</th>
+									<th style={{textAlign:'center'}}>Factura</th>
+									<th style={{textAlign:'center'}}>Cotización</th>
 								</tr>
 								{listas.map(item => (
 								<tr>
@@ -240,6 +241,7 @@ function Servicios(props) {
 									<td style={{textAlign:'center'}}>{item.vehiculo}</td>
 									<td style={{textAlign:'center'}}>{item.fecha}</td>
 									<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
+									<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
 								</tr>
 								))}
 							</table>
@@ -248,7 +250,7 @@ function Servicios(props) {
 					</form>
 				</div>
 
-				<div style={{ margin: 'auto' }} >
+				<div style={{ margin: 'auto', display: 'none' }} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
 							{listav.map(item => (

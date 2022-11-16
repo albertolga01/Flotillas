@@ -1,7 +1,7 @@
  
 import React,{useState, useEffect} from 'react';  
 import  {FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye} from 'react-icons/fa'
-import axios from '../node_modules/axios'; 
+import axios from 'axios'; 
 import {NabvarRe} from './component/Navbar'; 
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
@@ -12,7 +12,6 @@ import {ThreeDots } from  'react-loader-spinner'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const customStylesD = {
 	content: {
@@ -36,7 +35,16 @@ const customStyles = {
 	},
   };
 
-function Refacciones(props) {
+function Siniestros(props) {
+	const [modalIsOpenLoad, setIsOpenLoad] = useState(false); 
+	const [listav, setListaV] = useState([]); 
+	const [listaver, setListaVer] = useState([]);
+	const [modalIsOpen, setIsOpen] = useState(false);
+	const [modalIsOpen1, setIsOpen1] = useState(false);
+	const [lista, setLista] =  useState([]);  
+	const [listapd, setListaPD] = useState([]);  
+
+	const [listac, setListaC] = useState([]);
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -50,59 +58,39 @@ function Refacciones(props) {
 		toast(message);
 	}
     
-    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
-
-	const [listav, setListaV] = useState([]);
+	useEffect(()=> {
+		// getCargas();
+		 getVehiculos();
+		 getSiniestros();
+		 getChoferes();
+	   }, [])
 	
-	const [listaver, setListaVer] = useState([]);
-	useEffect(() => {
-		getVehiculos();
-	}, [])
 
-	async function addRefaccion() {
+	async function addSiniestro() {
 		
+		var choferNombre = document.getElementById("choferNombre").value;
 		var vehiculoid = document.getElementById("vehiculoid").value;
-		var fechacompra = document.getElementById("fechacompra").value;
-		var refaccion = document.getElementById("refaccion").value;
+		var fecha = document.getElementById("fechasiniestro").value;
 		var descripcion = document.getElementById("descripcion").value;
-		var precio = document.getElementById("precio").value;
-		var proveedor = document.getElementById("proveedor").value;
-		var documentorefaccion = document.getElementById("documentorefaccion"); 
-
+		 
 		
 		let fd = new FormData()
-			fd.append("id", "addRefaccion")
+			fd.append("id", "addSiniestro")
+			fd.append("idchofer",choferNombre)
 			fd.append("vehiculoid", vehiculoid)
-			fd.append("fechacompra", fechacompra) 
-			fd.append("refaccion", refaccion)
-			fd.append("descripcion", descripcion)
-			fd.append("precio", precio)
-			fd.append("proveedor", proveedor)
-			fd.append("documentorefaccion", documentorefaccion.files[0])
+			fd.append("fecha", fecha) 
+			fd.append("descripcion", descripcion) 
 
-			openModalLoad();
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
-		closeModalLoad();
-		notify(res.data.trim());
 		 
-		/*if(res.data.trim() == "Refacción agregada correctamente"){
+		notify(res.data.trim());
+		if(res.data.trim() == "Siniestro agregado correctamente"){
 			closeModal();
-  getRefacciones()
+	getSiniestros();
 
-		}*/
-		getRefacciones();
+		}
 	}
 
-
-	async function verRefeccion(vehiculoid) {
-	 
-		var id = "verRefacciones";
-		openModalLoad();
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&vehiculoid='+vehiculoid);
-		closeModalLoad();
-		setListaVer(res.data); 
-		 openModal1();
-	}
 
 	async function getVehiculos() {
 		var id = "11";
@@ -113,7 +101,7 @@ function Refacciones(props) {
 
 
 	let subtitle;
-	const [modalIsOpen, setIsOpen] = React.useState(false);
+	
   
 	function openModal() {
 	  setIsOpen(true);
@@ -128,6 +116,13 @@ function Refacciones(props) {
 	  setIsOpen(false);
 	}
 
+	function formatDate(date){
+		var index = date.search(" ");
+		date = date.substring(0, 10);
+		date = date.split("-");
+		var formatedDate = date[2] +"/"+ date[1] +"/"+ date[0];
+		return(formatedDate);
+	}
 
 	function format(todayy){
 		var today = new Date(todayy);
@@ -138,9 +133,32 @@ function Refacciones(props) {
 	  today = dd + '/' + mm + '/' + yyyy;
 	   return today;
 		}
+
+
 	
-	
-	
+		async function verRendimiento(vehiculoid) {
+	 
+			var id = "verRendimiento";
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&vehiculoid='+vehiculoid);
+			
+			setListaVer(res.data); 
+			 openModal1();
+		}
+		let subtitle1;
+		
+	  
+		function openModal1() {
+		  setIsOpen1(true);
+		}
+	  
+		function afterOpenModal() {
+		  // references are now sync'd and can be accessed.
+		  subtitle.style.color = '#f00';
+		}
+	  
+		function closeModal1() {
+		  setIsOpen1(false);
+		}
 		
 	  function formatNumber(importe){
 		   
@@ -148,58 +166,51 @@ function Refacciones(props) {
 		  style: 'currency',
 		  currency: 'USD',}));
 		}
-  
 
-  const [lista, setLista] =  useState([]);  
+		function formatN(importe){
+		   
+			return ((Number(importe)).toLocaleString('en-US'));
+			}
+	  
   
  
 
-  useEffect(()=> {
-    getRefacciones();
-  }, [])
+  
+  async function getChoferes() {
+	var id = "getChoferes";
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+	setListaC(res.data);
+	console.log(res.data);
+} 
 
-  async function getRefacciones(){
-	var id = "getRefacciones";
-	openModalLoad();
+  async function getSiniestros(){
+	var id = "getSiniestros";
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
- 	closeModalLoad();
+ 
 	setLista(res.data);
-	
+	setListaPD(res.data);
 	console.log(res.data);
 
   }
   
-  async function getRefaccionesDia(){
+  async function getCargasDia(){
 	   
-	var id = "getRefaccionesDia";
+	var id = "getSiniestroDia";
 	var fecha = document.getElementById("input-fecha").value;
-	openModalLoad();
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha);
-	closeModalLoad();
     setLista(res.data);
-	
+	setListaPD(res.data);
 	console.log(res.data);
 
   }
-
-  let subtitle1;
-  const [modalIsOpen1, setIsOpen1] = React.useState(false);
-
-  function openModal1() {
-	setIsOpen1(true);
-  }
-
-  function afterOpenModal() {
-	// references are now sync'd and can be accessed.
-	subtitle.style.color = '#f00';
-  }
-
-  function closeModal1() {
-	setIsOpen1(false);
-  }
-
  
- 
+  function filterPlacaVehiculo() {
+	var tipo = document.getElementById('vehiculof').value;  
+	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
+	setLista(result); 
+	
+}
+
   // Dynamically create select list
   let options = [];
  
@@ -208,19 +219,28 @@ function Refacciones(props) {
   
     <div className="container ">
      
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Refacciones"/>    
+<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Siniestros"/>    
 <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
 
 
      
 	 
 <div style={{width:'100%'}}>
-<label>Filtrar por fecha de compra: </label> 
+<label>Filtrar por fecha de siniestro: </label> 
 
-&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+<br></br><label>Vehiculo:</label>
+						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+						{listav.map(item => ( 
+									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+
+						))}
+                             
+						</select>
+
 </div>
 <div style={{width:'100%'}} align="right">
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>
+<button onClick={openModal} class="btn btn-outline-success btn-sm">Agregar Siniestro</button>
       
 		  <Modal
         isOpen={modalIsOpen}
@@ -229,8 +249,18 @@ function Refacciones(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nueva Refacción</h2>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nuevo Siniestro</h2>
         
+		<div>Chofer</div>
+		  <select id="choferNombre"  style={{width:'100%', marginTop:'5px'}}>
+                 
+				{listac.map(item => ( 
+                     <option value={item.id}>{item.nombre }</option>
+
+  		  ))}
+                         
+		  </select>
+
         <div>Vehiculo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
 		  {listav.map(item => ( 
@@ -238,55 +268,41 @@ function Refacciones(props) {
 
   		  ))}
 		  </select>
-		  <div>Fecha de compra</div>
-		  <input id="fechacompra" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Proveedor</div>
-		  <input id="proveedor" type="text" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Refacción</div>
-		  <input id="refaccion" type="text" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Fecha del siniestro</div>
+		  <input id="fechasiniestro" type="date" style={{width:'100%', marginTop:'5px'}}/>
 		  <div>Descripción</div>
-		  <input id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}} />
-		  <div>Precio</div>
-		  <input  id="precio" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Documento</div>
-		  <input id="documentorefaccion" type="file" style={{ height: '50px'}} />
-        
+		  <input  id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}}/> 
+		  
         
 <br></br>
 <br></br>
 		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button onClick={() => addRefaccion()} class="btn btn-outline-success btn-sm" >Guardar</button>
+		<button onClick={() => addSiniestro()} class="btn btn-outline-success btn-sm" >Guardar</button>
       </Modal>
 	  </div>
 	  </div>
  <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+	 
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th>Folio</th>
-                        <th>Fecha Compra</th>
-                        <th>Fecha Captura</th>
+                        <th>Fecha</th>
                         <th>Vehiculo</th>
-                        <th>Proveedor</th>
-                        <th>Refacción</th>
-                        <th>Descripcion</th> 
-                        <th>Precio</th>
-                        <th>Documento</th>
-
+                        <th>Chofer</th>
+                        <th>Descripcion</th>
+                         
                     </tr>
 
                     {  
                     lista.map(item => ( 
                      <tr>
-                    <td className='id-orden' >{item.folio}</td>
-                    <td>{format(item.fechacompra)}</td>
-                    <td>{format(item.fecha)}</td>
-                    <td>{item.vehiculo}</td>
-                    <td>{item.proveedor}</td>
-                    <td>{item.refaccion}</td>
+                    <td className='id-orden' >{item.id}</td>
+					<td>{formatDate(item.fecha)}</td>
+					<td>{item.vehiculo}</td>
+					<td>{item.nombrechofer}</td>
                     <td>{item.descripcion}</td>
-                    <td>{formatNumber(item.precio)}</td>
-                    <td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
-
+                     
+                    <td></td>
                     
                 </tr>
                 
@@ -297,7 +313,10 @@ function Refacciones(props) {
  
  
 
-	 <div style={{ margin: 'auto' , display:'none'}} >
+	
+ 
+
+	 <div style={{ margin: 'auto', display:'none'}} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
 							{listav.map(item => (
@@ -314,7 +333,7 @@ function Refacciones(props) {
 									</div>
 
 									<button className="btn btn-outline-success btn-sm" 
-									onClick={() => verRefeccion(item.vehiculoid)} >
+									onClick={() => verRendimiento(item.vehiculoid)} >
 										<FaEye /> ver
 									</button>
 								</div>
@@ -322,9 +341,7 @@ function Refacciones(props) {
 						</div>
 					</div>
 				</div>
- 
-
-
+            
 				<Modal
         isOpen={modalIsOpen1}
         onAfterOpen={afterOpenModal}
@@ -332,32 +349,35 @@ function Refacciones(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Refacciones</label>
+        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Redimiento</label>
         <br></br>
         <br></br>
-		<table id="productstable"  style={{width:'700px'}}> 
-                    <tr> 
+		<table id="productstable"  style={{width:'900px'}}> 
+		<tr>
                         <th>Folio</th>
-                        <th>Fecha Compra</th>
-                        <th>Fecha Captura</th>
                         <th>Vehiculo</th>
-                        <th>Refacción</th>  
-                        <th>Descripción</th>  
-                        <th>Precio</th>  
+                        <th>Fecha Carga</th>
+                        <th>Litros</th>
+                        <th>Importe</th>
+                        <th>Kilometraje Inicial</th>
+                        <th>Kilometraje Final</th>
+                        <th>Rendimiento</th> 
                     </tr>
 
                     { 
                     listaver.map(item => ( 
-                     <tr>
-                    <td className='id-orden' >{item.folio}</td>
-                    <td>{format(item.fechacompra)}</td>
-                    <td>{format(item.fecha)}</td>
-                    <td>{item.vehiculo}</td>
-                    <td>{item.refaccion}</td>
-                    <td>{item.descripcion}</td>
-                    <td>{formatNumber(item.precio)}</td>
-                    
-                </tr>
+						<tr>
+						<td className='id-orden' >{item.folio}</td>
+						<td>{item.vehiculo}</td>
+						<td>{format(item.fechacarga)}</td>
+						<td>{formatN(item.litros)}</td>
+						<td>{formatNumber(item.importe)}</td>
+						<td>{formatN(item.kilometraje)}</td>
+						<td>{formatN(item.kilometrajefinal)}</td>
+						<td>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>
+						<td></td>
+						
+					</tr>
                 
 					))}	
 		</table>
@@ -367,7 +387,6 @@ function Refacciones(props) {
 		<button onClick={closeModal1} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      </Modal>
  
-  
 	 <ToastContainer 
 				progressClassName="toastProgress"
 				position="top-center"
@@ -400,4 +419,4 @@ function Refacciones(props) {
 
 
 
-export default Refacciones;
+export default Siniestros;

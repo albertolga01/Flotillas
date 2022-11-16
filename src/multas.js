@@ -1,7 +1,7 @@
  
 import React,{useState, useEffect} from 'react';  
 import  {FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye} from 'react-icons/fa'
-import axios from '../node_modules/axios'; 
+import axios from 'axios'; 
 import {NabvarRe} from './component/Navbar'; 
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
@@ -35,7 +35,16 @@ const customStyles = {
 	},
   };
 
-function Rendimiento(props) {
+function Multas(props) {
+	const [modalIsOpenLoad, setIsOpenLoad] = useState(false); 
+	const [listav, setListaV] = useState([]); 
+	const [listaver, setListaVer] = useState([]);
+	const [modalIsOpen, setIsOpen] = useState(false);
+	const [modalIsOpen1, setIsOpen1] = useState(false);
+	const [lista, setLista] =  useState([]);  
+	const [listapd, setListaPD] = useState([]);  
+
+	const [listac, setListaC] = useState([]); 
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -49,39 +58,36 @@ function Rendimiento(props) {
 		toast(message);
 	}
     
-    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
-
-	const [listav, setListaV] = useState([]);
-	
-	const [listaver, setListaVer] = useState([]);
+    
 	useEffect(() => {
 		getVehiculos();
+		getChoferes();
+		getMultas();
+
 	}, [])
 
-	async function addCarga() {
+	async function addMulta() {
 		
+		var choferNombre = document.getElementById("choferNombre").value;
 		var vehiculoid = document.getElementById("vehiculoid").value;
-		var fechacarga = document.getElementById("fechacarga").value;
-		var kilometraje = document.getElementById("kilometraje").value;
-		var kilometrajefinal = document.getElementById("kilometrajefinal").value;
-		var litros = document.getElementById("litros").value;
+		var fechamulta = document.getElementById("fechamulta").value; 
+		var descripcionMulta = document.getElementById("descripcionMulta").value;
 		var importe = document.getElementById("importe").value;
 		
 		let fd = new FormData()
-			fd.append("id", "addCarga")
+			fd.append("id", "addMulta")
+			fd.append("idchofer",choferNombre)
 			fd.append("vehiculoid", vehiculoid)
-			fd.append("fechacarga", fechacarga) 
-			fd.append("kilometraje", kilometraje)
-			fd.append("kilometrajefinal", kilometrajefinal)
-			fd.append("litros", litros)
+			fd.append("fechamulta", fechamulta)  
+			fd.append("descripcionMulta", descripcionMulta)
 			fd.append("importe", importe)
 
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 
 		notify(res.data.trim());
-		if(res.data.trim() == "Carga agregada correctamente"){
+		if(res.data.trim() == "Multa agregada correctamente"){
 			closeModal();
-  getCargas()
+  getMultas()
 
 		}
 	}
@@ -93,10 +99,16 @@ function Rendimiento(props) {
 		setListaV(res.data);
 		console.log(res.data);
 	} 
-
-
+ 
+	async function getChoferes() {
+		var id = "getChoferes";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		setListaC(res.data);
+		console.log(res.data);
+	} 
+    
 	let subtitle;
-	const [modalIsOpen, setIsOpen] = React.useState(false);
+	
   
 	function openModal() {
 	  setIsOpen(true);
@@ -104,7 +116,7 @@ function Rendimiento(props) {
   
 	function afterOpenModal() {
 	  // references are now sync'd and can be accessed.
-	  subtitle.style.color = '#f00';
+	  //subtitle.style.color = '#f00';
 	}
   
 	function closeModal() {
@@ -122,6 +134,13 @@ function Rendimiento(props) {
 	   return today;
 		}
 
+	function formatDate(date){
+			var index = date.search(" ");
+			date = date.substring(0, 10);
+			date = date.split("-");
+			var formatedDate = date[2] +"/"+ date[1] +"/"+ date[0];
+			return(formatedDate);
+		}
 
 	
 		async function verRendimiento(vehiculoid) {
@@ -133,7 +152,7 @@ function Rendimiento(props) {
 			 openModal1();
 		}
 		let subtitle1;
-		const [modalIsOpen1, setIsOpen1] = React.useState(false);
+		
 	  
 		function openModal1() {
 		  setIsOpen1(true);
@@ -141,7 +160,7 @@ function Rendimiento(props) {
 	  
 		function afterOpenModal() {
 		  // references are now sync'd and can be accessed.
-		  subtitle.style.color = '#f00';
+		 // subtitle.style.color = '#f00';
 		}
 	  
 		function closeModal1() {
@@ -161,18 +180,11 @@ function Rendimiento(props) {
 			}
 	  
   
-
-  const [lista, setLista] =  useState([]);  
-	const [listapd, setListaPD] = useState([]);  
-  
+ 
  
 
-  useEffect(()=> {
-    getCargas();
-  }, [])
-
-  async function getCargas(){
-	var id = "getCargas";
+  async function getMultas(){
+	var id = "getMultas";
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
  
 	setLista(res.data);
@@ -183,7 +195,7 @@ function Rendimiento(props) {
   
   async function getCargasDia(){
 	   
-	var id = "getCargasDia";
+	var id = "getMultaDia";
 	var fecha = document.getElementById("input-fecha").value;
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha);
     setLista(res.data);
@@ -194,41 +206,59 @@ function Rendimiento(props) {
  
   function filterPlacaVehiculo() {
 	var tipo = document.getElementById('vehiculof').value;  
+	console.log(tipo);
 	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 	setLista(result); 
-	
+	console.log(listapd);	
+}
+
+function filterPlacaChofer() {
+	var tipo = document.getElementById('choferf').value;  
+	console.log(tipo);
+	var result = listapd.filter((x) => (x.idchofer === tipo)); 
+	setLista(result); 
+	console.log(listapd);	
 }
 
   // Dynamically create select list
-  let options = [];
+  let options = []; 
  
 
   return (
   
     <div className="container ">
      
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Rendimiento"/>    
+<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Multas"/>    
 <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
 
 
      
 	 
 <div style={{width:'100%'}}>
-<label>Filtrar por fecha: </label> 
+<label>Filtrar por fecha de multa: </label> 
 
 &nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<br></br><label>Vehiculo:</label>
-						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
-						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
-
-						))}
-                             
+<br></br><span>Vehiculo:</span>
+<div>
+	<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'500px', marginTop:'5px', cursor: 'pointer'}}>
+		 {listav.map(item => ( 
+			<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+ ))} 
 						</select>
+</div>
+ <span>&nbsp;</span>
+	 <span>Chofer:</span>
+	 <div>
+		 <select  id="choferf"  onChange={() => filterPlacaChofer()} className="form-control"  style={{width:'450px', marginTop:'5px', cursor: 'pointer'}}>
+			 {listac.map(item => ( 
+				 <option value={item.id}>{item.nombre}</option>
+ 				))} 
+						</select>
+	</div>
 
 </div>
 <div style={{width:'100%'}} align="right">
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva carga</button>
+<button onClick={openModal} class="btn btn-outline-success btn-sm">Agregar Multa</button>
       
 		  <Modal
         isOpen={modalIsOpen}
@@ -237,8 +267,18 @@ function Rendimiento(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nueva carga</h2>
-        
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Multa</h2>
+
+        <div>Chofer</div>
+		  <select id="choferNombre"  style={{width:'100%', marginTop:'5px'}}>
+                 
+				{listac.map(item => ( 
+                     <option value={item.id}>{item.nombre }</option>
+
+  		  ))}
+                         
+		  </select>
+
         <div>Vehiculo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
 		  {listav.map(item => ( 
@@ -246,22 +286,20 @@ function Rendimiento(props) {
 
   		  ))}
 		  </select>
-		  <div>Fecha de carga</div>
-		  <input id="fechacarga" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje inicial</div>
-		  <input  id="kilometraje" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje final</div>
-		  <input  id="kilometrajefinal" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Litros</div>
-		  <input id="litros" type="number" style={{width:'100%', marginTop:'5px'}}/>
+
+		   
+		  <div>Fecha de multa</div>
+		  <input id="fechamulta" type="date" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Descripción</div>
+		  <input  id="descripcionMulta" type="text" style={{width:'100%', marginTop:'5px'}}/> 
 		  <div>Importe</div>
 		  <input id="importe" type="number" style={{width:'100%', marginTop:'5px'}} />
 		  
         
 <br></br>
 <br></br>
-		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button onClick={() => addCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={() => addMulta()} class="btn btn-outline-success btn-sm" >Guardar</button>
       </Modal>
 	  </div>
 	  </div>
@@ -270,27 +308,22 @@ function Rendimiento(props) {
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th>Folio</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha Carga</th>
-                        <th>Litros</th>
-                        <th>Importe</th>
-                        <th>Kilometraje Inicial</th>
-                        <th>Kilometraje Final</th>
-                        <th>Rendimiento</th> 
+                        <th>Fecha Multa</th>
+                        <th>Chofer</th> 
+                        <th>Vehiculo</th> 
+                        <th>Descripcion</th>
+                        <th>Importe</th> 
                     </tr>
 
                     {  
                     lista.map(item => ( 
                      <tr>
-                    <td className='id-orden' >{item.folio}</td>
-					<td>{item.vehiculo}</td>
-                    <td>{format(item.fechacarga)}</td>
-                    <td>{formatN(item.litros)}</td>
-                    <td>{formatNumber(item.importe)}</td>
-                    <td>{formatN(item.kilometraje)}</td>
-                    <td>{formatN(item.kilometrajefinal)}</td>
-                    <td>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>
-                    <td></td>
+                    <td className='id-orden' >{item.id}</td>
+					<td>{formatDate(item.fechamulta)}</td>
+					<td>{item.nombrechofer}</td>
+					<td>{item.vehiculo}</td>   
+                    <td>{item.descripcion}</td>
+                    <td>{formatNumber(item.importe)}</td>  
                     
                 </tr>
                 
@@ -337,7 +370,7 @@ function Rendimiento(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Redimiento</label>
+        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Multas</label>
         <br></br>
         <br></br>
 		<table id="productstable"  style={{width:'900px'}}> 
@@ -357,7 +390,7 @@ function Rendimiento(props) {
 						<tr>
 						<td className='id-orden' >{item.folio}</td>
 						<td>{item.vehiculo}</td>
-						<td>{format(item.fechacarga)}</td>
+						<td>{formatDate(item.fechacarga)}</td>
 						<td>{formatN(item.litros)}</td>
 						<td>{formatNumber(item.importe)}</td>
 						<td>{formatN(item.kilometraje)}</td>
@@ -407,4 +440,4 @@ function Rendimiento(props) {
 
 
 
-export default Rendimiento;
+export default Multas;

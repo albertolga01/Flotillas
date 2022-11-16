@@ -41,8 +41,10 @@ function Placas(props) {
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 	const [listav, setListaV] = useState([]);  
 	const [listap, setListaP] = useState([]);  
+	const [listapd, setListaPD] = useState([]);  
 	const [listapv, setListaPV] = useState([]);
 	const [listaver, setListaVer] = useState([]);
+	
 	
 	
 	let subtitle;
@@ -91,6 +93,7 @@ function Placas(props) {
 		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id);
 		closeModalLoad();
 		setListaP(res.data);
+		setListaPD(res.data);
 		console.log(res.data);
 	}
 	async function getPlacasV() {
@@ -139,11 +142,7 @@ function Placas(props) {
 		getPlacas();
 
 	}
-	 
-  
-	 
- 
-
+	
 	function format(todayy){
 		var today = new Date(todayy);
 		var dd = String(today.getDate()).padStart(2, '0');
@@ -155,7 +154,12 @@ function Placas(props) {
 	}
  
 
-   
+	function filterPlacaVehiculo() {
+		var tipo = document.getElementById('vehiculof').value;  
+		var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
+		setListaP(result); 
+		
+	}
 
  
 	const style = `
@@ -203,6 +207,16 @@ function Placas(props) {
 				<div style={{ width: '70%' }}>
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'230px', overflow:'scroll'}}>
 						<h5>Historial de placas</h5>
+
+						<h6>Vehiculo</h6>
+						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						{listav.map(item => ( 
+									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+
+						))}
+                             
+						</select>
+
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th>Placas</th>
@@ -227,7 +241,7 @@ function Placas(props) {
 					</form>
 
 					<div style={{ width: '100%' }}>
-					<div className="card p-2 mt-2 border-secondary"  style={{ height:'110px', overflow:'scroll'}}>
+					<div className="card p-2 mt-2 border-secondary"  style={{ height:'210px', overflow:'scroll'}}>
 						<h5>Proximo a vencer  </h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
@@ -257,14 +271,15 @@ function Placas(props) {
 
 				
 
-				<div style={{ maxHeight: '22vmax', overflowY: 'scroll', width: '100%' }}>
+				<div style={{ maxHeight: '22vmax', overflowY: 'scroll', width: '10%' }}>
 				</div>
 
-				<div style={{ margin: 'auto' }} >
-					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
+				<div style={{ top: '150px', display: 'none'}} >
+					
+					<div style={{ position: 'sticky', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: '15px', padding: '15px', height:'410px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
 							{listav.map(item => (
-								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
+								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15px', marginLeft: '10px', minWidth: '15%' }}>
 									<div>
 									<b><label ></label></b> <label className="text-primary">{item.descripcion + " -"+ item.vehiculoid}</label> &nbsp;&nbsp; 
 										{(item.icon == null)  ?

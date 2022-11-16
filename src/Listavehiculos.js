@@ -275,7 +275,7 @@ function Listavehiculos(props) {
                     <td>{item.seriemotor}</td>
                     <td>{item.tipouso}</td>
                     <td>{item.empresa}</td>
-                    <td>-----</td>
+                    <td>{item.placas}</td>
                     <td>{item.gps}</td>
                     <td>{item.numvehiculo}</td>
                     <td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/" + item.icon}>{item.icon}</a></td>

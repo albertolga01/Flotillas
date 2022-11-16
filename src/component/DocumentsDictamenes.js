@@ -121,11 +121,11 @@ export default function Documents(props) {
                 <h6>Dictamen</h6>
                  
                 <select  id="dictamen"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-                            <option value="Dictamen Humo">Humo</option>
-                            <option value="Dictamen Fisico Mecanico">Físico mecánico NOM 007</option>
-                            <option value="Dictamen Fisico Mecanico">Dictamen NOM 001 Tanques</option>
-                            <option value="Dictamen Fisico Mecanico">Dictamen Ultrasonido de tanque</option>
-                            <option value="Dictamen Calibración Pemex">Dictamen de calibración Pemex</option>
+                            <option value="Dictamen Humo">Dictamen Humo</option>
+                            <option value="Dictamen Físico mecánico NOM 007">Físico mecánico NOM 007</option>
+                            <option value="Dictamen NOM 001 Tanques">Dictamen NOM 001 Tanques</option>
+                            <option value="Dictamen Ultrasonido de tanque">Dictamen Ultrasonido de tanque</option>
+                            <option value="Dictamen de calibración Pemex">Dictamen de calibración Pemex</option>
                              
 						</select>
                   

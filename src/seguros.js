@@ -290,7 +290,7 @@ function format(todayy){
 					</div>
 				</div>
 				</div>
-                <div   style={{margin:'auto'}} >  
+                <div   style={{margin:'auto', display:'none'}} >  
 		
 
 		<div style={{position: 'absolute', bottom:'10px',  backgroundColor:'white', border:'2px solid black', borderRadius:'5px', width:'80%', margin:'auto', padding:'5px'}}>

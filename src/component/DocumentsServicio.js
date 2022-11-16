@@ -98,6 +98,7 @@ export default function Documents(props) {
         e.preventDefault();
         var IDvehiInput = document.getElementById("IDvehiculo");
         var filedoc = document.getElementById("documentoservicio");
+        var filedocdos = document.getElementById("cotizacionservicio");
         let formData = new FormData();
             formData.append("id", "cargarServicios");
             formData.append("fecha", document.getElementById("fechainicial").value);
@@ -106,6 +107,8 @@ export default function Documents(props) {
             formData.append("descripcion", document.getElementById("descripcion").value);
             formData.append("IDvehiculo", IDvehiInput.value);
             formData.append("documentoservicio", filedoc.files[0]);
+            formData.append("cotizacionservicio", filedocdos.files[0]);
+
 
             await FormRequest(formData); 
            
@@ -138,9 +141,12 @@ export default function Documents(props) {
                 <h6>Descripción</h6>
                 <input type="text" id="descripcion"  ></input>
                 
-                <h6>Archivo</h6>
+                <h6>Factura</h6>
                 <input id="documentoservicio" type="file" style={{display: "none"}}></input>
+                <input id="cotizacionservicio" type="file" style={{display: "none"}}></input>
                 <input type="button" id="documentoservicio" class="btn btn-outline-success btn-sm" value="Elegir archivo" onClick={() => {document.getElementById('documentoservicio').click()}}></input>
+                <h6>Cotización</h6>
+                <input type="button" id="cotizacionservicio" class="btn btn-outline-success btn-sm" value="Elegir archivo" onClick={() => {document.getElementById('cotizacionservicio').click()}}></input>
                 
                 <button type="submit" class="btn btn-outline-success btn-sm">Cargar</button>
             </form>

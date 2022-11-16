@@ -247,15 +247,15 @@ function Dictamenes(props) {
 				</div>
 
 				<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'850px'}} >
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'450px'}} >
 						<h5>Dictámenes</h5>
 						<h6>Tipo Dictamen</h6>
 						<select  id="dictamenf"  onChange={() => filterDictamenTipo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-                            <option value="Dictamen Humo">Humo</option>
-                            <option value="Dictamen Fisico Mecanico">Físico mecánico NOM 007</option>
-                            <option value="Dictamen Fisico Mecanico">Dictamen NOM 001 Tanques</option>
-                            <option value="Dictamen Fisico Mecanico">Dictamen Ultrasonido de tanque</option>
-                            <option value="Dictamen Calibración Pemex">Dictamen de calibración Pemex</option>
+							<option value="Dictamen Humo">Dictamen Humo</option>
+                            <option value="Dictamen Físico mecánico NOM 007">Físico mecánico NOM 007</option>
+                            <option value="Dictamen NOM 001 Tanques">Dictamen NOM 001 Tanques</option>
+                            <option value="Dictamen Ultrasonido de tanque">Dictamen Ultrasonido de tanque</option>
+                            <option value="Dictamen de calibración Pemex">Dictamen de calibración Pemex</option>
                              
 						</select>
 						<h6>Vehiculo</h6>
@@ -298,10 +298,12 @@ function Dictamenes(props) {
 								))}
 							</table>
 						</div>
-						<br></br>
-						<br></br> 
-
-						<h6>Proximo a vencer (6 meses, 1 año, 3 años, 5 años, 10 años)</h6>
+						 
+					</form>
+					<div style={{ width: '100%' }}> 
+	 <div className="card p-2 mt-2 border-secondary"  style={{ height:'450px', overflow:'scroll'}}>
+	 
+		<h6>Proximo a vencer (6 meses, 1 año, 3 años, 5 años, 10 años)</h6>
 						<h6>Vigencia</h6>
 						<select  id="vigenciaf"  onChange={() => filterDictamenVencimiento()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
                             <option value="6">6 Meses</option>
@@ -334,11 +336,36 @@ function Dictamenes(props) {
 								</tr>
 								))}
 							</table>
-						</div>
-
-					</form>
+						 
+							</div>
 				</div>
+</div>
+				</div>
+				<div style={{ margin: 'auto', display:'none' }} >
+					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
+						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
+							{listav.map(item => (
 
+								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
+
+									<div>
+										<b><label ></label></b> <label className="text-primary">{item.descripcion + " -"+ item.vehiculoid}</label> &nbsp;&nbsp;
+
+										{(item.icon == null)  ?
+										<img src={'http://flotillas.grupopetromar.com/default.jpg'} style={{ height: '100px', width: '140px' }}></img>  
+										:
+										<img src={'http://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/'+item.icon} style={{ height: '100px', width: '140px' }}></img> 
+										 }
+									</div>
+
+									<button className="Bttn" onClick={() => verVehiculo(item.vehiculoid, item.id)}
+									><FaEye /> ver 
+									</button>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
 				 
 			</div>
 			<Modal 

@@ -8,7 +8,10 @@ import Rendimiento from '../rendimiento';
 import NvaRequisicion from '../Nvarequisicion';
 import Listavehiculos from '../Listavehiculos';
 import Servicios from '../Servicios';
-import Dictamenes from '../Dictamenes';
+import Dictamenes from '../Dictamenes'; 
+import Siniestros from '../siniestros';
+import Multas from '../multas';
+
 
 
 import OpcionesMenu from './OpcionesMenu'; 
@@ -41,6 +44,10 @@ export default function SideMenu(props) {
             return <Servicios tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Dictamenes') {
             return <Dictamenes tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'Siniestros') {
+            return <Siniestros tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'Multas') {
+            return <Multas tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else {
             return (<div style={{ width: '100%', textAlign: 'center', backgroundColor: '', margin: 'auto' }}><h1>Error al Cargar</h1></div>);

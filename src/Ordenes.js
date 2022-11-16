@@ -657,7 +657,7 @@ verOrden(idd);
     <h3>Autorizar  </h3>
     <div>
         <span>Filtrar por fecha &nbsp;</span>
-        <input id='input-fecha' type='date' style={{width:'10vw',fontSize:'12px', cursor:'pointer'}} onKeyUp={() => getOrdenes()}></input>
+        <input id='input-fecha' type='date' style={{width: '120px', height:'25px', fontSize: '16px', cursor:'pointer'}} onKeyUp={() => getOrdenes()}></input>
     </div>
     <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%'}}>
                 <table id="productstable"  style={{width:'100%'}}> 
