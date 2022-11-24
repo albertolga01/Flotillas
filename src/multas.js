@@ -306,7 +306,7 @@ function filterPlacaChofer() {
  <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
-                    <tr>
+                    <tr >
                         <th>Folio</th>
                         <th>Fecha Multa</th>
                         <th>Chofer</th> 
@@ -317,7 +317,7 @@ function filterPlacaChofer() {
 
                     {  
                     lista.map(item => ( 
-                     <tr>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.id}</td>
 					<td>{formatDate(item.fechamulta)}</td>
 					<td>{item.nombrechofer}</td>

@@ -281,7 +281,7 @@ function Rendimiento(props) {
 
                     {  
                     lista.map(item => ( 
-                     <tr>
+                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.folio}</td>
 					<td>{item.vehiculo}</td>
                     <td>{format(item.fechacarga)}</td>

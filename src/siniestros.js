@@ -281,7 +281,7 @@ function Siniestros(props) {
       </Modal>
 	  </div>
 	  </div>
- <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+ <div  style={{ Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
@@ -295,7 +295,7 @@ function Siniestros(props) {
 
                     {  
                     lista.map(item => ( 
-                     <tr>
+                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.id}</td>
 					<td>{formatDate(item.fecha)}</td>
 					<td>{item.vehiculo}</td>

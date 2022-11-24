@@ -276,7 +276,7 @@ function Refacciones(props) {
 
                     {  
                     lista.map(item => ( 
-                     <tr>
+                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.folio}</td>
                     <td>{format(item.fechacompra)}</td>
                     <td>{format(item.fecha)}</td>

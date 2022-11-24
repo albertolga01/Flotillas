@@ -11,6 +11,8 @@ import Servicios from '../Servicios';
 import Dictamenes from '../Dictamenes'; 
 import Siniestros from '../siniestros';
 import Multas from '../multas';
+import VehiculoCto from '../Vehiculoscomplemento';
+
 
 
 
@@ -48,6 +50,8 @@ export default function SideMenu(props) {
             return <Siniestros tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Multas') {
             return <Multas tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'Vehiculoscomplemento') {
+            return <VehiculoCto tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else {
             return (<div style={{ width: '100%', textAlign: 'center', backgroundColor: '', margin: 'auto' }}><h1>Error al Cargar</h1></div>);

@@ -61,6 +61,10 @@ export default function OpcionesMenu(props) {
                     <img id="sideimg3" alt="" />
                     <span>Vehículos</span>
                 </div>
+                <div id="sidebtn" onClick={() => { Seleccionar("Vehiculoscomplemento"); }}>
+                    <img id="sideimg3" alt="" />
+                    <span>Vehículos Complementos</span>
+                </div>
 
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("2"); }}>

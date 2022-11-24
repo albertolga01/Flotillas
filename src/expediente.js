@@ -63,6 +63,7 @@ function Expediente(props) {
 	const [listav, setListaV] = useState([]);
 	const [docsVehi, setDocsVehi] = useState([]);
 	const [listaver, setListaVer] = useState([]);
+	const [listapd, setListaPD] = useState([]);  
 
 
 	const [lista, setLista] = useState([]);
@@ -84,7 +85,12 @@ function Expediente(props) {
 	}
 
  
-
+	function filterPlacaVehiculo() {
+		var tipo = document.getElementById('vehiculof').value;  
+		var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
+		setDocsVehi(result); 
+		
+	}
 
 	async function verVehiculo(vehiculoid) {
 		//document.getElementById("IDvehi-input").value = descripcion;
@@ -157,8 +163,9 @@ function Expediente(props) {
 		.then(response => response.json())
         .then(data => {
 			setDocsVehi(data);
+			setListaPD(data);
 			closeModalLoad();
-			
+			console.log(data);
 		}
 			
 		)
@@ -202,8 +209,15 @@ function Expediente(props) {
 						<h5>Expediente</h5>
 						
 						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
-							<h6>Vehiculo: {lista}</h6>
- 
+							<span>Vehiculo: {lista}</span>
+							
+							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
+						{listav.map(item => ( 
+									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+
+						))}
+                             
+						</select>
 									<h6 id="id-displayexp" style={{fontWeight:"400"}}>{docsVehi.descripcion}</h6>
 								 
 						
