@@ -71,14 +71,17 @@ function Expediente(props) {
 	let id = 0;
 	let tipo = 0;
 	 let subtitle;
-
+ 
 	useEffect(() => {
 		getVehiculos();
 	}, [])
 
+
+	
+
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 
@@ -123,7 +126,6 @@ function Expediente(props) {
 	}
 
 
- 
 
 	function format(todayy){
 		var today = new Date(todayy);
@@ -134,8 +136,8 @@ function Expediente(props) {
 	  today = dd + '/' + mm + '/' + yyyy;
 	   return today;
 	}
-  
- 
+
+	
 
 	useEffect(() => {
 		getUsuarios();
@@ -153,7 +155,7 @@ function Expediente(props) {
 	async function getDocumentosTodos(){
 		let formData = new FormData();
             formData.append("id", "getExpedienteTodos");
-			//formData.append("IDvehiculo", IDvehiculo)
+			formData.append("idflotilla", props.flotilla)
 		openModalLoad();
         return fetch(process.env.REACT_APP_API_URL, {
             method: 'POST',
@@ -200,20 +202,20 @@ function Expediente(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<Documents getDocumentosTodos={getDocumentosTodos} />
+							<Documents flotilla={props.flotilla} getDocumentosTodos={getDocumentosTodos} />
 						</div> 
 				</div>
 
 				<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'340px'}} >
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'100%'}} >
 						<h5>Expediente</h5>
 						
 						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
-							<span>Vehiculo: {lista}</span>
+							<span>Vehículo: {lista}</span>
 							
 							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
                              

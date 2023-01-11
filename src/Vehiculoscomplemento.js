@@ -101,11 +101,11 @@ function Vehiculoscomplemento(props) {
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
 		setListaPV(res.data);
 		console.log(res.data);
-	}
+	} 
 
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 	}
 
@@ -124,13 +124,17 @@ function Vehiculoscomplemento(props) {
 		var vehiculoid = document.getElementById("vehiculoid").value;
 		var capacidad = document.getElementById("capacidad").value;
 		var descripcion = document.getElementById("descripcion").value; 
+		var serie = document.getElementById("serie").value; 
 		var complementodocumento = document.getElementById("complementodocumento"); 
+		var fechafactura = document.getElementById("fechafactura").value;
 		
 		let fd = new FormData()
 			fd.append("id", "addComplemento")
 			fd.append("vehiculoid", vehiculoid)
 			fd.append("capacidad", capacidad) 
 			fd.append("descripcion", descripcion) 
+			fd.append("serie", serie) 
+			fd.append("fechafactura", fechafactura) 
 			fd.append("complementodocumento", complementodocumento.files[0])
 		openModalLoad();
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
@@ -173,11 +177,11 @@ function Vehiculoscomplemento(props) {
 			<div className="row p-3">
 				<div style={{ width: '30%'}}>
 					 
-					<div className="card p-2 mt-2 border-secondary" style={{height:'430px',overflow:'scroll'}}>
+					<div className="card p-2 mt-2 border-secondary" style={{height:'530px',overflow:'scroll'}}>
 						<h5>Vehículo</h5>
 						<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
 						</select>
@@ -188,7 +192,14 @@ function Vehiculoscomplemento(props) {
 						<span>Descripción:</span>
 						<input id="descripcion" placeholder="descripcion"  className="form-control"  ></input>						
 						<br></br> 
-					 
+
+						<span>Serie:</span>
+						<input id="serie" placeholder="serie"  className="form-control"  ></input>						
+						<br></br>
+
+						<span>Fecha Factura</span>
+                		<input id="fechafactura" placeholder="Fecha Factura" className="form-control" type="date" ></input>
+
 						<span>Documento:</span> 
 						<input id="complementodocumento" type="file" style={{ height: '50px'}} />
 						<br></br> 
@@ -204,7 +215,7 @@ function Vehiculoscomplemento(props) {
 						<h6>Vehiculo</h6>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
                              
@@ -213,21 +224,25 @@ function Vehiculoscomplemento(props) {
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
 					<th>Folio</th>
-                        <th>Vehiculo</th>
-                        <th>Capacidad</th>
-                        <th>Descripcion</th>  
-                        <th>Factura</th>  
-                        <th>Fecha Captura</th> 
+                        <th  style={{textAlign:'center'}}>Vehiculo</th>
+                        <th  style={{textAlign:'center'}}>Capacidad</th>
+                        <th  style={{textAlign:'center'}}>Serie</th>
+                        <th  style={{textAlign:'center'}}>Descripcion</th>  
+                        <th  style={{textAlign:'center'}}>Factura</th>  
+                        <th  style={{textAlign:'center'}}>Fecha Factura</th>  
+                        <th  style={{textAlign:'center'}}>Fecha Captura</th> 
                     </tr>
 
                     {  
                     listap.map(item => ( 
-                     <tr>
-                    <td className='id-orden' >{item.folio}</td>
-                    <td className='id-orden' >{item.vehiculo}</td>
-                    <td>{item.capacidad}</td>
-					<td>{item.descripcion}</td>  
-					<td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.factura}>{item.factura}</a></td> 
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
+                    <td className='id-orden'  align='center' >{item.folio}</td>
+                    <td className='id-orden' style={{minWidth:'220px'}}>{item.vehiculo}</td>
+                    <td  align='center'>{item.capacidad}</td>
+                    <td>{item.serie}</td>
+					<td  align='center' style={{minWidth:'220px'}}>{item.descripcion}</td>  
+					<td style={{minWidth:'220px'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/DocumentoTanque/" + item.factura}>{item.factura}</a></td> 
+                    <td>{format(item.fechafactura)}</td>
                     <td>{format(item.fechacaptura)}</td>
                     
                     

@@ -88,8 +88,8 @@ function Rendimiento(props) {
 
 
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		console.log(res.data);
 	} 
@@ -173,7 +173,7 @@ function Rendimiento(props) {
 
   async function getCargas(){
 	var id = "getCargas";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
  
 	setLista(res.data);
 	setListaPD(res.data);
@@ -185,7 +185,7 @@ function Rendimiento(props) {
 	   
 	var id = "getCargasDia";
 	var fecha = document.getElementById("input-fecha").value;
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla);
     setLista(res.data);
 	setListaPD(res.data);
 	console.log(res.data);
@@ -220,7 +220,7 @@ function Rendimiento(props) {
 <br></br><label>Vehiculo:</label>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
                              
@@ -242,7 +242,7 @@ function Rendimiento(props) {
         <div>Vehiculo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
 		  {listav.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
   		  ))}
 		  </select>

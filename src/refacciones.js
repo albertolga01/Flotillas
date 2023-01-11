@@ -1,6 +1,7 @@
  
-import React,{useState, useEffect} from 'react';  
+import React,{useState, useEffect, useRef} from 'react';  
 import  {FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye} from 'react-icons/fa'
+import { useDownloadExcel } from 'react-export-table-to-excel';
 import axios from '../node_modules/axios'; 
 import {NabvarRe} from './component/Navbar'; 
 import ReactDOM from 'react-dom';
@@ -53,10 +54,13 @@ function Refacciones(props) {
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 
 	const [listav, setListaV] = useState([]);
+
+	const [listainv, setListaInv] = useState([]);
 	
 	const [listaver, setListaVer] = useState([]);
 	useEffect(() => {
 		getVehiculos();
+		getInventarios();
 	}, [])
 
 	async function addRefaccion() {
@@ -68,6 +72,7 @@ function Refacciones(props) {
 		var precio = document.getElementById("precio").value;
 		var proveedor = document.getElementById("proveedor").value;
 		var documentorefaccion = document.getElementById("documentorefaccion"); 
+		var refaccionid = document.getElementById("refaccionid").value;
 
 		
 		let fd = new FormData()
@@ -79,6 +84,7 @@ function Refacciones(props) {
 			fd.append("precio", precio)
 			fd.append("proveedor", proveedor)
 			fd.append("documentorefaccion", documentorefaccion.files[0])
+			fd.append("refaccionid", refaccionid)
 
 			openModalLoad();
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
@@ -91,6 +97,7 @@ function Refacciones(props) {
 
 		}*/
 		getRefacciones();
+		getInventarios();
 	}
 
 
@@ -105,8 +112,8 @@ function Refacciones(props) {
 	}
 
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		console.log(res.data);
 	} 
@@ -121,7 +128,7 @@ function Refacciones(props) {
   
 	function afterOpenModal() {
 	  // references are now sync'd and can be accessed.
-	  subtitle.style.color = '#f00';
+	 // subtitle.style.color = 'black';
 	}
   
 	function closeModal() {
@@ -151,7 +158,9 @@ function Refacciones(props) {
   
 
   const [lista, setLista] =  useState([]);  
-  
+  const [listaSelecInventario, setListaSelecInventario] =  useState([]);  
+  const [listapd, setListaPD] = useState([]);
+  const [listap, setListaP] = useState([]);  
  
 
   useEffect(()=> {
@@ -161,26 +170,65 @@ function Refacciones(props) {
   async function getRefacciones(){
 	var id = "getRefacciones";
 	openModalLoad();
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
  	closeModalLoad();
 	setLista(res.data);
 	
 	console.log(res.data);
 
   }
-  
+  const tableRef = useRef(null);
+
+    const { onDownload } = useDownloadExcel({
+        currentTableRef: tableRef.current,
+        filename: 'Refacciones',
+        sheet: 'Refacciones'
+    })
+
   async function getRefaccionesDia(){
 	   
 	var id = "getRefaccionesDia";
 	var fecha = document.getElementById("input-fecha").value;
+	var fechafinal = document.getElementById("input-fecha-final").value;
 	openModalLoad();
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla+'&fechafinal='+fechafinal);
 	closeModalLoad();
     setLista(res.data);
 	
 	console.log(res.data);
 
   }
+
+  async function getInventarios(){
+	   
+	var id = "getInventario";
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id );
+    setListaSelecInventario(res.data);
+	console.log(res.data);
+
+  }
+
+  function filterRefaccion() {
+	let folio = document.getElementById("refaccionid").value;
+ 
+	if(folio != "0"){
+	var result = listaSelecInventario.filter((x) => (x.folio === folio));
+	console.log(result); 
+	document.getElementById("fechacompra").value = result[0].fechacompra;
+	document.getElementById("proveedor").value = result[0].proveedor;
+	document.getElementById("refaccion").value = result[0].producto;
+	document.getElementById("descripcion").value = result[0].producto;
+	document.getElementById("precio").value = result[0].precio;
+	}else{
+		
+	document.getElementById("fechacompra").value = "";
+	document.getElementById("proveedor").value = "";
+	document.getElementById("refaccion").value = "";
+	document.getElementById("descripcion").value = "";
+	document.getElementById("precio").value = "";
+	}
+	
+}
 
   let subtitle1;
   const [modalIsOpen1, setIsOpen1] = React.useState(false);
@@ -191,7 +239,7 @@ function Refacciones(props) {
 
   function afterOpenModal() {
 	// references are now sync'd and can be accessed.
-	subtitle.style.color = '#f00';
+	//subtitle.style.color = '#f00';
   }
 
   function closeModal1() {
@@ -218,10 +266,11 @@ function Refacciones(props) {
 <label>Filtrar por fecha de compra: </label> 
 
 &nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+<input id="input-fecha-final" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
 </div>
 <div style={{width:'100%'}} align="right">
 <button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>
-      
+<button onClick={onDownload} class="btn btn-outline-success btn-sm"> Exportar excel </button>   
 		  <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -229,12 +278,21 @@ function Refacciones(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nueva Refacción</h2>
+        <h2   style={{color:'black'}} >Nueva Refacción</h2>
         
-        <div>Vehiculo</div>
+        <div>Vehículo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
 		  {listav.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+
+  		  ))}
+		  </select>
+		  <div>Refacción</div>
+		  <select id="refaccionid" onChange={() => filterRefaccion()} style={{width:'100%', marginTop:'5px'}}>
+		  <option value="0">Seleccione </option>
+		  {listaSelecInventario.map(item => ( 
+			 		 
+                     <option value={item.folio}>{item.producto + " - " + item.descripcion}</option>
 
   		  ))}
 		  </select>
@@ -259,18 +317,18 @@ function Refacciones(props) {
       </Modal>
 	  </div>
 	  </div>
- <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-                <table id="productstable"  style={{width:'100%'}}> 
+ <div  style={{maxHeight:'39vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+                <table id="productstable"  style={{width:'100%'}}  ref={tableRef}> 
                     <tr>
                         <th>Folio</th>
-                        <th>Fecha Compra</th>
-                        <th>Fecha Captura</th>
                         <th>Vehiculo</th>
+						<th>Fecha Compra</th>
                         <th>Proveedor</th>
                         <th>Refacción</th>
                         <th>Descripcion</th> 
                         <th>Precio</th>
                         <th>Documento</th>
+						<th>Fecha Captura</th>
 
                     </tr>
 
@@ -278,21 +336,23 @@ function Refacciones(props) {
                     lista.map(item => ( 
                      <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.folio}</td>
-                    <td>{format(item.fechacompra)}</td>
+                    <td style={{minWidth:'280px'}}>{item.vehiculo}</td>
+					<td style={{ padding:'5px'}}>{format(item.fechacompra)}</td>
+                    <td style={{minWidth:'250px', padding:'5px'}}>{item.proveedor}</td>
+                    <td style={{minWidth:'350px'}}>{item.refaccion}</td>
+                    <td style={{minWidth:'350px'}}>{item.descripcion}</td>
+                    <td style={{minWidth:'50px', padding:'15px'}}>{formatNumber(item.precio)}</td>
+                    <td style={{minWidth:'150px', padding:'5px'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
                     <td>{format(item.fecha)}</td>
-                    <td>{item.vehiculo}</td>
-                    <td>{item.proveedor}</td>
-                    <td>{item.refaccion}</td>
-                    <td>{item.descripcion}</td>
-                    <td>{formatNumber(item.precio)}</td>
-                    <td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
-
                     
                 </tr>
                 
         ))}	
                         <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
                 </table> 
+
+				
+
 	 </div>
  
  

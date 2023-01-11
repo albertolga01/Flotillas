@@ -90,7 +90,7 @@ function Placas(props) {
 	async function getPlacas() {
 		var id = "getPlacas";
 		openModalLoad();
-		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id);
+		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		closeModalLoad();
 		setListaP(res.data);
 		setListaPD(res.data);
@@ -98,14 +98,14 @@ function Placas(props) {
 	}
 	async function getPlacasV() {
 		var id = "getPlacasProximo";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaPV(res.data);
 		console.log(res.data);
 	}
 
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 	}
 
@@ -143,6 +143,8 @@ function Placas(props) {
 
 	}
 	
+	
+	
 	function format(todayy){
 		var today = new Date(todayy);
 		var dd = String(today.getDate()).padStart(2, '0');
@@ -161,6 +163,13 @@ function Placas(props) {
 		
 	}
 
+	function getPlaca(){
+		let id = document.getElementById("vehiculoid").value;
+		var result = listav.filter((x) => (x.vehiculoid === id));
+		console.log(result); 
+		document.getElementById("placas").value = result[0].placas;
+	}
+
  
 	const style = `
 		.form-control{
@@ -177,9 +186,9 @@ function Placas(props) {
 					 
 					<div className="card p-2 mt-2 border-secondary" style={{ overflow:'scroll'}}>
 						<h5>Placas</h5>
-						<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}} onChange={()=>getPlaca()}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
 						</select>
@@ -205,13 +214,13 @@ function Placas(props) {
 				</div>
 
 				<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'230px', overflow:'scroll'}}>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'380px', overflow:'scroll'}}>
 						<h5>Historial de placas</h5>
 
 						<h6>Vehiculo</h6>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
                              
@@ -227,7 +236,7 @@ function Placas(props) {
 
                     {  
                     listap.map(item => ( 
-                     <tr>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
                     <td className='id-orden' >{item.placas}</td>
                     <td className='id-orden' >{item.vehiculo}</td>
                     <td>{format(item.fechainicial)}</td>
@@ -241,7 +250,7 @@ function Placas(props) {
 					</form>
 
 					<div style={{ width: '100%' }}>
-					<div className="card p-2 mt-2 border-secondary"  style={{ height:'210px', overflow:'scroll'}}>
+					<div className="card p-2 mt-2 border-secondary"  style={{ height:'180px', overflow:'scroll'}}>
 						<h5>Proximo a vencer  </h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
@@ -253,7 +262,7 @@ function Placas(props) {
 
                     {  
                     listapv.map(item => ( 
-                     <tr>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
                     <td className='id-orden' >{item.placas}</td>
 					<td>{item.vehiculo}</td>
                     <td>{format(item.fechainicial)}</td>
@@ -270,9 +279,7 @@ function Placas(props) {
 				</div>
 
 				
-
-				<div style={{ maxHeight: '22vmax', overflowY: 'scroll', width: '10%' }}>
-				</div>
+ 
 
 				<div style={{ top: '150px', display: 'none'}} >
 					

@@ -18,9 +18,11 @@ import 'react-toastify/dist/ReactToastify.css';
 	const [departamento, setDepartamento] = useState("null");
 	const [tipo, setTipo] = useState("null");
 	const [isLoggedIn, setisLoggedIn] = useState(isLoggedIna);
+	const [flotilla, setFlotilla] = useState([]);
 
 	useEffect(() => {
 		getDepartamentos();
+		getTiposCorreo();
 	}, [])
 
 	function handleKeyPress(event) {
@@ -41,6 +43,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	}
     
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
+	const [listac, setListaC] = useState([]); 
 
 	async function getDepartamentos() {
 		var id = "3";
@@ -58,6 +61,7 @@ import 'react-toastify/dist/ReactToastify.css';
 		// setNombreDepartamento(select.options[select.selectedIndex].text); 
 		var user = document.getElementById("form-usuario").value;
 		var pass = document.getElementById("form-password").value;
+		var flo = document.getElementById("flotilla").value;
 		var id = "5";
 		let fd = new FormData()
 		fd.append("user", user)
@@ -66,16 +70,27 @@ import 'react-toastify/dist/ReactToastify.css';
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		//console.log(res.data);
 		if (res.data[0].res == "1") {
+			setFlotilla(flo);
 			setisLoggedIn(false);
 			setUsuario(res.data[0].usuario);
 			setUserid(res.data[0].userid);
 			setName(res.data[0].name);
 			setDepartamento(res.data[0].departamento);
 			setTipo(res.data[0].tipo);
+			
 		} else {
 			notify("Datos de acceso incorrectos");
 		}
 		// console.log(res.data);
+	}
+
+	async function getTiposCorreo() {
+		var id = "obtenerFlotillas";
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		setListaC(rese.data);
+		//console.log(rese.data);
+		//var Data = JSON.stringify(rese.data);
+		//console.log(Data[0]);
 	}
 
 	if (isLoggedIn) {
@@ -92,6 +107,14 @@ import 'react-toastify/dist/ReactToastify.css';
 						<input id="form-usuario" onKeyPress={handleKeyPress} type="text" style={{ height: '30px' }} placeholder="Usuario" />
 						<span>Contraseña</span>
 						<input id="form-password" onKeyPress={handleKeyPress} type="password" style={{ height: '30px' }} placeholder="Contraseña" />
+
+						<span>Seleccione</span>
+						
+						<select  id="flotilla"  className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+							{listac.map(item => ( 
+								<option value={item.idflotilla}>{item.nombre}</option>
+								))} 
+						</select> 
 						<button id="form-btn" style={{ backgroundColor: '#0071ce', color: 'white' }} onClick={(e) => getImagenes(e)}>INICIAR SESIÓN</button>
 						{ }
 					</div>
@@ -107,7 +130,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	} else {
 		return (
 			<div >
-				<SideMenu dptoid={listadepartamento} departamento={nombredepartamento} usuario={usuario} userid={userid} name={name} selected='3' tipo={tipo} />
+				<SideMenu dptos={listac} flotilla1={flotilla} dptoid={listadepartamento} departamento={nombredepartamento} usuario={usuario} userid={userid} name={name} selected='3' tipo={tipo} />
 			</div>
 		);
 	}

@@ -61,6 +61,7 @@ function Seguros(props) {
   const [value, setValue] = useState([]); 
   let id = 0; 
   let tipo = 0; 
+	const [listapd, setListaPD] = useState([]);  
   
 
   useEffect(() => {
@@ -69,24 +70,33 @@ function Seguros(props) {
 }, [])  
 async function getSeguros() {
 	var id = "getSeguros";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 	setListaP(res.data);
+	setListaPD(res.data);
 	console.log(res.data);
 }
 async function getPlacasV() {
 	var id = "getSegurosProximo";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 	setListaPV(res.data);
 	console.log(res.data);
 }
+
+function filterPlacaVehiculo() {
+	var tipo = document.getElementById('vehiculof').value;  
+	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
+	setListaP(result); 
+	
+}
+
 
   useEffect(()=> {
     getVehiculos();
   }, [])
 
   async function getVehiculos(){
-	var id = "11";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
+	var id = "getVehiculos";
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
 	setListaV(res.data);
 	//console.log(res.data);
 
@@ -202,14 +212,14 @@ function format(todayy){
     <div className="container ">
     <NabvarRe titulo="Seguros"/>    
 <div className="row p-3">
-	<div style={{width:'30%', height:'350px', overflowY:'scroll'}}>
+	<div style={{width:'30%', height:'500px' }}>
 <div className="card p-2 mt-2 border-secondary"   >
       <h5>Seguro</h5>    
         
  
 		<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
 						</select>
@@ -229,25 +239,32 @@ function format(todayy){
     </div> 
 	</div>
 
-	<div style={{ width: '70%', overflow: "scroll"}}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'230px',overflow: "scroll"}}>
-						<h5>Historial de seguros</h5>
+	<div style={{ width: '70%' }}>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'300px',overflow: "scroll"}}>
+						<span>Historial de seguros</span>
+						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
+						{listav.map(item => ( 
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+
+						))}
+                             
+						</select>
 						<table id="productstable"  style={{width:'100%' }}> 
                     <tr> 
                         <th>Vehiculo</th>
                         <th>No. Seguro</th>
                         <th>Compañia</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th> 
-                        <th>Estado</th> 
+                        <th style={{textAlign:'center'}}>Fecha</th>
+                        <th style={{textAlign:'center'}}>Vencimiento</th> 
+                        <th style={{textAlign:'center'}}>Estado</th> 
                     </tr>
 					{  
                     listap.map(item => ( 
-                     <tr>
-                    <td className='id-orden' >{item.vehiculo}</td>
-                    <td className='id-orden' >{item.noseguro}</td>
-                    <td className='id-orden' >{item.compania}</td>
-                    <td>{format(item.fechainicial)}</td>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
+                    <td  style={{minWidth:'280px'}} >{item.vehiculo}</td>
+                    <td  style={{minWidth:'180px'}}  >{item.noseguro}</td>
+                    <td  >{item.compania}</td>
+                    <td style={{minWidth:'100px'}}>{format(item.fechainicial)}</td>
                     <td>{format(item.fechafinal)}</td>  
                     <td>{estado(item.fechafinal)}</td>  
                     
@@ -261,23 +278,23 @@ function format(todayy){
 					</form>
 
 					<div style={{ width: '100%' }}>
-					<div className="card p-2 mt-2 border-secondary"  style={{ height:'110px', overflow:'scroll'}}>
+					<div className="card p-2 mt-2 border-secondary"  style={{ height:'200px', overflow:'scroll'}}>
 						<h5>Proximo a vencer (6 meses)</h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
 					<th>Vehiculo</th>
                         <th>No. Seguro</th>
                         <th>Compañia</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th>
-                        <th>Restante</th>
+                        <th style={{textAlign:'center'}}>Fecha</th>
+                        <th style={{textAlign:'center'}}>Vencimiento</th>
+                        <th style={{textAlign:'center'}}>Restante</th>
                     </tr>
 					{listapv.map(item => ( 
-                     <tr>
-                    <td className='id-orden' >{item.vehiculo}</td>
-                    <td className='id-orden' >{item.noseguro}</td>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
+                    <td  style={{minWidth:'280px'}}>{item.vehiculo}</td>
+                    <td  style={{minWidth:'180px'}} >{item.noseguro}</td>
                     <td className='id-orden' >{item.compania}</td>
-                    <td>{format(item.fechainicial)}</td>
+                    <td style={{minWidth:'100px'}}>{format(item.fechainicial)}</td>
                     <td>{format(item.fechafinal)}</td>  
                     <td>{dias(item.fechafinal)}</td>  
                     

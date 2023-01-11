@@ -6,7 +6,7 @@ import {NabvarRe} from './component/Navbar';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import './App.css'; 
-
+import { BsUpload } from "react-icons/bs";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
 
@@ -36,6 +36,11 @@ const customStyles = {
   };
 
 function Siniestros(props) {
+
+	const [modalIsOpenArchivo, setIsOpenArchivo] = React.useState(false);
+	const [listadocumentos, setListaDocumentos] =  useState([]);
+	const [folioVehiculo, setFolioVehiculo] = useState([]); 
+
 	const [modalIsOpenLoad, setIsOpenLoad] = useState(false); 
 	const [listav, setListaV] = useState([]); 
 	const [listaver, setListaVer] = useState([]);
@@ -54,6 +59,18 @@ function Siniestros(props) {
 		setIsOpenLoad(false); 
 	}
 
+	
+	function openModalA() {
+		setIsOpenArchivo(true);
+	  }
+	  function closeModalA() {
+		setIsOpenArchivo(false);
+	  }
+	  function afterOpenModalA() {
+		// references are now sync'd and can be accessed.
+		subtitle.style.color = 'black';
+	  }
+
     function notify(message){
 		toast(message);
 	}
@@ -65,13 +82,40 @@ function Siniestros(props) {
 		 getChoferes();
 	   }, [])
 	
+	   async function getDocumentos(folio){
+		var id = "getDocumentos";
+		setListaDocumentos([]);
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&folio='+folio); 
+		//console.log(rese.data);
+		setListaDocumentos(rese.data);    
+	}
 
+	async function addDocumento(){
+		openModalLoad();
+		var documento = document.getElementById("documento");
+		var descripcion = document.getElementById("descripcionArhivo").value;
+		let fd = new FormData() 
+		fd.append("id","15")
+		fd.append("Filename", descripcion);
+		fd.append("tipo", "2");
+		fd.append("Filedesc", descripcion);
+		fd.append("IDvehiculo", folioVehiculo) 
+		fd.append("file", documento.files[0]);
+		
+		setListaDocumentos([]);
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
+		closeModalLoad();
+		closeModalA();
+		notify(res.data.trim());
+		
+	}
 	async function addSiniestro() {
 		
 		var choferNombre = document.getElementById("choferNombre").value;
 		var vehiculoid = document.getElementById("vehiculoid").value;
 		var fecha = document.getElementById("fechasiniestro").value;
 		var descripcion = document.getElementById("descripcion").value;
+		var deducible = document.getElementById("deducible").value;
 		 
 		
 		let fd = new FormData()
@@ -80,6 +124,7 @@ function Siniestros(props) {
 			fd.append("vehiculoid", vehiculoid)
 			fd.append("fecha", fecha) 
 			fd.append("descripcion", descripcion) 
+			fd.append("deducible", deducible) 
 
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 
@@ -93,8 +138,8 @@ function Siniestros(props) {
 
 
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		console.log(res.data);
 	} 
@@ -172,44 +217,49 @@ function Siniestros(props) {
 			return ((Number(importe)).toLocaleString('en-US'));
 			}
 	  
-  
- 
 
-  
-  async function getChoferes() {
-	var id = "getChoferes";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
-	setListaC(res.data);
-	console.log(res.data);
-} 
+		async function getChoferes() {
+			var id = "getChoferes";
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+			setListaC(res.data);
+			console.log(res.data);
+		} 
 
-  async function getSiniestros(){
-	var id = "getSiniestros";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
- 
-	setLista(res.data);
-	setListaPD(res.data);
-	console.log(res.data);
+		async function getSiniestros(){
+			var id = "getSiniestros";
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
+		
+			setLista(res.data);
+			setListaPD(res.data);
+			console.log(res.data);
 
-  }
-  
-  async function getCargasDia(){
-	   
-	var id = "getSiniestroDia";
-	var fecha = document.getElementById("input-fecha").value;
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha);
-    setLista(res.data);
-	setListaPD(res.data);
-	console.log(res.data);
+		}
+		
+		async function getCargasDia(){
+			
+			var id = "getSiniestroDia";
+			var fecha = document.getElementById("input-fecha").value;
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla);
+			setLista(res.data);
+			setListaPD(res.data);
+			console.log(res.data);
 
-  }
- 
-  function filterPlacaVehiculo() {
-	var tipo = document.getElementById('vehiculof').value;  
-	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
-	setLista(result); 
-	
-}
+		}
+		
+		function filterPlacaVehiculo() {
+			var tipo = document.getElementById('vehiculof').value;  
+			var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
+			setLista(result); 
+			
+		}
+
+		function agregarDoc(folio){
+			openModalA();
+			setFolioVehiculo(folio);
+			getDocumentos(folio);
+		
+		}
+
 
   // Dynamically create select list
   let options = [];
@@ -232,7 +282,7 @@ function Siniestros(props) {
 <br></br><label>Vehiculo:</label>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
                              
@@ -252,19 +302,14 @@ function Siniestros(props) {
         <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nuevo Siniestro</h2>
         
 		<div>Chofer</div>
-		  <select id="choferNombre"  style={{width:'100%', marginTop:'5px'}}>
-                 
-				{listac.map(item => ( 
-                     <option value={item.id}>{item.nombre }</option>
-
-  		  ))}
-                         
-		  </select>
+		  
+		<input id="choferNombre" type="text" style={{width:'100%', marginTop:'5px'}}/>
+	 
 
         <div>Vehiculo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
 		  {listav.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
   		  ))}
 		  </select>
@@ -272,6 +317,8 @@ function Siniestros(props) {
 		  <input id="fechasiniestro" type="date" style={{width:'100%', marginTop:'5px'}}/>
 		  <div>Descripción</div>
 		  <input  id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}}/> 
+		  <div>Deducible</div>
+		  <input id="deducible" type="text" style={{width:'100%', marginTop:'5px'}}/>
 		  
         
 <br></br>
@@ -290,6 +337,8 @@ function Siniestros(props) {
                         <th>Vehiculo</th>
                         <th>Chofer</th>
                         <th>Descripcion</th>
+                        <th>Deducible</th>
+						<th>Archivo</th>
                          
                     </tr>
 
@@ -301,6 +350,9 @@ function Siniestros(props) {
 					<td>{item.vehiculo}</td>
 					<td>{item.nombrechofer}</td>
                     <td>{item.descripcion}</td>
+                    <td>{item.deducible}</td>
+					<td><button style={{width:'100%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(item.vehiculoid)}><BsUpload /></button></td>
+
                      
                     <td></td>
                     
@@ -400,6 +452,47 @@ function Siniestros(props) {
 					<ThreeDots color="#0071ce" height={80} width={80} /> 
 					</div>  
 			</Modal>
+
+			
+			<Modal
+			isOpen={modalIsOpenArchivo}
+			onAfterOpen={afterOpenModalA}
+			onRequestClose={closeModalA}
+			style={customStyles}
+			contentLabel="Example Modal"
+		>
+			<h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Agregar Archivo</h2> 
+
+			<div>Archivo:</div>
+			<input id="documento" type="file" style={{display: "none"}}></input>
+			<input type="button"  style={{width:'100%' }} id="documento" class="btn btn-outline-success btn-sm" value="Elegir archivo" onClick={() => {document.getElementById('documento').click()}}></input>
+
+			<div>Descripción:</div>
+			<input id="descripcionArhivo" type="text"  style={{width:'100%', marginTop:'5px'}}/>
+			<tr > 
+							<th>Folio</th>
+							<th>Descripción</th> 
+							<th>Documento</th> 
+							  
+						</tr>
+			{ listadocumentos.map(item => ( 
+							 
+							 <tr id="tabletr" style={{  fontSize:'13.5px', border: '2px solid #ABB2B9'}}>
+								  
+								 <td  align='center' className='id-orden'>{item.folio}</td>
+								 <td  align='center' className='id-orden'>{item.descripcion}</td>
+								 <td  align='center' className='id-orden'><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documento}>{item.documento}</a></td>
+							   
+								 
+							 </tr> 
+							 ))}	
+			
+			
+		<br></br>
+		<br></br>
+			<button onClick={closeModalA} class="btn btn-outline-danger btn-sm " style={{ height:'45px'}}>Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button onClick={() => addDocumento()} class="btn btn-outline-success btn-sm"  style={{ height:'45px'}}>Guardar</button>
+		</Modal>
 
         </div>
  

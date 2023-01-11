@@ -85,8 +85,8 @@ export default function Documents(props) {
 
     
     async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 
@@ -102,6 +102,7 @@ export default function Documents(props) {
         let formData = new FormData();
             formData.append("id", "cargarServicios");
             formData.append("fecha", document.getElementById("fechainicial").value);
+            formData.append("fechaproximo", document.getElementById("fechaproximo").value);
             formData.append("servicio", document.getElementById("servicio").value);
             formData.append("odometro", document.getElementById("odometro").value);
             formData.append("descripcion", document.getElementById("descripcion").value);
@@ -121,16 +122,19 @@ export default function Documents(props) {
             </style>
 
             <form id="add-form" onSubmit={handleSubmit}>
-                <h6>Vehiculo</h6>
+                <h6>Vehículo</h6>
                 <select  id="IDvehiculo"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
 						</select>
                 
-                <h6>Fecha</h6>
-                <input id="fechainicial" placeholder="Fecha Servicio" className="form-control" type="date"></input>
+                <h6>Fecha Servicio</h6>
+                <input id="fechainicial" placeholder="Fecha Servicio" className="form-control" type="date"></input> 
+
+                <h6>Fecha Próximo Servicio</h6>
+                <input id="fechaproximo" placeholder="Fecha Próximo Servicio" className="form-control" type="date"></input>
                  
                 <h6>Servicio</h6>
                 <input type="text" id="servicio" ></input>

@@ -94,8 +94,8 @@ function Multas(props) {
 
 
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		console.log(res.data);
 	} 
@@ -185,7 +185,7 @@ function Multas(props) {
 
   async function getMultas(){
 	var id = "getMultas";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
  
 	setLista(res.data);
 	setListaPD(res.data);
@@ -197,7 +197,7 @@ function Multas(props) {
 	   
 	var id = "getMultaDia";
 	var fecha = document.getElementById("input-fecha").value;
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla);
     setLista(res.data);
 	setListaPD(res.data);
 	console.log(res.data);
@@ -238,11 +238,11 @@ function filterPlacaChofer() {
 <label>Filtrar por fecha de multa: </label> 
 
 &nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<br></br><span>Vehiculo:</span>
+<br></br><span>Vehículo:</span>
 <div>
 	<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'500px', marginTop:'5px', cursor: 'pointer'}}>
 		 {listav.map(item => ( 
-			<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+			<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
  ))} 
 						</select>
 </div>
@@ -270,19 +270,13 @@ function filterPlacaChofer() {
         <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Multa</h2>
 
         <div>Chofer</div>
-		  <select id="choferNombre"  style={{width:'100%', marginTop:'5px'}}>
-                 
-				{listac.map(item => ( 
-                     <option value={item.id}>{item.nombre }</option>
 
-  		  ))}
-                         
-		  </select>
-
-        <div>Vehiculo</div>
+		<input id="choferNombre" type="text" style={{width:'100%', marginTop:'5px'}}/>
+		   
+        <div>Vehículo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
 		  {listav.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
   		  ))}
 		  </select>
@@ -310,7 +304,7 @@ function filterPlacaChofer() {
                         <th>Folio</th>
                         <th>Fecha Multa</th>
                         <th>Chofer</th> 
-                        <th>Vehiculo</th> 
+                        <th>Vehículo</th> 
                         <th>Descripcion</th>
                         <th>Importe</th> 
                     </tr>
@@ -376,7 +370,7 @@ function filterPlacaChofer() {
 		<table id="productstable"  style={{width:'900px'}}> 
 		<tr>
                         <th>Folio</th>
-                        <th>Vehiculo</th>
+                        <th>Vehículo</th>
                         <th>Fecha Carga</th>
                         <th>Litros</th>
                         <th>Importe</th>

@@ -5,7 +5,7 @@ import Expediente from '../expediente';
 import Seguros from '../seguros';
 import Refacciones from '../refacciones';
 import Rendimiento from '../rendimiento';
-import NvaRequisicion from '../Nvarequisicion';
+import Nuevovehiculo from '../Nuevovehiculo';
 import Listavehiculos from '../Listavehiculos';
 import Servicios from '../Servicios';
 import Dictamenes from '../Dictamenes'; 
@@ -20,47 +20,53 @@ import OpcionesMenu from './OpcionesMenu';
 export default function SideMenu(props) {
 
     const [selected, setSelect] = useState(props.selected);
+    const [flotilla1, setFlotilla] = useState(props.flotilla1);
     // console.log(props.selected);
 
-
+    function cambiarRazon(value){ 
+        /*  */    
+        setFlotilla(value);   
+     }
+     useEffect(() => {
+        getDepartamentos();
+        setFlotilla(props.flotilla1);
+    }, [])
     const Element = () => {
 
         if (selected == '1') {
             return <App tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} />;
         } else if (selected == '2') {
-            return <Placas tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Placas flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else if (selected == '3') {
-            return <NvaRequisicion tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Nuevovehiculo flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '4') {
-            return <Seguros tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Seguros flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '5') {
-            return <Refacciones tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Refacciones flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '6') {
-            return <Rendimiento tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Rendimiento flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '7') {
-            return <Expediente tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Expediente flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == 'Vehiculos') {
-            return <Listavehiculos tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Listavehiculos flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Servicios') {
-            return <Servicios tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Servicios flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Dictamenes') {
-            return <Dictamenes tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Dictamenes flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Siniestros') {
-            return <Siniestros tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Siniestros flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Multas') {
-            return <Multas tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Multas flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Vehiculoscomplemento') {
-            return <VehiculoCto tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <VehiculoCto flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else {
             return (<div style={{ width: '100%', textAlign: 'center', backgroundColor: '', margin: 'auto' }}><h1>Error al Cargar</h1></div>);
         }
     }
 
-    useEffect(() => {
-        getDepartamentos();
-    }, [])
+
 
     const [isMenuOpen1, SetIsMenuOpen1] = useState(true);
 
@@ -74,6 +80,8 @@ export default function SideMenu(props) {
             SetIsMenuOpen1(false);
         }
     }
+
+    
 
     function getDepartamentos() {
 
@@ -99,9 +107,8 @@ export default function SideMenu(props) {
     return (
 
         <div style={{ height: '100vh', width: '100vw', position: 'sticky', top: '0', display: 'flex', overflowX: 'auto' }}>
-
-       
-<OpcionesMenu dptoid={props.dptoid} unmount={cambiarSelected} admin={props.admin} name={props.name} isMenuOpen1={isMenuOpen1}></OpcionesMenu>
+            
+<OpcionesMenu dptos={props.dptos} dptoid={props.dptoid} unmountMe={cambiarRazon} unmount={cambiarSelected} admin={props.admin} name={props.name} isMenuOpen1={isMenuOpen1}></OpcionesMenu>
 
             <Element selected={selected} />
 

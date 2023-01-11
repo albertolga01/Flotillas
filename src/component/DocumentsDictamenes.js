@@ -107,7 +107,7 @@ export default function Documents(props) {
                 <h6>Vehiculo</h6>
                 <select  id="IDvehiculo"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						{props.vehiculos.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
 						</select>
@@ -122,7 +122,7 @@ export default function Documents(props) {
                  
                 <select  id="dictamen"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
                             <option value="Dictamen Humo">Dictamen Humo</option>
-                            <option value="Dictamen Físico mecánico NOM 007">Físico mecánico NOM 007</option>
+                            <option value="Dictamen Físico Mecánico">Dictamen Físico Mecánico</option>
                             <option value="Dictamen NOM 001 Tanques">Dictamen NOM 001 Tanques</option>
                             <option value="Dictamen Ultrasonido de tanque">Dictamen Ultrasonido de tanque</option>
                             <option value="Dictamen de calibración Pemex">Dictamen de calibración Pemex</option>

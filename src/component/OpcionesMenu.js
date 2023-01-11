@@ -32,6 +32,10 @@ export default function OpcionesMenu(props) {
         window.location.reload();
     }
 
+    async function CambiarRzon(){  
+        var select = document.getElementById("select").value; 
+         props.unmountMe(select);    
+    }
    
 
     return (
@@ -41,16 +45,26 @@ export default function OpcionesMenu(props) {
                 
                 <div id="sidepanel" style={{width:'100%'}}>
                 <img id="sidepanel-logo" alt="Logo" />
-
-                <span style={{ textAlign: 'center', color: 'white', fontSize: '12px', paddingBottom: '.4rem', paddingTop: '.4rem', borderBottom: '2px solid white' }}>
+                <br></br>   
+                        
+                        <select style={{width:'100%',maxWidth:'100%', fontWeight:'bold', color:'white', backgroundColor:'#0071ce', border:'none', textAlignLast:'center'}} id="select" onChange={()=> CambiarRzon()}> 
+                              {  
+                                  props.dptos.map(item => (  
+                                      <option value={item.idflotilla}>{item.nombre}</option> 
+                                  )) 
+                              }   
+                          </select>    
+                          <br></br>
+                <label style={{ width: '100%',textAlign: 'center', color: 'white', fontSize: '12px', paddingBottom: '.4rem', paddingTop: '.4rem', borderBottom: '2px solid white' }}>
                     <b>Bienvenido:</b> {props.name}
-                </span>
-
+                </label>
+                <br></br>
+                <br></br>
               
                 
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("3"); }}>
-                    <img id="sideimg3" alt="" />
+                    <img id="sideimg14" alt="" />
                     <span>Nuevo Vehículo</span>
                 </div>
                     :
@@ -58,7 +72,7 @@ export default function OpcionesMenu(props) {
                 }
 
                   <div id="sidebtn" onClick={() => { Seleccionar("Vehiculos"); }}>
-                    <img id="sideimg3" alt="" />
+                    <img id="sideimg11" alt="" />
                     <span>Vehículos</span>
                 </div>
                 <div id="sidebtn" onClick={() => { Seleccionar("Vehiculoscomplemento"); }}>
@@ -68,7 +82,7 @@ export default function OpcionesMenu(props) {
 
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("2"); }}>
-                    <FaTruck style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
+                    <img id="sideimg10" alt="" />
                     <span>Placas</span>
                 </div>
                     :
@@ -83,19 +97,19 @@ export default function OpcionesMenu(props) {
                     <label></label>
                 }
                   <div id="sidebtn" onClick={() => { Seleccionar("Servicios"); }}>
-                    <img id="sideimg3" alt="" />
+                    <img id="sideimg12" alt="" />
                     <span>Servicios</span>
                 </div>
                 <div id="sidebtn" onClick={() => { Seleccionar("Multas"); }}>
-                    <img id="sideimg3" alt="" />
+                    <img id="sideimg13" alt="" />
                     <span>Multas</span>
                 </div>
                 <div id="sidebtn" onClick={() => { Seleccionar("Siniestros"); }}>
-                    <img id="sideimg3" alt="" />
+                    <img id="sideimg9" alt="" />
                     <span>Siniestros</span>
                 </div>
                 <div id="sidebtn" onClick={() => { Seleccionar("Dictamenes"); }}>
-                    <img id="sideimg3" alt="" />
+                    <img id="sideimg15" alt="" />
                     <span>Dictámenes</span>
                 </div>
                 {(props.tipo != "2") ?

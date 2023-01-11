@@ -85,7 +85,7 @@ function Dictamenes(props) {
 
 	async function getDictamenes() {
 		var id = "getDictamenesVehiculo";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaS(res.data);
 		setListaSD(res.data); 
 		//console.log(res.data);  process.env.REACT_APP_API_URL
@@ -124,8 +124,8 @@ function Dictamenes(props) {
 	}
 
 	async function getVehiculos() {
-		var id = "11";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 
@@ -178,7 +178,13 @@ function Dictamenes(props) {
 	   return today;
 	}
   
- 
+	function formatDate(date){
+		var index = date.search(" ");
+		date = date.substring(0, 10);
+		date = date.split("-");
+		var formatedDate = date[2] +"/"+ date[1] +"/"+ date[0];
+		return(formatedDate);
+	}
 
 	useEffect(() => {
 		getUsuarios();
@@ -242,30 +248,37 @@ function Dictamenes(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<DocumentsDictamenes vehiculos={listav} getDictamenes={getDictamenes}/>
+							<DocumentsDictamenes flotilla={props.flotilla} vehiculos={listav} getDictamenes={getDictamenes}/>
 						</div> 
 				</div>
 
 				<div style={{ width: '70%' }}>
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'450px'}} >
 						<h5>Dictámenes</h5>
-						<h6>Tipo Dictamen</h6>
-						<select  id="dictamenf"  onChange={() => filterDictamenTipo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-							<option value="Dictamen Humo">Dictamen Humo</option>
-                            <option value="Dictamen Físico mecánico NOM 007">Físico mecánico NOM 007</option>
-                            <option value="Dictamen NOM 001 Tanques">Dictamen NOM 001 Tanques</option>
-                            <option value="Dictamen Ultrasonido de tanque">Dictamen Ultrasonido de tanque</option>
-                            <option value="Dictamen de calibración Pemex">Dictamen de calibración Pemex</option>
-                             
-						</select>
-						<h6>Vehiculo</h6>
-						<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
 
-						))}
-                             
-						</select>
+						<div style={{width:'100%', height:'100px', justifyContent: 'space-between', columnGap:'0.875rem', display:'flex', flexDirection:'row'}} align="center"> 
+                     		<div style={{width:'100%', display: 'flex', flexDirection:'column'}}>
+							 <h6>Tipo Dictamen</h6>
+								<select  id="dictamenf"  onChange={() => filterDictamenTipo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+									<option value="Dictamen Humo">Dictamen Humo</option>
+									<option value="Dictamen Físico mecánico">Físico Mecánico</option>
+									<option value="Dictamen NOM 007 Tanques">Dictamen NOM 007 Tanques</option>
+									<option value="Dictamen Ultrasonido de tanque">Dictamen Ultrasonido de tanque</option>
+									<option value="Dictamen de calibración Pemex">Dictamen de calibración Pemex</option>
+								</select>
+						
+                     		</div>
+							 <div style={{width:'100%', display: 'flex', flexDirection:'column'}}>
+							 <h6>Vehículo</h6>
+									<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+										{listav.map(item => ( 
+													<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+										))}
+									</select>
+                     		</div>
+                    	</div>
+						 
+						 
 						
 						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
 							<h6>Vehículo: {lista}</h6>
@@ -276,24 +289,22 @@ function Dictamenes(props) {
 
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
-								<tr>
-									<th style={{textAlign:'center'}}>Dictamen</th>
+								<tr> 
+									<th style={{textAlign:'center'}}>Vehículo</th>
 									<th style={{textAlign:'center'}}>Tipo Dictamen</th>
 									<th style={{textAlign:'center'}}>Descripción</th>
-									<th style={{textAlign:'center'}}>Vehículo</th>
-									<th style={{textAlign:'center'}}>Fecha Dictamen</th>
-									<th style={{textAlign:'center'}}>Fecha Final</th>
+									<th style={{textAlign:'center'}}>Fecha</th>
+									<th style={{textAlign:'center'}}>Vencimiento</th>
 									<th style={{textAlign:'center'}}>Archivo</th>
 								</tr>
 								{listas.map(item => (
-								<tr>
-									<td style={{textAlign:'center'}}>{item.id}</td>
-									<td style={{textAlign:'center'}}>{item.nombre}</td>
-									<td style={{textAlign:'center'}}>{item.descripcion}</td>
-									<td style={{textAlign:'center'}}>{item.vehiculo}</td>
-									<td style={{textAlign:'center'}}>{item.fecha}</td>
-									<td style={{textAlign:'center'}}>{item.fechafinal}</td>
-									<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
+								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}> 
+									<td style={{minWidth:'280px'}}>{item.vehiculo}</td>
+									<td style={{textAlign:'center', minWidth:'180px'}}>{item.nombre}</td>
+									<td style={{textAlign:'center', minWidth:'280px'}}>{item.descripcion}</td>
+									<td style={{textAlign:'center'}}>{formatDate(item.fecha)}</td>
+									<td style={{textAlign:'center'}}>{formatDate(item.fechafinal)}</td>
+									<td style={{ minWidth:'280px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 								</tr>
 								))}
 							</table>
@@ -315,24 +326,22 @@ function Dictamenes(props) {
 						</select>
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
-								<tr>
-									<th style={{textAlign:'center'}}>Dictamen</th>
-									<th style={{textAlign:'center'}}>Tipo Dictamen</th>
-									<th style={{textAlign:'center'}}>Descripción</th>
+								<tr > 
 									<th style={{textAlign:'center'}}>Vehículo</th>
-									<th style={{textAlign:'center'}}>Fecha Dictamen</th>
-									<th style={{textAlign:'center'}}>Fecha Final</th>
+									<th style={{textAlign:'center'}}>Tipo Dictamen</th>
+									<th style={{textAlign:'center'}}>Descripción</th> 
+									<th style={{textAlign:'center'}}>Fecha</th>
+									<th style={{textAlign:'center'}}>Vencimiento</th>
 									<th style={{textAlign:'center'}}>Archivo</th>
 								</tr>
 								{listasvd.map(item => (
-								<tr>
-									<td style={{textAlign:'center'}}>{item.id}</td>
-									<td style={{textAlign:'center'}}>{item.nombre}</td>
-									<td style={{textAlign:'center'}}>{item.descripcion}</td>
-									<td style={{textAlign:'center'}}>{item.vehiculo}</td>
-									<td style={{textAlign:'center'}}>{item.fecha}</td>
-									<td style={{textAlign:'center'}}>{item.fechafinal}</td>
-									<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
+								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}> 
+									<td style={{minWidth:'280px'}}>{item.vehiculo}</td>
+									<td style={{textAlign:'center', minWidth:'180px'}}>{item.nombre}</td>
+									<td style={{minWidth:'280px'}}>{item.descripcion}</td> 
+									<td style={{textAlign:'center'}}>{format(item.fecha)}</td>
+									<td style={{textAlign:'center'}}>{format(item.fechafinal)}</td>
+									<td style={{ minWidth:'280px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 								</tr>
 								))}
 							</table>

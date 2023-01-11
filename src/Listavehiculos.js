@@ -9,7 +9,7 @@ import './App.css';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
+import { BsArrowRepeat, BsEnvelopeFill } from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -49,16 +49,32 @@ function Listavehiculos(props) {
     function notify(message){
 		toast(message);
 	}
-    
+	const [empresas, setEmpresas] = useState([]);
+	const [listaEmpresas, setListaEmpresas] = useState([]);
+
     const [modalIsOpenLoad, setIsOpenLoad] = useState(false);
 
 	const [listav, setListaV] = useState([]);
+
+	
 	
 	const [listaver, setListaVer] = useState([]);
 	useEffect(() => {
 		getVehiculos();
+		getEmpresas();
+		getTiposCorreo();
 	}, [])
 
+
+	async function getEmpresas() {
+		var id = "getEmpresas";
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		setEmpresas(rese.data);
+		//console.log(rese.data);
+		//var Data = JSON.stringify(rese.data);
+		//console.log(Data[0]);
+	}
+/*
 	async function addRefaccion() {
 		
 		var vehiculoid = document.getElementById("vehiculoid").value;
@@ -85,20 +101,20 @@ function Listavehiculos(props) {
 		closeModalLoad();
 		notify(res.data.trim());
 		 
-		/*if(res.data.trim() == "Refacción agregada correctamente"){
+		if(res.data.trim() == "Refacción agregada correctamente"){
 			closeModal();
   getRefacciones()
 
-		}*/
+		}
 		getRefacciones();
 	}
 
- 
+ */
 
 	async function getVehiculos() {
-		var id = "11";
+		var id = "getVehiculos";
 		openModalLoad();
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id=' + id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
 		setListaV(res.data);
 		closeModalLoad();
 		console.log(res.data);
@@ -147,9 +163,7 @@ function Listavehiculos(props) {
   
  
 
-  useEffect(()=> {
-    getRefacciones();
-  }, [])
+ 
 
   async function getRefacciones(){
 	var id = "getRefacciones";
@@ -177,6 +191,9 @@ function Listavehiculos(props) {
 
   let subtitle1;
   const [modalIsOpen1, setIsOpen1] = React.useState(false);
+  const [folioVehiculo1, setFolioVehiculo1] = useState([]); 
+  const [listac, setListaC] = useState([]); 
+
 
   function openModal1() {
 	setIsOpen1(true);
@@ -184,17 +201,86 @@ function Listavehiculos(props) {
 
   function afterOpenModal() {
 	// references are now sync'd and can be accessed.
-	subtitle.style.color = '#f00';
+	//subtitle.style.color = '#f00';
   }
 
   function closeModal1() {
 	setIsOpen1(false);
   }
 
- 
+  function envioCorreo(folio){
+	openModal1();
+
+	setFolioVehiculo1(folio);
+	 obtenerCorreos(folio);
+}
  
   // Dynamically create select list
   let options = [];
+
+  async function actualizarVehiculo(folio){
+	let notificar = 0;
+	if(document.getElementById("notificar"+folio).checked){
+		 notificar = 1;
+	} 
+	if(window.confirm('Actualizar los campos del vehiculo con folio: ' + folio)){ 
+		let fd = new FormData() 
+		fd.append("id", "actualizarVehiculo")
+		fd.append("vehiculoid", folio) 
+		fd.append("responsable", document.getElementById("responsable"+folio).value)
+		fd.append("tipouso", document.getElementById("tipouso"+folio).value)
+		fd.append("empresa", document.getElementById("empresa"+folio).value)
+		fd.append("pernota", document.getElementById("pernota"+folio).value)
+		fd.append("numerovehiculo", document.getElementById("numerovehiculo"+folio).value)
+		fd.append("gps", document.getElementById("gps"+folio).value)
+		fd.append("notificar", notificar)
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+		console.log("actualizarVehiculo: " +res.data);
+		notify(res.data.trim());
+		getVehiculos();
+	}
+
+}
+
+async function EnviarCorreo(folio){
+	var correo = document.getElementById("correo").value;
+	 
+	openModalLoad();
+		let fd = new FormData() 
+		fd.append("id", "agregarCorreo")
+		fd.append("vehiculoid", folioVehiculo1) 
+		fd.append("correo", correo)
+		fd.append("tipocorreo", document.getElementById("tipocorreo").value)
+		 
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+		console.log("EnviarCorreo: " +res.data);
+		closeModalLoad();
+		notify(res.data.trim());
+		//getVehiculos(); 
+
+}
+
+async function obtenerCorreos(folio){ 
+ setListaVer([]);
+		let fd = new FormData() 
+		fd.append("id", "obtenerCorreos")
+		fd.append("vehiculoid", folio)   
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+		console.log("EnviarCorreo: " +res.data);
+		setListaVer(res.data);
+		//notify(res.data.trim());
+		//getVehiculos(); 
+
+}
+
+async function getTiposCorreo() {
+	var id = "obtenerTiposCorreos";
+	const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+	setListaC(rese.data);
+	//console.log(rese.data);
+	//var Data = JSON.stringify(rese.data);
+	//console.log(Data[0]);
+}
  
 
   return (
@@ -203,50 +289,14 @@ function Listavehiculos(props) {
      
 <NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Vehículos"/>    
 <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
-
-
-     
+ 
 	 
 <div style={{width:'100%'}} align="right"> 
-		  <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nueva Refacción</h2>
-        
-        <div>Vehiculo</div>
-		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
-		  {listav.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " -" + item.vehiculoid}</option>
-
-  		  ))}
-		  </select>
-		  <div>Fecha de compra</div>
-		  <input id="fechacompra" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Proveedor</div>
-		  <input id="proveedor" type="text" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Refacción</div>
-		  <input id="refaccion" type="text" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Descripción</div>
-		  <input id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}} />
-		  <div>Precio</div>
-		  <input  id="precio" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Documento</div>
-		  <input id="documentorefaccion" type="file" style={{ height: '50px'}} />
-        
-        
-<br></br>
-<br></br>
-		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button onClick={() => addRefaccion()} class="btn btn-outline-success btn-sm" >Guardar</button>
-      </Modal>
+		  
 	  </div>
 	  </div>
- <div  style={{  overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-                <table id="productstable"  style={{width:'100%'}}> 
+ <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+                <table id="productstable"  style={{width:'100%'}} > 
                     <tr>
                         <th>Folio</th>
                         <th>Vehículo</th>
@@ -257,29 +307,38 @@ function Listavehiculos(props) {
                         <th>Tipo Uso</th> 
                         <th>Empresa</th>
                         <th>Placa</th>
-                        <th>Gps</th>
-                        <th>Número Vehículo</th>
-                        <th>Foto</th>
+                        <th >Gps</th>
+                        <th>Número Vehículo</th> 
                         <th>PerNota</th>
+						<th>Actualizar</th>
+						<th>Correo</th>
+						<th>Notificar</th>
 
                     </tr>
 
                     {  
                     listav.map(item => ( 
-                     <tr id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.vehiculoid}</td>
-                    <td>{item.descripcion}</td>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
+                    <td className='id-orden' align='center'>{item.vehiculoid}</td>
+                    <td style={{minWidth:'250px'}}>{item.descripcion}</td>
                     <td>{item.modelo}</td>
-                    <td>{item.responsable}</td>
-                    <td>{item.serievehiculo}</td>
-                    <td>{item.seriemotor}</td>
-                    <td>{item.tipouso}</td>
-                    <td>{item.empresa}</td>
+                    <td><input defaultValue={item.responsable} id={"responsable"+item.vehiculoid} ></input></td>
+                    <td  align='center'>{item.serievehiculo}</td>
+                    <td  align='center'>{item.seriemotor}</td>
+                    <td><input defaultValue={item.tipouso} id={"tipouso"+item.vehiculoid}  ></input></td>
+                    <td><select id={"empresa"+item.vehiculoid} style={{ width: '210px', height: '25px' }} onChange={(e) => setListaEmpresas(e.target.value)}>
+										<option value={item.idempresa}> {item.empresa}</option>
+										{empresas.map(item => (
+											<option value={item.id}> {item.nombre}</option>))
+										}</select></td>
                     <td>{item.placas}</td>
-                    <td>{item.gps}</td>
-                    <td>{item.numvehiculo}</td>
-                    <td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/" + item.icon}>{item.icon}</a></td>
-					<td>-----</td>
+                    <td><input defaultValue={item.gps} id={"gps"+item.vehiculoid}  style={{ width: '60px'}}></input></td>
+                    <td><input defaultValue={item.numvehiculo} id={"numerovehiculo"+item.vehiculoid} style={{ width: '60px' }}></input></td>
+                    {/*<td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/" + item.icon}>{item.icon}</a></td>
+					*/}<td><input defaultValue={item.pernota} id={"pernota"+item.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></td>
+					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarVehiculo(item.vehiculoid)} style={{minWidth:'100%' }}><BsArrowRepeat /></button></td>
+					<td><button  className='btn btn-outline-success btn-sm' onClick={() => envioCorreo(item.vehiculoid)}  style={{minWidth:'100%' }}><BsEnvelopeFill /></button></td>
+					<td>< input checked={item.notificar} type="checkbox" id={"notificar"+item.vehiculoid} style={{minWidth:'50px'}}></input></td>
 
                     
                 </tr>
@@ -299,39 +358,37 @@ function Listavehiculos(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Refacciones</label>
-        <br></br>
-        <br></br>
-		<table id="productstable"  style={{width:'700px'}}> 
-                    <tr> 
-                        <th>Folio</th>
-                        <th>Fecha Compra</th>
-                        <th>Fecha Captura</th>
-                        <th>Vehiculo</th>
-                        <th>Refacción</th>  
-                        <th>Descripción</th>  
-                        <th>Precio</th>  
-                    </tr>
-
-                    { 
-                    listaver.map(item => ( 
-                     <tr>
-                    <td className='id-orden' >{item.folio}</td>
-                    <td>{format(item.fechacompra)}</td>
-                    <td>{format(item.fecha)}</td>
-                    <td>{item.vehiculo}</td>
-                    <td>{item.refaccion}</td>
-                    <td>{item.descripcion}</td>
-                    <td>{formatNumber(item.precio)}</td>
-                    
-                </tr>
-                
-					))}	
-		</table>
+        <h2  style={{color:'black', fontSize:'32px'}}>Agregar Correo</h2>
+		<tr >  
+							<th>Correo</th>  
+							<th>Tipo</th>  
+			
+							  
+						</tr>
+			{ listaver.map(item => ( 
+							 
+							 <tr id="tabletr" style={{  fontSize:'14px', border: '2px solid #ABB2B9'}}>
+								  
+								 
+								 <td style={{paddingRight:'15px'}}  >{item.correo}</td>
+								 <td >{item.tipo}</td>
+								 
+							 </tr> 
+							 ))}	
+		<div>Correo</div>
+        <input id="correo" type="text" style={{width:'100%', marginTop:'5px'}}/>
+	 
+				<select  id="tipocorreo"  className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+							{listac.map(item => ( 
+								<option value={item.folio}>{item.tipo}</option>
+					))} 
+				</select> 
         
 <br></br>
 <br></br>
-		<button onClick={closeModal1} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button onClick={closeModal1} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={() => EnviarCorreo()} class="btn btn-outline-success btn-sm" >Agregar</button>
      </Modal>
  
   
