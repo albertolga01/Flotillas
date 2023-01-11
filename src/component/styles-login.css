@@ -112,8 +112,10 @@ body{
 
 #sidepanel-logo{
     content: url("../resources/favicon.svg");
-    width: 6vmax;
+    max-height: 150px;
+    max-width: 150px;
     align-self: center;
+    margin-left: 25%;
     padding-top: 1vh;
 }
 
@@ -157,6 +159,54 @@ body{
     height: 26px;
 }
 
+#sideimg9{
+    content: url("../resources/siniestros.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
+
+#sideimg10{
+    content: url("../resources/placas.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
+
+#sideimg11{
+    content: url("../resources/vehiculos.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
+
+#sideimg12{
+    content: url("../resources/servicios.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
+
+#sideimg13{
+    content: url("../resources/multas.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
+
+#sideimg14{
+    content: url("../resources/nuevovehiculo.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
+
+#sideimg15{
+    content: url("../resources/dictamenes.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
 .sideselected{
     background-color: #001f6b;
 }

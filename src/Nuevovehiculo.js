@@ -1,7 +1,7 @@
 import add from './resources/add.svg';
 import React, { useState, useEffect } from 'react';
 import { FaCheckCircle } from 'react-icons/fa'
-import axios from '../node_modules/axios';
+import axios from 'axios';
 import { NabvarRe } from './component/Navbar';
 import './App.css';
 
@@ -26,7 +26,7 @@ const customStyles = {
 	},
   };
 
-function NvaRequisicion(props) {
+function Nuevovehiculo(props) {
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -98,16 +98,18 @@ function NvaRequisicion(props) {
 			fd.append("responsable", responsable)
 			fd.append("modelo", modelo)
 			fd.append("gps", gps)
+			fd.append("idflotilla", props.flotilla)
 
 			openModalLoad();
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 closeModalLoad();
+		 limpiarFormulario();
 		if (res.data == "1") {
 			//notify("Nuevo vehiculo agregado correctamente");
 			notify(res.data.trim());
-
-			document.getElementById("observaciones").value = "";
-			document.getElementById("descripcion").value = "";
+			console.log(res.data);
+		
+			
 		}else{
 			notify(res.data.trim());
 
@@ -126,6 +128,23 @@ function NvaRequisicion(props) {
 		toast(message);
 	}
 
+
+	function limpiarFormulario(){
+		document.getElementById("observaciones").value = "";
+		document.getElementById("descripcion").value = "";
+		document.getElementById("tipoid").value = "";
+		document.getElementById("img-vehi").value = "";
+		document.getElementById("serievehiculo").value = "";
+		document.getElementById("seriemotor").value = "";
+		document.getElementById("tipouso").value = "";
+		document.getElementById("empresa").value = "";
+		document.getElementById("numvehiculo").value = "";
+		document.getElementById("responsable").value = "";
+		document.getElementById("modelo").value = "";
+		document.getElementById("gps").value = "";
+
+	}
+
 	async function getUsuarios() {
 		var id = "2";
 		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
@@ -136,7 +155,7 @@ function NvaRequisicion(props) {
 
 	return (
 		<div className="container ">
-			<NabvarRe titulo="Nuevo Vehiculo"/>
+			<NabvarRe titulo="Nuevo Vehículo"/>
 
 			<div className="row p-3">
 				<div style={{ margin: 'auto' }} >
@@ -145,12 +164,12 @@ function NvaRequisicion(props) {
 						<table>
 							<tr>
 								<th colSpan="2" style={{ borderRadius: '20px 20px 0px 0px', height: '30px', fontFamily: 'Roboto, sans-serif', fontSize: '10px' }}>
-									<label style={{ fontSize: '16px' }}> Agregar Nuevo Vehiculo</label>
+									<label style={{ fontSize: '16px' }}> Agregar Nuevo Vehículo</label>
 								</th>
 							</tr>
 
 							<tr>
-								<td><label>Tipo de Vehiculo:</label><br></br>
+								<td><label>Tipo de Vehículo:</label><br></br>
 									<select id="tipoid" style={{ width: '556px', height: '25px' }} onChange={(e) => setListadepartamento(e.target.value)}>
 										{dptos.map(item => (
 											<option value={item.dptoid}> {item.name}</option>))
@@ -249,6 +268,9 @@ function NvaRequisicion(props) {
 									<button className="btn btn-outline-success btn-sm"onClick={(e) => addVehiculo(e)} >
 										Guardar <FaCheckCircle />
 									</button>
+
+
+									 
 								</td>
 							</tr>
 						</table>
@@ -272,4 +294,4 @@ function NvaRequisicion(props) {
 	);
 }
 
-export default NvaRequisicion;
+export default Nuevovehiculo;
