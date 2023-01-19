@@ -80,6 +80,7 @@ function Dictamenes(props) {
 	useEffect(() => {
 		getVehiculos();
 		getDictamenes();
+		getDictamenesVehiculoProximo();
 		 
 	}, [])
 
@@ -87,9 +88,14 @@ function Dictamenes(props) {
 		var id = "getDictamenesVehiculo";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaS(res.data);
-		setListaSD(res.data); 
-		//console.log(res.data);  process.env.REACT_APP_API_URL
+		 
+	}
 
+	async function getDictamenesVehiculoProximo(periodo) {
+	 
+		var id = "getDictamenesVehiculoProximo";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&periodo='+periodo); 
+		setListaVd(res.data);  
 	}
 
 	async function getVencimietosD(){
@@ -114,13 +120,15 @@ function Dictamenes(props) {
 
 
 
-	function filterDictamenVencimiento() { 
-		var meses = document.getElementById('vigenciaf').value;   
-		var dt = new Date();
-         dt.setMonth( dt.getMonth() + parseInt(meses) ); 
-	 
-		var result = listasd.filter((x) => (new Date(x.fechafinal).getTime() < dt.getTime())); 
-		setListaVd(result);
+	function filterDictamenVencimiento() {  	
+			var meses = document.getElementById('vigenciaf').value;   
+			var dt = new Date();
+			 dt.setMonth( dt.getMonth() + parseInt(meses) ); 
+		 
+			var result = listasd.filter((x) => (new Date(x.fechafinal).getTime() < dt.getTime())); 
+			//setListaVd(result);
+		 
+	
 	}
 
 	async function getVehiculos() {
@@ -316,7 +324,7 @@ function Dictamenes(props) {
 	 
 		<h6>Proximo a vencer (6 meses, 1 año, 3 años, 5 años, 10 años)</h6>
 						<h6>Vigencia</h6>
-						<select  id="vigenciaf"  onChange={() => filterDictamenVencimiento()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						<select  id="vigenciaf"  onChange={(e) => getDictamenesVehiculoProximo(e.target.value)} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
                             <option value="6">6 Meses</option>
                             <option value="12">1 año</option>
                             <option value="36">3 años</option>
