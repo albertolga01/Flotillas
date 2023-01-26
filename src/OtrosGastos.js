@@ -28,7 +28,7 @@ const customStyles = {
 	},
   };
 
-function Servicios(props) {
+function OtrosGastos(props) {
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -91,7 +91,7 @@ function Servicios(props) {
 	}
 
 	async function getServicios() {
-		var id = "getServicios";
+		var id = "getGastos";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaS(res.data);
 		//console.log(res.data);  process.env.REACT_APP_API_URL
@@ -223,34 +223,13 @@ function Servicios(props) {
 	return (
 
 		<div className="container ">
-		 	<NabvarRe titulo="Servicios" />
+		 	<NabvarRe titulo="Gastos" />
 			<div className="row p-3">
-				<div style={{ width: '30%' }}>
-						<div className="card p-2 mt-2 border-secondary">
-						{/* 
-							<h5>Expediente</h5>
+				 
 
-							<input placeholder="Vehiculo" id="name" className="form-control" >
-							</input>
-							<br></br>
-
-							<input id="newuser-user" placeholder="Placas" className="form-control"></input>
-							<br></br>
-
-							<input id="newuser-password" placeholder="Fecha Alta" className="form-control" type="password "></input>
-							<br></br>
-							<input id="newuser-password" placeholder="Fecha Vencimiento" className="form-control" type="password "></input>
-							<br></br>
-							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
-						*/}
-							
-							<DocumentsServicio flotilla={props.flotilla} getServicios={getServicios}/>
-						</div> 
-				</div>
-
-				<div style={{ width: '70%' }}>
+				<div style={{ width: '100%' }}>
 					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'650px'}} >
-						<h5>Servicios</h5>
+						<h5>Gastos</h5>
 						
 						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
 							<h6>Vehiculo: {lista}</h6>
@@ -273,8 +252,7 @@ function Servicios(props) {
 									<th style={{textAlign:'center'}}>Próximo</th>
 									<th style={{textAlign:'center'}}>Factura</th>
 									<th style={{textAlign:'center'}}>Cotización</th>
-									<th style={{textAlign:'center'}}>Actualizar</th>
-									<th style={{textAlign:'center'}}>Gastos</th>
+									<th style={{textAlign:'center'}}>Actualizar</th> 
 								</tr>
 								{listas.map(item => (
 								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
@@ -296,8 +274,7 @@ function Servicios(props) {
 									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
 									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
-									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarGastos(item.id, item.vehiculo, item.servicio)} style={{width:'100%' }}><FaExternalLinkAlt /></button></td>
-								</tr>
+							 	</tr>
 								))}
 							</table>
 						</div>
@@ -387,4 +364,4 @@ function Servicios(props) {
 
 
 
-export default Servicios;
+export default OtrosGastos;

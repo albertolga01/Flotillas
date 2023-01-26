@@ -88,10 +88,20 @@ function Rendimiento(props) {
 
 
 	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		console.log(res.data);
+		if(props.tipo == "1"){
+			var id = "getVehiculos";
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
+			setListaV(res.data);
+			console.log(res.data);
+
+		}else{
+			var id = "getVehiculosAsignados";
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&userid='+props.userid);
+			setListaV(res.data);
+			console.log(res.data);
+
+		}
+			
 	} 
 
 
@@ -112,17 +122,24 @@ function Rendimiento(props) {
 	}
 
 
-	function format(todayy){
+		function format(todayy){
 		var today = new Date(todayy);
 		var dd = String(today.getDate()).padStart(2, '0');
-	  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-	  var yyyy = today.getFullYear();
+	  	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	  	var yyyy = today.getFullYear();
 	  
-	  today = dd + '/' + mm + '/' + yyyy;
-	   return today;
+	  	today = dd + '/' + mm + '/' + yyyy;
+	   	return today;
 		}
 
-
+  
+		function formatDate(date){
+			var index = date.search(" ");
+			date = date.substring(0, 10);
+			date = date.split("-");
+			var formatedDate = date[2] +"/"+ date[1] +"/"+ date[0];
+			return(formatedDate);
+		}
 	
 		async function verRendimiento(vehiculoid) {
 	 
@@ -141,7 +158,7 @@ function Rendimiento(props) {
 	  
 		function afterOpenModal() {
 		  // references are now sync'd and can be accessed.
-		  subtitle.style.color = '#f00';
+		  //subtitle.style.color = '#f00';
 		}
 	  
 		function closeModal1() {
@@ -172,12 +189,22 @@ function Rendimiento(props) {
   }, [])
 
   async function getCargas(){
-	var id = "getCargas";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
- 
-	setLista(res.data);
-	setListaPD(res.data);
-	console.log(res.data);
+	if(props.tipo == "1"){
+		var id = "getCargas";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
+	 
+		setLista(res.data);
+		setListaPD(res.data);
+		console.log(res.data);
+	}else{
+		var id = "getCargasVehiculosAsignados";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&userid='+props.userid);
+	 
+		setLista(res.data);
+		setListaPD(res.data);
+		console.log(res.data);
+	}
+
 
   }
   
@@ -185,7 +212,9 @@ function Rendimiento(props) {
 	   
 	var id = "getCargasDia";
 	var fecha = document.getElementById("input-fecha").value;
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla);
+	var fechafinal = document.getElementById("input-fecha-final").value;
+	var vehiculoid = document.getElementById("vehiculof").value;
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&fechafinal='+fechafinal+'&idflotilla='+props.flotilla+'&vehiculoid='+vehiculoid);
     setLista(res.data);
 	setListaPD(res.data);
 	console.log(res.data);
@@ -208,6 +237,9 @@ function Rendimiento(props) {
     <div className="container ">
      
 <NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Rendimiento"/>    
+<div style={{width:'100%'}} align="right">
+				<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva carga</button>
+	  </div>
 <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
 
 
@@ -215,9 +247,10 @@ function Rendimiento(props) {
 	 
 <div style={{width:'100%'}}>
 <label>Filtrar por fecha: </label> 
-
-&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<br></br><label>Vehiculo:</label>
+	<br></br>
+<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+&nbsp;&nbsp;&nbsp;<input id="input-fecha-final" type="date"  onChange={() => getCargasDia()}style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+<br></br><label>Vehículo:</label>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
 						{listav.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
@@ -227,50 +260,16 @@ function Rendimiento(props) {
 						</select>
 
 </div>
-<div style={{width:'100%'}} align="right">
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva carga</button>
-      
-		  <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nueva carga</h2>
-        
-        <div>Vehiculo</div>
-		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
-		  {listav.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
-  		  ))}
-		  </select>
-		  <div>Fecha de carga</div>
-		  <input id="fechacarga" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje inicial</div>
-		  <input  id="kilometraje" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje final</div>
-		  <input  id="kilometrajefinal" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Litros</div>
-		  <input id="litros" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Importe</div>
-		  <input id="importe" type="number" style={{width:'100%', marginTop:'5px'}} />
-		  
-        
-<br></br>
-<br></br>
-		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button onClick={() => addCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
-      </Modal>
 	  </div>
-	  </div>
+
+	 
  <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th>Folio</th>
-                        <th>Vehiculo</th>
+                        <th>Vehículo</th>
                         <th>Fecha Carga</th>
                         <th>Litros</th>
                         <th>Importe</th>
@@ -284,7 +283,7 @@ function Rendimiento(props) {
                      <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.folio}</td>
 					<td>{item.vehiculo}</td>
-                    <td>{format(item.fechacarga)}</td>
+                    <td>{formatDate(item.fechacarga)}</td>
                     <td>{formatN(item.litros)}</td>
                     <td>{formatNumber(item.importe)}</td>
                     <td>{formatN(item.kilometraje)}</td>
@@ -337,13 +336,13 @@ function Rendimiento(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Redimiento</label>
+        <label   style={{color:'black', fontSize:'32px'}}>Historial de Redimiento</label>
         <br></br>
         <br></br>
 		<table id="productstable"  style={{width:'900px'}}> 
 		<tr>
                         <th>Folio</th>
-                        <th>Vehiculo</th>
+                        <th>Vehículo</th>
                         <th>Fecha Carga</th>
                         <th>Litros</th>
                         <th>Importe</th>
@@ -388,7 +387,41 @@ function Rendimiento(props) {
 					<ThreeDots color="#0071ce" height={80} width={80} /> 
 					</div>  
 			</Modal>
+			
 
+			<Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h2  style={{color:'black'}}>Nueva carga</h2>
+        
+        <div>Vehículo</div>
+		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
+		  {listav.map(item => ( 
+                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+
+  		  ))}
+		  </select>
+		  <div>Fecha de carga</div>
+		  <input id="fechacarga" type="date" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Kilometraje inicial</div>
+		  <input  id="kilometraje" type="number" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Kilometraje final</div>
+		  <input  id="kilometrajefinal" type="number" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Litros</div>
+		  <input id="litros" type="number" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Importe</div>
+		  <input id="importe" type="number" style={{width:'100%', marginTop:'5px'}} />
+		  
+        
+<br></br>
+<br></br>
+		<button style={{width:'45%', marginLeft:'20px'}} onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button>  
+		<button style={{width:'45%', marginLeft:'25px'}} onClick={() => addCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
+      </Modal>
         </div>
  
  

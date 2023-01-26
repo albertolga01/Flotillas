@@ -35,16 +35,7 @@ const customStyles = {
 	},
   };
 
-function Multas(props) {
-	const [modalIsOpenLoad, setIsOpenLoad] = useState(false); 
-	const [listav, setListaV] = useState([]); 
-	const [listaver, setListaVer] = useState([]);
-	const [modalIsOpen, setIsOpen] = useState(false);
-	const [modalIsOpen1, setIsOpen1] = useState(false);
-	const [lista, setLista] =  useState([]);  
-	const [listapd, setListaPD] = useState([]);  
-
-	const [listac, setListaC] = useState([]); 
+function Gastosvehiculo(props) {
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -58,38 +49,69 @@ function Multas(props) {
 		toast(message);
 	}
     
-    
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
+
+	const [listav, setListaV] = useState([]);
+	
+	const [listaver, setListaVer] = useState([]);
 	useEffect(() => {
 		getVehiculos();
-		getChoferes();
-		getMultas();
-
 	}, [])
 
-	async function addMulta() {
+	async function addCarga() {
 		
-		var choferNombre = document.getElementById("choferNombre").value;
 		var vehiculoid = document.getElementById("vehiculoid").value;
-		var fechamulta = document.getElementById("fechamulta").value; 
-		var descripcionMulta = document.getElementById("descripcionMulta").value;
+		var fechacarga = document.getElementById("fechacarga").value;
+		var kilometraje = document.getElementById("kilometraje").value;
+		var kilometrajefinal = document.getElementById("kilometrajefinal").value;
+		var litros = document.getElementById("litros").value;
 		var importe = document.getElementById("importe").value;
 		
 		let fd = new FormData()
-			fd.append("id", "addMulta")
-			fd.append("idchofer",choferNombre)
+			fd.append("id", "addCarga")
 			fd.append("vehiculoid", vehiculoid)
-			fd.append("fechamulta", fechamulta)  
-			fd.append("descripcionMulta", descripcionMulta)
+			fd.append("fechacarga", fechacarga) 
+			fd.append("kilometraje", kilometraje)
+			fd.append("kilometrajefinal", kilometrajefinal)
+			fd.append("litros", litros)
 			fd.append("importe", importe)
 
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 
 		notify(res.data.trim());
-		if(res.data.trim() == "Multa agregada correctamente"){
+		if(res.data.trim() == "Carga agregada correctamente"){
 			closeModal();
-  getMultas()
+  getCargas()
 
 		}
+	}
+
+	async function gastosVehiculo(){
+		var vehiculoid = document.getElementById("vehiculof").value;
+		var fechainicio = document.getElementById("input-fecha").value;
+		var fechafinal = document.getElementById("input-fecha-final").value;
+
+		let fd = new FormData()
+			fd.append("id", "gastosVehiculo")
+			fd.append("vehiculoid", vehiculoid)
+			fd.append("fechainicio", fechainicio)
+			fd.append("fechafinal", fechafinal) 
+			 
+
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
+		console.log(res.data);
+		setLista(res.data);
+
+		let fd1 = new FormData()
+		fd1.append("id", "gastosVehiculoServicios")
+		fd1.append("vehiculoid", vehiculoid)
+		fd1.append("fechainicio", fechainicio)
+		fd1.append("fechafinal", fechafinal) 
+			 
+
+		const res1 = await axios.post(process.env.REACT_APP_API_URL, fd1);
+		console.log(res1.data);
+		setListaServicios(res1.data);
 	}
 
 
@@ -99,16 +121,10 @@ function Multas(props) {
 		setListaV(res.data);
 		console.log(res.data);
 	} 
- 
-	async function getChoferes() {
-		var id = "getChoferes";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
-		setListaC(res.data);
-		console.log(res.data);
-	} 
-    
+
+
 	let subtitle;
-	
+	const [modalIsOpen, setIsOpen] = React.useState(false);
   
 	function openModal() {
 	  setIsOpen(true);
@@ -116,7 +132,7 @@ function Multas(props) {
   
 	function afterOpenModal() {
 	  // references are now sync'd and can be accessed.
-	  //subtitle.style.color = '#f00';
+	  subtitle.style.color = '#f00';
 	}
   
 	function closeModal() {
@@ -134,13 +150,6 @@ function Multas(props) {
 	   return today;
 		}
 
-	function formatDate(date){
-			var index = date.search(" ");
-			date = date.substring(0, 10);
-			date = date.split("-");
-			var formatedDate = date[2] +"/"+ date[1] +"/"+ date[0];
-			return(formatedDate);
-		}
 
 	
 		async function verRendimiento(vehiculoid) {
@@ -152,7 +161,7 @@ function Multas(props) {
 			 openModal1();
 		}
 		let subtitle1;
-		
+		const [modalIsOpen1, setIsOpen1] = React.useState(false);
 	  
 		function openModal1() {
 		  setIsOpen1(true);
@@ -160,7 +169,7 @@ function Multas(props) {
 	  
 		function afterOpenModal() {
 		  // references are now sync'd and can be accessed.
-		 // subtitle.style.color = '#f00';
+		  subtitle.style.color = '#f00';
 		}
 	  
 		function closeModal1() {
@@ -180,11 +189,20 @@ function Multas(props) {
 			}
 	  
   
- 
+
+  	const [lista, setLista] =  useState([]);  
+	const [listapd, setListaPD] = useState([]);  
+	const [listaservicios, setListaServicios] = useState([]);  
+
+  
  
 
-  async function getMultas(){
-	var id = "getMultas";
+  useEffect(()=> {
+    getCargas();
+  }, [])
+
+  async function getCargas(){
+	var id = "getCargas";
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
  
 	setLista(res.data);
@@ -195,7 +213,7 @@ function Multas(props) {
   
   async function getCargasDia(){
 	   
-	var id = "getMultaDia";
+	var id = "getCargasDia";
 	var fecha = document.getElementById("input-fecha").value;
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla);
     setLista(res.data);
@@ -206,127 +224,131 @@ function Multas(props) {
  
   function filterPlacaVehiculo() {
 	var tipo = document.getElementById('vehiculof').value;  
-	console.log(tipo);
 	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 	setLista(result); 
-	console.log(listapd);	
-}
-
-function filterPlacaChofer() {
-	var tipo = document.getElementById('choferf').value;  
-	console.log(tipo);
-	var result = listapd.filter((x) => (x.idchofer === tipo)); 
-	setLista(result); 
-	console.log(listapd);	
+	
 }
 
   // Dynamically create select list
-  let options = []; 
+  let options = [];
  
 
   return (
   
     <div className="container ">
      
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Multas"/>    
+<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Gastos por vehículo"/>    
 <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
 
 
      
 	 
 <div style={{width:'100%'}}>
-<label>Filtrar por fecha de multa: </label> 
+<label>Filtrar por fecha: </label> 
 
 &nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<br></br><span>Vehículo:</span>
-<div>
-	<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'500px', marginTop:'5px', cursor: 'pointer'}}>
-		 {listav.map(item => ( 
-			<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
- ))} 
+&nbsp;&nbsp;&nbsp;<input id="input-fecha-final" type="date"   style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+<br></br><label>Vehículo:</label>
+						<select  id="vehiculof"  onChange={() => gastosVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+						{listav.map(item => ( 
+									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+
+						))}
+                             
 						</select>
-</div>
- <span>&nbsp;</span>
-	 <span>Chofer:</span>
-	 <div>
-		 <select  id="choferf"  onChange={() => filterPlacaChofer()} className="form-control"  style={{width:'450px', marginTop:'5px', cursor: 'pointer'}}>
-			 {listac.map(item => ( 
-				 <option value={item.id}>{item.nombre}</option>
- 				))} 
-						</select>
-	</div>
 
 </div>
 <div style={{width:'100%'}} align="right">
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Agregar Multa</button>
-      
-		  <Modal
+ {/* <button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva carga</button>
+    
+	 <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Multa</h2>
-
-        <div>Chofer</div>
-
-		<input id="choferNombre" type="text" style={{width:'100%', marginTop:'5px'}}/>
-		   
-        <div>Vehículo</div>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nueva carga</h2>
+        
+        <div>Vehiculo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
 		  {listav.map(item => ( 
                      <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
   		  ))}
 		  </select>
-
-		   
-		  <div>Fecha de multa</div>
-		  <input id="fechamulta" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Descripción</div>
-		  <input  id="descripcionMulta" type="text" style={{width:'100%', marginTop:'5px'}}/> 
+		  <div>Fecha de carga</div>
+		  <input id="fechacarga" type="date" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Kilometraje inicial</div>
+		  <input  id="kilometraje" type="number" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Kilometraje final</div>
+		  <input  id="kilometrajefinal" type="number" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Litros</div>
+		  <input id="litros" type="number" style={{width:'100%', marginTop:'5px'}}/>
 		  <div>Importe</div>
 		  <input id="importe" type="number" style={{width:'100%', marginTop:'5px'}} />
 		  
         
-<br></br>
-<br></br>
-		<button style={{width:'45%', marginLeft:'20px'}} onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button>  
-		<button style={{width:'45%', marginLeft:'25px'}} onClick={() => addMulta()} class="btn btn-outline-success btn-sm" >Guardar</button>
+	<br></br>
+	<br></br>
+		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button onClick={() => addCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
       </Modal>
+	 
+	 */}
+		  
 	  </div>
 	  </div>
- <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+ <div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
-                    <tr >
-                        <th>Folio</th>
-                        <th>Fecha Multa</th>
-                        <th>Chofer</th> 
-                        <th>Vehículo</th> 
-                        <th>Descripcion</th>
-                        <th>Importe</th> 
+                    <tr> 
+                        <th>Vehículo</th>
+						<th>Fecha</th>  
+                        <th style={{textAlign:'center'}}>Descripción</th>
+						<th style={{textAlign:'center'}}>Precio</th>   
                     </tr>
 
                     {  
                     lista.map(item => ( 
-                     <tr id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.id}</td>
-					<td>{formatDate(item.fechamulta)}</td>
-					<td>{item.nombrechofer}</td>
-					<td>{item.vehiculo}</td>   
-                    <td>{item.descripcion}</td>
-                    <td>{formatNumber(item.importe)}</td>  
+                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
+                    <td className='id-orden' >{item.vehiculo}</td>
+					<td style={{textAlign:'center'}}>{format(item.fecha)}</td>
+					<td>{item.descripcion}</td>
+					<td style={{textAlign:'center'}}>${item.precio}</td> 
+                      
                     
                 </tr>
-                
-        ))}	
-                        <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
+                ))}	 
+                </table>
+				<h3>Servicios</h3>
+				<table id="productstable"  style={{width:'100%'}}> 
+                    <tr> 
+                        <th>Vehículo</th>
+						<th>Fecha</th>  
+                        <th style={{textAlign:'center'}}>Descripción</th>
+						<th style={{textAlign:'center'}}>Precio</th>   
+                    </tr>
+
+                    {  
+                    listaservicios.map(item => ( 
+                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
+                    <td className='id-orden' >{item.vehiculo}</td>
+					<td style={{textAlign:'center'}}>{format(item.fecha)}</td>
+					<td>{item.descripcion}</td>
+					<td style={{textAlign:'center'}}>${item.precio}</td> 
+                      
+                    
+                </tr>
+                ))}	 
                 </table> 
 	 </div>
  
  
+<br></br>
+<br></br>
+<br></br>
+<br></br>
 
 	
  
@@ -364,13 +386,13 @@ function filterPlacaChofer() {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Multas</label>
+        <label ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black', fontSize:'32px'}}>Historial de Redimiento</label>
         <br></br>
         <br></br>
 		<table id="productstable"  style={{width:'900px'}}> 
 		<tr>
                         <th>Folio</th>
-                        <th>Vehículo</th>
+                        <th>Vehiculo</th>
                         <th>Fecha Carga</th>
                         <th>Litros</th>
                         <th>Importe</th>
@@ -384,7 +406,7 @@ function filterPlacaChofer() {
 						<tr>
 						<td className='id-orden' >{item.folio}</td>
 						<td>{item.vehiculo}</td>
-						<td>{formatDate(item.fechacarga)}</td>
+						<td>{format(item.fechacarga)}</td>
 						<td>{formatN(item.litros)}</td>
 						<td>{formatNumber(item.importe)}</td>
 						<td>{formatN(item.kilometraje)}</td>
@@ -434,4 +456,4 @@ function filterPlacaChofer() {
 
 
 
-export default Multas;
+export default Gastosvehiculo;

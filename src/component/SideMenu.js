@@ -12,6 +12,8 @@ import Dictamenes from '../Dictamenes';
 import Siniestros from '../siniestros';
 import Multas from '../multas';
 import VehiculoCto from '../Vehiculoscomplemento';
+import Gastosvehiculo from '../Gastosvehiculo';
+import OtrosGastos from '../OtrosGastos';
 
 
 
@@ -21,7 +23,7 @@ export default function SideMenu(props) {
 
     const [selected, setSelect] = useState(props.selected);
     const [flotilla1, setFlotilla] = useState(props.flotilla1);
-    // console.log(props.selected);
+     console.log(props.selected);
 
     function cambiarRazon(value){ 
         /*  */    
@@ -29,7 +31,9 @@ export default function SideMenu(props) {
      }
      useEffect(() => {
         getDepartamentos();
-        setFlotilla(props.flotilla1);
+      //  setFlotilla(props.flotilla1);
+        
+       // setSelect(props.selected);
     }, [])
     const Element = () => {
 
@@ -60,6 +64,10 @@ export default function SideMenu(props) {
             return <Multas flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Vehiculoscomplemento') {
             return <VehiculoCto flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'Gastosvehiculo') {
+            return <Gastosvehiculo flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'OtrosGastos') {
+            return <OtrosGastos flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else {
             return (<div style={{ width: '100%', textAlign: 'center', backgroundColor: '', margin: 'auto' }}><h1>Error al Cargar</h1></div>);
@@ -107,8 +115,8 @@ export default function SideMenu(props) {
     return (
 
         <div style={{ height: '100vh', width: '100vw', position: 'sticky', top: '0', display: 'flex', overflowX: 'auto' }}>
-            
-<OpcionesMenu dptos={props.dptos} dptoid={props.dptoid} unmountMe={cambiarRazon} unmount={cambiarSelected} admin={props.admin} name={props.name} isMenuOpen1={isMenuOpen1}></OpcionesMenu>
+       
+<OpcionesMenu tipo={props.tipo} dptos={props.dptos} dptoid={props.dptoid} unmountMe={cambiarRazon} unmount={cambiarSelected} admin={props.admin} name={props.name} isMenuOpen1={isMenuOpen1}></OpcionesMenu>
 
             <Element selected={selected} />
 

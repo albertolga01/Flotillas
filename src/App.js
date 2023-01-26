@@ -172,8 +172,8 @@ function App(props) {
 						<label>Tipo: </label>
 						
 						<select id="newuser-tipo">
-							<option value='1'>Usuario</option>
-							<option value='2'>Administrador</option>
+							<option value='1'>Administrador</option>
+							<option value='2'>Usuario</option>
 						</select>
 						<br></br>
 						

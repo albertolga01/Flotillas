@@ -207,6 +207,14 @@ body{
     width:  26px;
     filter: invert(100%);
 }
+
+#sideimg16{
+    content: url("../resources/car_valuation.svg");
+    height: 26px;
+    width:  26px;
+    filter: invert(100%);
+}
+
 .sideselected{
     background-color: #001f6b;
 }

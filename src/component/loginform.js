@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	const [tipo, setTipo] = useState("null");
 	const [isLoggedIn, setisLoggedIn] = useState(isLoggedIna);
 	const [flotilla, setFlotilla] = useState([]);
+	const [defSelected, setDefSelected] = useState([]);
 
 	useEffect(() => {
 		getDepartamentos();
@@ -71,13 +72,18 @@ import 'react-toastify/dist/ReactToastify.css';
 		//console.log(res.data);
 		if (res.data[0].res == "1") {
 			setFlotilla(flo);
-			setisLoggedIn(false);
+			
 			setUsuario(res.data[0].usuario);
 			setUserid(res.data[0].userid);
 			setName(res.data[0].name);
 			setDepartamento(res.data[0].departamento);
 			setTipo(res.data[0].tipo);
-			
+			if(res.data[0].tipo == "1"){
+				setDefSelected('3');
+			}else{ 
+				setDefSelected('6');
+			}
+			setisLoggedIn(false);	
 		} else {
 			notify("Datos de acceso incorrectos");
 		}
@@ -130,7 +136,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	} else {
 		return (
 			<div >
-				<SideMenu dptos={listac} flotilla1={flotilla} dptoid={listadepartamento} departamento={nombredepartamento} usuario={usuario} userid={userid} name={name} selected='3' tipo={tipo} />
+				<SideMenu dptos={listac} flotilla1={flotilla} dptoid={listadepartamento} departamento={nombredepartamento} usuario={usuario} userid={userid} name={name} selected={defSelected} tipo={tipo} />
 			</div>
 		);
 	}

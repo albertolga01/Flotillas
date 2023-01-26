@@ -9,7 +9,7 @@ import './App.css';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-import { BsArrowRepeat, BsEnvelopeFill } from "react-icons/bs";
+import { BsArrowRepeat, BsEnvelopeFill, BsFillPersonPlusFill } from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -55,14 +55,16 @@ function Listavehiculos(props) {
     const [modalIsOpenLoad, setIsOpenLoad] = useState(false);
 
 	const [listav, setListaV] = useState([]);
-
+	const [value, setValue] = useState([]);
 	
 	
 	const [listaver, setListaVer] = useState([]);
+	const [listaUsuario, setListaUsuario] = useState([]);
 	useEffect(() => {
 		getVehiculos();
 		getEmpresas();
 		getTiposCorreo();
+		getUsuarios();
 	}, [])
 
 
@@ -137,6 +139,13 @@ function Listavehiculos(props) {
 	  setIsOpen(false);
 	}
 
+	async function getUsuarios() {
+		var id = "2";
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		 //console.log(rese.data);
+		setValue(rese.data);
+	}
+
 
 	function format(todayy){
 		var today = new Date(todayy);
@@ -191,12 +200,16 @@ function Listavehiculos(props) {
 
   let subtitle1;
   const [modalIsOpen1, setIsOpen1] = React.useState(false);
+  const [modalIsOpenUsuario, setIsOpenUsuario] = React.useState(false);
   const [folioVehiculo1, setFolioVehiculo1] = useState([]); 
   const [listac, setListaC] = useState([]); 
 
 
   function openModal1() {
 	setIsOpen1(true);
+  }
+  function openModalUsuario() {
+	setIsOpenUsuario(true);
   }
 
   function afterOpenModal() {
@@ -207,12 +220,22 @@ function Listavehiculos(props) {
   function closeModal1() {
 	setIsOpen1(false);
   }
+  function closeModalUsuario() {
+	setIsOpenUsuario(false);
+  }
 
   function envioCorreo(folio){
 	openModal1();
 
 	setFolioVehiculo1(folio);
 	 obtenerCorreos(folio);
+}
+
+function envioUsuario(folio){
+	openModalUsuario();
+
+	setFolioVehiculo1(folio);
+	 obtenerUsuariosVehiculo(folio);
 }
  
   // Dynamically create select list
@@ -273,6 +296,38 @@ async function obtenerCorreos(folio){
 
 }
 
+
+
+async function EnviarUsuarioVehiculo(folio){
+	var userid = document.getElementById("useridusuario").value;
+	 
+	openModalLoad();
+		let fd = new FormData() 
+		fd.append("id", "agregarUsuarioVehiculo")
+		fd.append("vehiculoid", folioVehiculo1) 
+		fd.append("userid", userid) 
+		 
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+		console.log("EnviarCorreo: " +res.data);
+		closeModalLoad();
+		notify(res.data.trim());
+		//getVehiculos(); 
+
+}
+
+async function obtenerUsuariosVehiculo(folio){ 
+ setListaUsuario([]);
+		let fd = new FormData() 
+		fd.append("id", "obtenerUsuariosVehiculo")
+		fd.append("vehiculoid", folio)   
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+		console.log("EnviarCorreo: " +res.data);
+		setListaUsuario(res.data);
+		//notify(res.data.trim());
+		//getVehiculos(); 
+
+}
+
 async function getTiposCorreo() {
 	var id = "obtenerTiposCorreos";
 	const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
@@ -312,6 +367,7 @@ async function getTiposCorreo() {
                         <th>PerNota</th>
 						<th>Actualizar</th>
 						<th>Correo</th>
+						<th>Usuario</th>
 						<th>Notificar</th>
 
                     </tr>
@@ -338,6 +394,7 @@ async function getTiposCorreo() {
 					*/}<td><input defaultValue={item.pernota} id={"pernota"+item.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></td>
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarVehiculo(item.vehiculoid)} style={{minWidth:'100%' }}><BsArrowRepeat /></button></td>
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => envioCorreo(item.vehiculoid)}  style={{minWidth:'100%' }}><BsEnvelopeFill /></button></td>
+					<td><button  className='btn btn-outline-success btn-sm' onClick={() => envioUsuario(item.vehiculoid)}  style={{minWidth:'100%' }}><BsFillPersonPlusFill /></button></td>
 					<td>< input checked={item.notificar} type="checkbox" id={"notificar"+item.vehiculoid} style={{minWidth:'50px'}}></input></td>
 
                     
@@ -391,6 +448,43 @@ async function getTiposCorreo() {
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={() => EnviarCorreo()} class="btn btn-outline-success btn-sm" >Agregar</button>
      </Modal>
  
+
+	 <Modal
+        isOpen={modalIsOpenUsuario}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModalUsuario}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h2  style={{color:'black', fontSize:'32px'}}>Agregar Usuario</h2>
+		<tr >  
+							<th>Usuario</th>   
+			
+							  
+						</tr>
+			{ listaUsuario.map(item => ( 
+							 
+							 <tr id="tabletr" style={{  fontSize:'14px', border: '2px solid #ABB2B9'}}>
+								  
+								  
+								 <td >{item.name + " (" + item.usuario+")"}</td>
+								 
+							 </tr> 
+							 ))}	
+		<div>Usuario</div> 
+	 
+				<select  id="useridusuario"  className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+							{value.map(item => ( 
+								<option value={item.userid}>{item.name + " (" + item.usuario+")"}</option>
+					))} 
+				</select> 
+				
+		<br></br>
+		<br></br>
+				<button onClick={closeModalUsuario} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={() => EnviarUsuarioVehiculo()} class="btn btn-outline-success btn-sm" >Agregar</button>
+			</Modal>
   
 	 <ToastContainer 
 				progressClassName="toastProgress"

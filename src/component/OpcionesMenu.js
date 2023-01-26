@@ -70,15 +70,22 @@ export default function OpcionesMenu(props) {
                     :
                     <label></label>
                 }
-
-                  <div id="sidebtn" onClick={() => { Seleccionar("Vehiculos"); }}>
+                {(props.tipo != "2") ?
+                <div id="sidebtn" onClick={() => { Seleccionar("Vehiculos"); }}>
                     <img id="sideimg11" alt="" />
                     <span>Vehículos</span>
                 </div>
+                :
+                <label></label>
+                }
+                {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("Vehiculoscomplemento"); }}>
                     <img id="sideimg3" alt="" />
                     <span>Vehículos Complementos</span>
                 </div>
+                :
+                <label></label>
+                }
 
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("2"); }}>
@@ -96,22 +103,49 @@ export default function OpcionesMenu(props) {
                     :
                     <label></label>
                 }
+                {(props.tipo != "2") ?
                   <div id="sidebtn" onClick={() => { Seleccionar("Servicios"); }}>
                     <img id="sideimg12" alt="" />
                     <span>Servicios</span>
                 </div>
+                :
+                <label></label>
+                }
+                    {(props.tipo != "2") ?
+                  <div id="sidebtn" onClick={() => { Seleccionar("OtrosGastos"); }}>
+                    <img id="sideimg12" alt="" />
+                    <span>Otros Gastos</span>
+                </div>
+                :
+                <label></label>
+                }
+
+                {(props.tipo != "2") ?
+
                 <div id="sidebtn" onClick={() => { Seleccionar("Multas"); }}>
                     <img id="sideimg13" alt="" />
                     <span>Multas</span>
                 </div>
+                :
+                <label></label>
+                }
+                {(props.tipo != "2") ?
+
                 <div id="sidebtn" onClick={() => { Seleccionar("Siniestros"); }}>
                     <img id="sideimg9" alt="" />
                     <span>Siniestros</span>
                 </div>
+                :
+                <label></label>
+                }
+                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("Dictamenes"); }}>
                     <img id="sideimg15" alt="" />
                     <span>Dictámenes</span>
                 </div>
+                :
+                <label></label>
+                }
                 {(props.tipo != "2") ?
                 <div id="sidebtn" onClick={() => { Seleccionar("4"); }}>
                 <img id="sideimg2" alt="" />
@@ -121,11 +155,15 @@ export default function OpcionesMenu(props) {
                     :
                     <label></label>
                 }
+                 {(props.tipo != "2") ?
 
-<div id="sidebtn" onClick={() => { Seleccionar("5"); }}>
+                <div id="sidebtn" onClick={() => { Seleccionar("5"); }}>
                     <FaWhmcs style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
                     <span>Refacciones</span>
                 </div>
+                :
+                <label></label>
+                }
                 <div id="sidebtn" onClick={() => { Seleccionar("6"); }}>
                     <FaGasPump style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
                     <span>Rendimiento</span>
@@ -140,9 +178,15 @@ export default function OpcionesMenu(props) {
                     :
                     <label></label>
                 }
+                {(props.tipo != "2") ?
                 
-                
-     
+                <div id="sidebtn" onClick={() => { Seleccionar("Gastosvehiculo"); }}>
+                    <img id="sideimg16" alt="" />
+                    <span>Gastos Vehículos</span>
+                </div>
+                :
+                <label></label>
+                }
                 <div id="sidebtn" onClick={() => logOut()}>
                     <img id="sideimg5" alt="" />
                     <span>Cerrar sesión</span>
