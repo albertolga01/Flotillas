@@ -332,13 +332,13 @@ function Siniestros(props) {
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-                        <th>Folio</th>
-                        <th>Fecha</th>
-                        <th>Vehiculo</th>
-                        <th>Chofer</th>
-                        <th>Descripcion</th>
-                        <th>Deducible</th>
-						<th>Archivo</th>
+                        <th class="header">Folio</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Chofer</th>
+                        <th class="header">Descripcion</th>
+                        <th class="header">Deducible</th>
+						<th class="header">Archivo</th>
                          
                     </tr>
 
@@ -406,14 +406,14 @@ function Siniestros(props) {
         <br></br>
 		<table id="productstable"  style={{width:'900px'}}> 
 		<tr>
-                        <th>Folio</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha Carga</th>
-                        <th>Litros</th>
-                        <th>Importe</th>
-                        <th>Kilometraje Inicial</th>
-                        <th>Kilometraje Final</th>
-                        <th>Rendimiento</th> 
+                        <th class="header">Folio</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Fecha Carga</th>
+                        <th class="header">Litros</th>
+                        <th class="header">Importe</th>
+                        <th class="header">Kilometraje Inicial</th>
+                        <th class="header">Kilometraje Final</th>
+                        <th class="header">Rendimiento</th> 
                     </tr>
 
                     { 
@@ -470,9 +470,9 @@ function Siniestros(props) {
 			<div>Descripción:</div>
 			<input id="descripcionArhivo" type="text"  style={{width:'100%', marginTop:'5px'}}/>
 			<tr > 
-							<th>Folio</th>
-							<th>Descripción</th> 
-							<th>Documento</th> 
+							<th class="header">Folio</th>
+							<th class="header">Descripción</th> 
+							<th class="header">Documento</th> 
 							  
 						</tr>
 			{ listadocumentos.map(item => ( 

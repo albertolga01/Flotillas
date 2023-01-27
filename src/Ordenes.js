@@ -662,12 +662,12 @@ verOrden(idd);
     <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%'}}>
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-                        <th>Folio</th>
-                        <th>Fecha</th>
-                        <th>Solicita</th>
-                        <th>Estado</th>
-                        <th>Detalles</th> 
-                        <th>Cotización</th>
+                        <th class="header">Folio</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Solicita</th>
+                        <th class="header">Estado</th>
+                        <th class="header">Detalles</th> 
+                        <th class="header">Cotización</th>
                     </tr>
 
                     {  

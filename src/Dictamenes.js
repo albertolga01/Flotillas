@@ -406,11 +406,11 @@ function Dictamenes(props) {
 							<br></br>
 							<table id="productstable"  style={{width:'500px'}}> 
 										<tr>
-											<th>Vehículo</th>
-											<th>Descripción</th>
-											<th>Fecha</th>
-											<th>Nombre Dictamen</th>
-											<th>Documento</th>  
+											<th class="header">Vehículo</th>
+											<th class="header">Descripción</th>
+											<th class="header">Fecha</th>
+											<th class="header">Nombre Dictamen</th>
+											<th class="header">Documento</th>  
 										</tr>
 
 										{  

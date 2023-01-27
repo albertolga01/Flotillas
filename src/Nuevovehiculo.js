@@ -254,7 +254,7 @@ function Nuevovehiculo(props) {
 
 						<table>
 							<tr>
-								<th></th><td>Observaciones</td>
+								<th class="header"></th><td>Observaciones</td>
 							</tr>
 
 							<tr>

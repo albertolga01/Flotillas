@@ -353,22 +353,22 @@ async function getTiposCorreo() {
  <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
                 <table id="productstable"  style={{width:'100%'}} > 
                     <tr>
-                        <th>Folio</th>
-                        <th>Vehículo</th>
-                        <th>Modelo</th> 
-                        <th>Responsable</th> 
-                        <th>Serie Vehículo</th>
-                        <th>Serie Motor</th>
-                        <th>Tipo Uso</th> 
-                        <th>Empresa</th>
-                        <th>Placa</th>
-                        <th >Gps</th>
-                        <th>Número Vehículo</th> 
-                        <th>PerNota</th>
-						<th>Actualizar</th>
-						<th>Correo</th>
-						<th>Usuario</th>
-						<th>Notificar</th>
+                        <th class="header">Folio</th>
+                        <th class="header">Vehículo</th>
+                        <th class="header">Modelo</th> 
+                        <th class="header">Responsable</th> 
+                        <th class="header">Serie Vehículo</th>
+                        <th class="header">Serie Motor</th>
+                        <th class="header">Tipo Uso</th> 
+                        <th class="header">Empresa</th>
+                        <th class="header">Placa</th>
+                        <th class="header">Gps</th>
+                        <th class="header">Número</th> 
+                        <th class="header">PerNota</th>
+						<th class="header">Actualizar</th>
+						<th class="header">Correo</th>
+						<th class="header">Usuario</th>
+						<th class="header">Notificar</th>
 
                     </tr>
 
@@ -417,8 +417,8 @@ async function getTiposCorreo() {
       >
         <h2  style={{color:'black', fontSize:'32px'}}>Agregar Correo</h2>
 		<tr >  
-							<th>Correo</th>  
-							<th>Tipo</th>  
+							<th class="header">Correo</th>  
+							<th class="header">Tipo</th>  
 			
 							  
 						</tr>
@@ -458,7 +458,7 @@ async function getTiposCorreo() {
       >
         <h2  style={{color:'black', fontSize:'32px'}}>Agregar Usuario</h2>
 		<tr >  
-							<th>Usuario</th>   
+							<th class="header">Usuario</th>   
 			
 							  
 						</tr>

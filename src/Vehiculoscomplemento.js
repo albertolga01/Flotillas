@@ -90,7 +90,7 @@ function Vehiculoscomplemento(props) {
 	async function getPlacas() {
 		var id = "getTanques";
 		openModalLoad();
-		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id);
+		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		closeModalLoad();
 		setListaP(res.data);
 		setListaPD(res.data);
@@ -98,7 +98,7 @@ function Vehiculoscomplemento(props) {
 	}
 	async function getPlacasV() {
 		var id = "getPlacasProximo";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaPV(res.data);
 		console.log(res.data);
 	} 
@@ -223,14 +223,14 @@ function Vehiculoscomplemento(props) {
 
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-					<th>Folio</th>
-                        <th  style={{textAlign:'center'}}>Vehiculo</th>
-                        <th  style={{textAlign:'center'}}>Capacidad</th>
-                        <th  style={{textAlign:'center'}}>Serie</th>
-                        <th  style={{textAlign:'center'}}>Descripcion</th>  
-                        <th  style={{textAlign:'center'}}>Factura</th>  
-                        <th  style={{textAlign:'center'}}>Fecha Factura</th>  
-                        <th  style={{textAlign:'center'}}>Fecha Captura</th> 
+					<th class="header">Folio</th>
+                        <th class="header" style={{textAlign:'center'}}>Vehiculo</th>
+                        <th class="header" style={{textAlign:'center'}}>Capacidad</th>
+                        <th class="header" style={{textAlign:'center'}}>Serie</th>
+                        <th class="header" style={{textAlign:'center'}}>Descripcion</th>  
+                        <th class="header" style={{textAlign:'center'}}>Factura</th>  
+                        <th class="header" style={{textAlign:'center'}}>Fecha Factura</th>  
+                        <th class="header" style={{textAlign:'center'}}>Fecha Captura</th> 
                     </tr>
 
                     {  
@@ -259,10 +259,10 @@ function Vehiculoscomplemento(props) {
 						<h5>Proximo a vencer  </h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-                        <th>Placas</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th>  
+                        <th class="header">Placas</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Vencimiento</th>  
                     </tr>
 
                     {  
@@ -327,10 +327,10 @@ function Vehiculoscomplemento(props) {
         <br></br>
 		<table id="productstable"  style={{width:'500px'}}> 
                     <tr>
-                        <th>Placas</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th>  
+                        <th class="header">Placas</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Vencimiento</th>  
                     </tr>
 
                     {  

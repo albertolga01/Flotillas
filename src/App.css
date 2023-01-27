@@ -75,3 +75,9 @@ color: white;
   background: rgba(77, 128, 169, 0.411);
 
 }
+
+.header{    
+  padding: 10px; 
+  background-color: #0071ce38; 
+  border: 1px solid;
+}

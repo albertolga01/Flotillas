@@ -268,14 +268,14 @@ function Rendimiento(props) {
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-                        <th>Folio</th>
-                        <th>Vehículo</th>
-                        <th>Fecha Carga</th>
-                        <th>Litros</th>
-                        <th>Importe</th>
-                        <th>Kilometraje Inicial</th>
-                        <th>Kilometraje Final</th>
-                        <th>Rendimiento</th> 
+                        <th class="header">Folio</th>
+                        <th class="header">Vehículo</th>
+                        <th class="header">Fecha Carga</th>
+                        <th class="header">Litros</th>
+                        <th class="header">Importe</th>
+                        <th class="header">Kilometraje Inicial</th>
+                        <th class="header">Kilometraje Final</th>
+                        <th class="header">Rendimiento</th> 
                     </tr>
 
                     {  
@@ -341,14 +341,14 @@ function Rendimiento(props) {
         <br></br>
 		<table id="productstable"  style={{width:'900px'}}> 
 		<tr>
-                        <th>Folio</th>
-                        <th>Vehículo</th>
-                        <th>Fecha Carga</th>
-                        <th>Litros</th>
-                        <th>Importe</th>
-                        <th>Kilometraje Inicial</th>
-                        <th>Kilometraje Final</th>
-                        <th>Rendimiento</th> 
+                        <th class="header">Folio</th>
+                        <th class="header">Vehículo</th>
+                        <th class="header">Fecha Carga</th>
+                        <th class="header">Litros</th>
+                        <th class="header">Importe</th>
+                        <th class="header">Kilometraje Inicial</th>
+                        <th class="header">Kilometraje Final</th>
+                        <th class="header">Rendimiento</th> 
                     </tr>
 
                     { 

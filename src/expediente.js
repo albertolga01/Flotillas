@@ -230,10 +230,10 @@ function Expediente(props) {
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr>
-									<th>Nombre</th>
-									<th>Descripción</th>
-									<th>Fecha</th>
-									<th>Archivo</th>
+									<th class="header">Nombre</th>
+									<th class="header">Descripción</th>
+									<th class="header">Fecha</th>
+									<th class="header">Archivo</th>
 								</tr>
 								{docsVehi.map(item => (
 								<tr>
@@ -296,10 +296,10 @@ function Expediente(props) {
 							<br></br>
 							<table id="productstable"  style={{width:'500px'}}> 
 										<tr>
-											<th>Vehículo</th>
-											<th>Nombre Archivo</th>
-											<th>Fecha</th>
-											<th>Vencimiento</th>  
+											<th class="header">Vehículo</th>
+											<th class="header">Nombre Archivo</th>
+											<th class="header">Fecha</th>
+											<th class="header">Vencimiento</th>  
 										</tr>
 
 										{  

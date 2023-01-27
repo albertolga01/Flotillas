@@ -303,8 +303,8 @@ function Gastosvehiculo(props) {
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr> 
-                        <th>Vehículo</th>
-						<th>Fecha</th>  
+                        <th class="header">Vehículo</th>
+						<th class="header">Fecha</th>  
                         <th style={{textAlign:'center'}}>Descripción</th>
 						<th style={{textAlign:'center'}}>Precio</th>   
                     </tr>
@@ -324,8 +324,8 @@ function Gastosvehiculo(props) {
 				<h3>Servicios</h3>
 				<table id="productstable"  style={{width:'100%'}}> 
                     <tr> 
-                        <th>Vehículo</th>
-						<th>Fecha</th>  
+                        <th class="header">Vehículo</th>
+						<th class="header">Fecha</th>  
                         <th style={{textAlign:'center'}}>Descripción</th>
 						<th style={{textAlign:'center'}}>Precio</th>   
                     </tr>
@@ -391,14 +391,14 @@ function Gastosvehiculo(props) {
         <br></br>
 		<table id="productstable"  style={{width:'900px'}}> 
 		<tr>
-                        <th>Folio</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha Carga</th>
-                        <th>Litros</th>
-                        <th>Importe</th>
-                        <th>Kilometraje Inicial</th>
-                        <th>Kilometraje Final</th>
-                        <th>Rendimiento</th> 
+                        <th class="header">Folio</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Fecha Carga</th>
+                        <th class="header">Litros</th>
+                        <th class="header">Importe</th>
+                        <th class="header">Kilometraje Inicial</th>
+                        <th class="header">Kilometraje Final</th>
+                        <th class="header">Rendimiento</th> 
                     </tr>
 
                     { 

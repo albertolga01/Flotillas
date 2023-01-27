@@ -14,7 +14,8 @@ import Multas from '../multas';
 import VehiculoCto from '../Vehiculoscomplemento';
 import Gastosvehiculo from '../Gastosvehiculo';
 import OtrosGastos from '../OtrosGastos';
-
+import axios from '../../node_modules/axios'; 
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -25,10 +26,31 @@ export default function SideMenu(props) {
     const [flotilla1, setFlotilla] = useState(props.flotilla1);
      console.log(props.selected);
 
-    function cambiarRazon(value){ 
+   async function cambiarRazon(value){ 
         /*  */    
-        setFlotilla(value);   
+       
+
+            var select = document.getElementById("select").value; 
+            var id = "CambiarRzon";   
+            let fd = new FormData()   
+            fd.append("id", id);  
+            fd.append("flotillaid", select);   
+            fd.append("userid", props.userid);   
+            const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+                    console.log(res.data[0]);  
+                
+            if(res.data[0].res == "1"){   
+         
+            setFlotilla(value);   
+            //props.unmountMe(res.data[0].rzonsocial, res.data[0].dptoid);    
+            }else{ 
+                        notify("No tiene acceso a esta flotilla"); 
+            }
      }
+
+     function notify(message){
+		toast(message);
+	}
      useEffect(() => {
         getDepartamentos();
       //  setFlotilla(props.flotilla1);
@@ -120,7 +142,10 @@ export default function SideMenu(props) {
 
             <Element selected={selected} />
 
-
+            <ToastContainer 
+				progressClassName="toastProgress"
+				position="top-center"
+				/>
         </div>
     )
 }

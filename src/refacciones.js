@@ -320,15 +320,15 @@ function Refacciones(props) {
  <div  style={{maxHeight:'39vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
                 <table id="productstable"  style={{width:'100%'}}  ref={tableRef}> 
                     <tr>
-                        <th>Folio</th>
-                        <th>Vehiculo</th>
-						<th>Fecha Compra</th>
-                        <th>Proveedor</th>
-                        <th>Refacción</th>
-                        <th>Descripcion</th> 
-                        <th>Precio</th>
-                        <th>Documento</th>
-						<th>Fecha Captura</th>
+                        <th class="header">Folio</th>
+                        <th class="header">Vehiculo</th>
+						<th class="header">Fecha Compra</th>
+                        <th class="header">Proveedor</th>
+                        <th class="header">Refacción</th>
+                        <th class="header">Descripcion</th> 
+                        <th class="header">Precio</th>
+                        <th class="header">Documento</th>
+						<th class="header">Fecha Captura</th>
 
                     </tr>
 
@@ -397,13 +397,13 @@ function Refacciones(props) {
         <br></br>
 		<table id="productstable"  style={{width:'700px'}}> 
                     <tr> 
-                        <th>Folio</th>
-                        <th>Fecha Compra</th>
-                        <th>Fecha Captura</th>
-                        <th>Vehiculo</th>
-                        <th>Refacción</th>  
-                        <th>Descripción</th>  
-                        <th>Precio</th>  
+                        <th class="header">Folio</th>
+                        <th class="header">Fecha Compra</th>
+                        <th class="header">Fecha Captura</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Refacción</th>  
+                        <th class="header">Descripción</th>  
+                        <th class="header">Precio</th>  
                     </tr>
 
                     { 

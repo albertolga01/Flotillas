@@ -251,9 +251,9 @@ function format(todayy){
 						</select>
 						<table id="productstable"  style={{width:'100%' }}> 
                     <tr> 
-                        <th>Vehiculo</th>
-                        <th>No. Seguro</th>
-                        <th>Compañia</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">No. Seguro</th>
+                        <th class="header">Compañia</th>
                         <th style={{textAlign:'center'}}>Fecha</th>
                         <th style={{textAlign:'center'}}>Vencimiento</th> 
                         <th style={{textAlign:'center'}}>Estado</th> 
@@ -282,9 +282,9 @@ function format(todayy){
 						<h5>Proximo a vencer (6 meses)</h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-					<th>Vehiculo</th>
-                        <th>No. Seguro</th>
-                        <th>Compañia</th>
+					<th class="header">Vehiculo</th>
+                        <th class="header">No. Seguro</th>
+                        <th class="header">Compañia</th>
                         <th style={{textAlign:'center'}}>Fecha</th>
                         <th style={{textAlign:'center'}}>Vencimiento</th>
                         <th style={{textAlign:'center'}}>Restante</th>
@@ -356,12 +356,12 @@ function format(todayy){
         <br></br>
 		<table id="productstable"  style={{width:'500px'}}> 
                     <tr> 
-                        <th>Vehiculo</th>
-                        <th>No. Seguro</th>
-                        <th>Compañia</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th>  
-                        <th>Estado</th>  
+                        <th class="header">Vehiculo</th>
+                        <th class="header">No. Seguro</th>
+                        <th class="header">Compañia</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Vencimiento</th>  
+                        <th class="header">Estado</th>  
                     </tr>
 
                     {  

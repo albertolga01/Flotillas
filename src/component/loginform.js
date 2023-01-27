@@ -67,6 +67,7 @@ import 'react-toastify/dist/ReactToastify.css';
 		let fd = new FormData()
 		fd.append("user", user)
 		fd.append("pass", pass)
+		fd.append("idflotilla", document.getElementById("flotilla").value)
 		fd.append("id", id);
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		//console.log(res.data);

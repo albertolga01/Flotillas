@@ -228,10 +228,10 @@ function Placas(props) {
 
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-                        <th>Placas</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th> 
+                        <th class="header">Placas</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Vencimiento</th> 
                     </tr>
 
                     {  
@@ -254,10 +254,10 @@ function Placas(props) {
 						<h5>Proximo a vencer  </h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
-                        <th>Placas</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th>  
+                        <th class="header">Placas</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Vencimiento</th>  
                     </tr>
 
                     {  
@@ -320,10 +320,10 @@ function Placas(props) {
         <br></br>
 		<table id="productstable"  style={{width:'500px'}}> 
                     <tr>
-                        <th>Placas</th>
-                        <th>Vehiculo</th>
-                        <th>Fecha</th>
-                        <th>Vencimiento</th>  
+                        <th class="header">Placas</th>
+                        <th class="header">Vehiculo</th>
+                        <th class="header">Fecha</th>
+                        <th class="header">Vencimiento</th>  
                     </tr>
 
                     {  
