@@ -42,8 +42,7 @@ export default function Documents(props) {
     const [descripcion, setdescripcion] = useState(); 
     const [fechainicial, setfechainicial] = useState(); 
 
-   
-    const [listav, setListaV] = useState([]);  
+    
     const [listas, setListaS] = useState([]);  
     const [modalIsOpenLoad, setIsOpenLoad] = useState(false);
 
@@ -59,8 +58,7 @@ export default function Documents(props) {
     }
 
 
-    useEffect(() => { 
-        getVehiculos();
+    useEffect(() => {  
 	}, [])
 
     
@@ -84,14 +82,6 @@ export default function Documents(props) {
     }
 
     
-    async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		//console.log(res.data);  process.env.REACT_APP_API_URL
-
-	}
-
    
 
     const handleSubmit = async e => {
@@ -125,7 +115,7 @@ export default function Documents(props) {
             <form id="add-form" onSubmit={handleSubmit}>
                 <h6>Vehículo</h6>
                 <select  id="IDvehiculo"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-						{listav.map(item => ( 
+						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}

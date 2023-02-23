@@ -62,7 +62,7 @@ function OtrosGastos(props) {
 	const [couno, setCouno] = useState([]);
 	const [codos, setCodos] = useState([]);
 	const [cotres, setCotres] = useState([]);
-	const [listav, setListaV] = useState([]);
+	
 	const [docsVehi, setDocsVehi] = useState([]);
 	const [listaver, setListaVer] = useState([]);
 
@@ -80,8 +80,7 @@ function OtrosGastos(props) {
 	let tipo = 0;
 	 let subtitle;
 
-	useEffect(() => {
-		getVehiculos();
+	useEffect(() => { 
 		getServicios();
 		 
 	}, [])
@@ -96,7 +95,12 @@ function OtrosGastos(props) {
 
 	async function getServicios() {
 		var id = "getGastos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
+		var fecha = document.getElementById("input-fecha").value;
+		var fechafinal = document.getElementById("input-fecha-final").value;
+		var vehiculo = document.getElementById("vehiculof").value;
+		openModalLoad();
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&fecha='+fecha+'&fechafinal='+fechafinal+'&vehiculo='+vehiculo+'&tipo='+props.tipo+'&userid='+props.userid);
+		closeModalLoad();
 		setListaS(res.data);
 		setListaSD(res.data);
 		console.log(res.data);
@@ -106,13 +110,7 @@ function OtrosGastos(props) {
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 
 	}
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		//console.log(res.data);  process.env.REACT_APP_API_URL
-
-	}
+	 
  
 
 
@@ -275,16 +273,28 @@ function OtrosGastos(props) {
 						</div>
 
 						 */}
-						 <div style={{width:'100%'}} align="left">
-								<h6>Vehículo:</h6>
-									<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						 
+							<div style={{width:'100%'}}>
+							<label>Filtrar por fecha de compra: </label> 
+
+							&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getServicios()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+							<input id="input-fecha-final" type="date" onChange={() => getServicios()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+							 
+
+							<h6>Vehículo:</h6>
+								{/** onChange={() => filterDictamenVehiculo()}  */}
+									<select  id="vehiculof"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 									<option value="0">Todos</option> 
 											
-											{listav.map(item => ( 
+											{props.vehiculos.map(item => ( 
 												<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
 												))}
 									</select>
-						</div>
+								<button onClick={() => getServicios()} class="btn btn-outline-success btn-sm">Buscar</button>
+							
+							
+							</div>
+						 
 						
 						<div style={{height: "100%", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
@@ -338,7 +348,7 @@ function OtrosGastos(props) {
 				<div style={{ margin: 'auto', display: 'none' }} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
 

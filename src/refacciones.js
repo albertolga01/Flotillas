@@ -62,8 +62,7 @@ function Refacciones(props) {
 	const [listaver, setListaVer] = useState([]);
 
 	const [listasd, setListaSD] = useState([]);  
-	useEffect(() => {
-		getVehiculos();
+	useEffect(() => { 
 		getInventarios();
 	}, [])
 
@@ -125,15 +124,7 @@ function Refacciones(props) {
 		setListaVer(res.data); 
 		 openModal1();
 	}
-
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		console.log(res.data);
-	} 
-
-
+ 
 	let subtitle;
 	const [modalIsOpen, setIsOpen] = React.useState(false);
   
@@ -176,8 +167,7 @@ function Refacciones(props) {
   const [listaSelecInventario, setListaSelecInventario] =  useState([]);  
   const [listapd, setListaPD] = useState([]);
   const [listap, setListaP] = useState([]);  
- 
-  const [listav, setListaV] = useState([]);
+  
 
   useEffect(()=> {
     getRefacciones();
@@ -186,7 +176,7 @@ function Refacciones(props) {
   async function getRefacciones(){
 	var id = "getRefacciones";
 	openModalLoad();
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
  	closeModalLoad();
 	setLista(res.data);
 
@@ -208,8 +198,9 @@ function Refacciones(props) {
 	var id = "getRefaccionesDia";
 	var fecha = document.getElementById("input-fecha").value;
 	var fechafinal = document.getElementById("input-fecha-final").value;
+	var vehiculo = document.getElementById("vehiculof").value;
 	openModalLoad();
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla+'&fechafinal='+fechafinal);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&idflotilla='+props.flotilla+'&fechafinal='+fechafinal+'&vehiculo='+vehiculo+'&tipo='+props.tipo+'&userid='+props.userid);
 	closeModalLoad();
     setLista(res.data);
 	
@@ -296,17 +287,23 @@ function Refacciones(props) {
 <input id="input-fecha-final" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
 <div style={{width:'100%'}} align="left">
 		<h6>Vehículo:</h6>
-			<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+		{/**onChange={() => filterDictamenVehiculo()} */}
+			<select  id="vehiculof"   className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 			<option value="0">Todos</option> 
 					
-					{listav.map(item => ( 
+					{props.vehiculos.map(item => ( 
 						<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
 						))}
 			</select>
     </div>
+	<button onClick={() => getRefaccionesDia()} class="btn btn-outline-success btn-sm">Buscar</button>
 </div>
 <div style={{width:'100%'}} align="right">
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>&nbsp;&nbsp;&nbsp;
+{(props.tipo == "1") ? 
+<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>
+	: <></>
+}
+&nbsp;&nbsp;&nbsp;
 <button onClick={onDownload} class="btn btn-outline-success btn-sm"> Exportar excel </button>   
 
 		  <Modal
@@ -320,7 +317,7 @@ function Refacciones(props) {
         
         <div>Vehículo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
-		  {listav.map(item => ( 
+		  {props.vehiculos.map(item => ( 
                      <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
   		  ))}
@@ -360,14 +357,14 @@ function Refacciones(props) {
                     <tr>
                         <th class="header">Folio</th>
                         <th class="header">Vehículo</th>
-						<th class="header">Fecha Compra</th>
+						<th class="header" style={{textAlign:'center', minWidth:'160px'}}>Fecha Compra</th>
                         <th class="header">Proveedor</th>
                         <th class="header">Refacción</th>
                         <th class="header">Descripción</th> 
                         <th class="header">Precio</th>
                         <th class="header">Documento</th>
-						<th class="header" style={{textAlign:'center'}}>Orden de Compra</th>
-						<th class="header">Fecha Captura</th>
+						<th class="header" style={{textAlign:'center', minWidth:'160px'}}>Orden de Compra</th>
+						<th class="header">Captura</th>
 						<th class="header">Borrar</th>
 
                     </tr>
@@ -385,7 +382,11 @@ function Refacciones(props) {
                     <td style={{minWidth:'150px', padding:'5px'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
                     <td>{item.foliooc}</td>
 					<td>{format(item.fecha)}</td>
+					{(props.tipo == "1") ? 
 					<td><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccion(item.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+					:<></>
+					}
+					
 
                     
                 </tr>
@@ -403,7 +404,7 @@ function Refacciones(props) {
 	 <div style={{ margin: 'auto' , display:'none'}} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
 									<div>
 									<b><label ></label></b> <label className="text-primary">{item.descripcion + " -"+ item.vehiculoid}</label> &nbsp;&nbsp; 

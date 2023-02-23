@@ -24,6 +24,7 @@ export default function SideMenu(props) {
 
     const [selected, setSelect] = useState(props.selected);
     const [flotilla1, setFlotilla] = useState(props.flotilla1);
+    const [listav, setListaV] = useState([]);
      console.log(props.selected);
 
    async function cambiarRazon(value){ 
@@ -53,43 +54,41 @@ export default function SideMenu(props) {
 	}
      useEffect(() => {
         getDepartamentos();
-      //  setFlotilla(props.flotilla1);
-        
-       // setSelect(props.selected);
+        getVehiculos();
     }, [])
     const Element = () => {
 
         if (selected == '1') {
             return <App tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} />;
         } else if (selected == '2') {
-            return <Placas flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Placas  vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else if (selected == '3') {
-            return <Nuevovehiculo flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Nuevovehiculo vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '4') {
-            return <Seguros flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Seguros vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '5') {
-            return <Refacciones flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Refacciones vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '6') {
-            return <Rendimiento flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Rendimiento vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == '7') {
-            return <Expediente flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Expediente vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         } else if (selected == 'Vehiculos') {
-            return <Listavehiculos flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Listavehiculos vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Servicios') {
-            return <Servicios flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Servicios vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Dictamenes') {
-            return <Dictamenes flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Dictamenes vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Siniestros') {
-            return <Siniestros flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Siniestros vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Multas') {
-            return <Multas flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Multas vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Vehiculoscomplemento') {
-            return <VehiculoCto flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <VehiculoCto vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'Gastosvehiculo') {
-            return <Gastosvehiculo flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <Gastosvehiculo vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'OtrosGastos') {
-            return <OtrosGastos flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+            return <OtrosGastos vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else {
             return (<div style={{ width: '100%', textAlign: 'center', backgroundColor: '', margin: 'auto' }}><h1>Error al Cargar</h1></div>);
@@ -133,6 +132,14 @@ export default function SideMenu(props) {
         }
 
     }
+
+    async function getVehiculos() {
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+flotilla1+'&tipo='+props.tipo+'&userid='+props.userid);
+		setListaV(res.data);
+		//console.log(res.data);  process.env.REACT_APP_API_URL
+
+	}
 
     return (
 

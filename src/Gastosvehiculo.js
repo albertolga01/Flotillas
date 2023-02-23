@@ -50,12 +50,10 @@ function Gastosvehiculo(props) {
 	}
     
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
-
-	const [listav, setListaV] = useState([]);
+ 
 	
 	const [listaver, setListaVer] = useState([]);
-	useEffect(() => {
-		getVehiculos();
+	useEffect(() => { 
 		gastosVehiculo();
 	}, [])
 
@@ -96,6 +94,8 @@ function Gastosvehiculo(props) {
 			fd.append("vehiculoid", vehiculoid)
 			fd.append("fechainicio", fechainicio)
 			fd.append("fechafinal", fechafinal) 
+			fd.append("userid", props.userid) 
+			fd.append("tipo", props.tipo) 
 			 
 
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
@@ -114,13 +114,7 @@ function Gastosvehiculo(props) {
 		setListaServicios(res1.data);
 	}
 
-
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		console.log(res.data);
-	} 
+ 
 
 
 	let subtitle;
@@ -243,7 +237,7 @@ function Gastosvehiculo(props) {
 <br></br><label>Vehículo:</label>
 						<select  id="vehiculof"   className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
 						<option value="0">Todos</option>
-						{listav.map(item => (  
+						{props.vehiculos.map(item => (  
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
@@ -311,10 +305,10 @@ function Gastosvehiculo(props) {
                     {  
                     lista.map(item => ( 
                      <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.vehiculo}</td>
+                    <td className='id-orden' >{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
 					<td style={{textAlign:'center'}}>{format(item.fecha)}</td>
 					<td>{item.descripcion}</td>
-					<td style={{textAlign:'center'}}>${item.precio}</td> 
+					<td style={{textAlign:'left'}}>${item.precio}</td> 
                       
                     
                 </tr>
@@ -355,7 +349,7 @@ function Gastosvehiculo(props) {
 	 <div style={{ margin: 'auto', display:'none'}} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
 									<div>
 									<b><label ></label></b> <label className="text-primary">{item.descripcion + " -"+ item.vehiculoid}</label> &nbsp;&nbsp; 

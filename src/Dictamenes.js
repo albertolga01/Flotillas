@@ -59,8 +59,7 @@ function Dictamenes(props) {
 
 	const [couno, setCouno] = useState([]);
 	const [codos, setCodos] = useState([]);
-	const [cotres, setCotres] = useState([]);
-	const [listav, setListaV] = useState([]);
+	const [cotres, setCotres] = useState([]); 
 	const [docsVehi, setDocsVehi] = useState([]);
 	const [listaver, setListaVer] = useState([]);
 
@@ -77,8 +76,7 @@ function Dictamenes(props) {
 	let tipo = 0;
 	 let subtitle;
 
-	useEffect(() => {
-		getVehiculos();
+	useEffect(() => { 
 		getDictamenes();
 		getDictamenesVehiculoProximo();
 		 
@@ -139,13 +137,7 @@ function Dictamenes(props) {
 	
 	}
 
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		//console.log(res.data);  process.env.REACT_APP_API_URL
-
-	}
+	 
  
 
 
@@ -264,7 +256,7 @@ function Dictamenes(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<DocumentsDictamenes flotilla={props.flotilla} vehiculos={listav} getDictamenes={getDictamenes}/>
+							<DocumentsDictamenes flotilla={props.flotilla} vehiculos={props.vehiculos} getDictamenes={getDictamenes}/>
 						</div> 
 				</div>
 
@@ -289,7 +281,7 @@ function Dictamenes(props) {
 							 <h6>Vehículo</h6>
 									<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 									<option value="0">Todos</option>
-										{listav.map(item => ( 
+										{props.vehiculos.map(item => ( 
 											 (item.dictamen == "1") ?
 											 <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
 											 :
@@ -376,7 +368,7 @@ function Dictamenes(props) {
 				<div style={{ margin: 'auto', display:'none' }} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
 

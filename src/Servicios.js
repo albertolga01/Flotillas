@@ -63,8 +63,7 @@ function Servicios(props) {
 
 	const [couno, setCouno] = useState([]);
 	const [codos, setCodos] = useState([]);
-	const [cotres, setCotres] = useState([]);
-	const [listav, setListaV] = useState([]);
+	const [cotres, setCotres] = useState([]); 
 	const [docsVehi, setDocsVehi] = useState([]);
 	const [listaver, setListaVer] = useState([]);
 
@@ -80,8 +79,7 @@ function Servicios(props) {
 	let tipo = 0;
 	 let subtitle;
 
-	useEffect(() => {
-		getVehiculos();
+	useEffect(() => { 
 		getServicios();
 		 
 	}, [])
@@ -96,19 +94,12 @@ function Servicios(props) {
 
 	async function getServicios() {
 		var id = "getServicios";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 		setListaS(res.data);
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 		setListaSD(res.data);
 	}
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		//console.log(res.data);  process.env.REACT_APP_API_URL
-
-	}
- 
+	 
 	const tableRef = useRef(null);
     const { onDownload } = useDownloadExcel({
         currentTableRef: tableRef.current,
@@ -232,13 +223,7 @@ function Servicios(props) {
 	const [listaSv, setListavs] = useState([]);
 	const [listasd, setListaSD] = useState([]);  
 
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListavs(res.data);
-		console.log(res.data);
-	} 
-
+	 
 	function filterDictamenVehiculo() {
 		var tipo = document.getElementById('vehiculof').value;  
 		if(tipo == "0"){ 
@@ -255,28 +240,32 @@ function Servicios(props) {
 		<div className="container ">
 		 	<NabvarRe titulo="Servicios" />
 			<div className="row p-3">
+			{(props.tipo == "1") ? 
 				<div style={{ width: '30%' }}>
-						<div className="card p-2 mt-2 border-secondary">
-						{/* 
-							<h5>Expediente</h5>
+				<div className="card p-2 mt-2 border-secondary">
+				{/* 
+					<h5>Expediente</h5>
 
-							<input placeholder="Vehiculo" id="name" className="form-control" >
-							</input>
-							<br></br>
+					<input placeholder="Vehiculo" id="name" className="form-control" >
+					</input>
+					<br></br>
 
-							<input id="newuser-user" placeholder="Placas" className="form-control"></input>
-							<br></br>
+					<input id="newuser-user" placeholder="Placas" className="form-control"></input>
+					<br></br>
 
-							<input id="newuser-password" placeholder="Fecha Alta" className="form-control" type="password "></input>
-							<br></br>
-							<input id="newuser-password" placeholder="Fecha Vencimiento" className="form-control" type="password "></input>
-							<br></br>
-							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
-						*/}
-							
-							<DocumentsServicio flotilla={props.flotilla} getServicios={getServicios}/>
-						</div> 
-				</div>
+					<input id="newuser-password" placeholder="Fecha Alta" className="form-control" type="password "></input>
+					<br></br>
+					<input id="newuser-password" placeholder="Fecha Vencimiento" className="form-control" type="password "></input>
+					<br></br>
+					<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
+				*/}
+					
+					<DocumentsServicio getServicios={getServicios} flotilla={props.flotilla} vehiculos={props.vehiculos} getServicios={getServicios}/>
+				</div> 
+		</div>
+			:<></>
+			}
+			
 
 				<div style={{ width: '70%' }}>
 					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'650px'}} >
@@ -344,7 +333,7 @@ function Servicios(props) {
 				<div style={{ margin: 'auto', display: 'none' }} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
 

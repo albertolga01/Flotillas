@@ -38,8 +38,7 @@ const customStyles = {
 function Vehiculoscomplemento(props) { 
 
 	
-    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
-	const [listav, setListaV] = useState([]);  
+    const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false); 
 	const [listap, setListaP] = useState([]);  
 	const [listapd, setListaPD] = useState([]);  
 	const [listapv, setListaPV] = useState([]);
@@ -80,8 +79,7 @@ function Vehiculoscomplemento(props) {
 
 	 
 	 
-	useEffect(() => {
-		getVehiculos();
+	useEffect(() => { 
 		getPlacas();
 		getPlacasV();
 	}, [])
@@ -90,7 +88,7 @@ function Vehiculoscomplemento(props) {
 	async function getPlacas() {
 		var id = "getTanques";
 		openModalLoad();
-		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
+		const res = await axios.get( process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 		closeModalLoad();
 		setListaP(res.data);
 		setListaPD(res.data);
@@ -102,12 +100,7 @@ function Vehiculoscomplemento(props) {
 		setListaPV(res.data);
 		console.log(res.data);
 	} 
-
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-	}
+ 
 
 
 	async function verVehiculo(vehiculoid) {
@@ -178,48 +171,52 @@ function Vehiculoscomplemento(props) {
 			<input id='input-cotizacion' type='file' style={{ display: 'none' }} ></input>
 			<NabvarRe titulo="Complementos del Vehículo" />
 			<div className="row p-3">
+				{(props.tipo == "1") ? 
 				<div style={{ width: '30%'}}>
 					 
-					<div className="card p-2 mt-2 border-secondary" style={{height:'530px',overflow:'scroll'}}>
-						<h5>Vehículo</h5>
-						<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-						{listav.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+				<div className="card p-2 mt-2 border-secondary" style={{height:'530px',overflow:'scroll'}}>
+					<h5>Vehículo</h5>
+					<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+					{props.vehiculos.map(item => ( 
+								<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
-						))}
-						</select>
-						<span>Capacidad:</span>
-						<input id="capacidad" placeholder="Capacidad" className="form-control"></input>
-						<br></br> 
+					))}
+					</select>
+					<span>Capacidad:</span>
+					<input id="capacidad" placeholder="Capacidad" className="form-control"></input>
+					<br></br> 
+					 
+					<span>Descripción:</span>
+					<input id="descripcion" placeholder="descripcion"  className="form-control"  ></input>						
+					<br></br> 
+
+					<span>Serie:</span>
+					<input id="serie" placeholder="serie"  className="form-control"  ></input>						
+					<br></br>
+
+					<span>Fecha Factura</span>
+					<input id="fechafactura" placeholder="Fecha Factura" className="form-control" type="date" ></input>
+
+					<span>Documento:</span> 
+					<input id="complementodocumento" type="file" style={{ height: '50px'}} />
+					<br></br> 
 						 
-						<span>Descripción:</span>
-						<input id="descripcion" placeholder="descripcion"  className="form-control"  ></input>						
-						<br></br> 
-
-						<span>Serie:</span>
-						<input id="serie" placeholder="serie"  className="form-control"  ></input>						
-						<br></br>
-
-						<span>Fecha Factura</span>
-                		<input id="fechafactura" placeholder="Fecha Factura" className="form-control" type="date" ></input>
-
-						<span>Documento:</span> 
-						<input id="complementodocumento" type="file" style={{ height: '50px'}} />
-						<br></br> 
-							 
-						<button className="btn btn-outline-success btn-sm" onClick={() => addComplemento()}>Agregar <FaCheckCircle /></button>
-					</div>
+					<button className="btn btn-outline-success btn-sm" onClick={() => addComplemento()}>Agregar <FaCheckCircle /></button>
 				</div>
+			</div>
+				: <></>
+				}
+				
 
 				<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'430px', overflow:'scroll'}}>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'85vh', overflow:'scroll'}}>
 						<h5>Historial de complementos</h5>
 
 						<h6>Vehiculo</h6>
 						
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
 						<option value="0">Todos</option>
-						{listav.map(item => ( 
+						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
@@ -297,7 +294,7 @@ function Vehiculoscomplemento(props) {
 					
 					<div style={{ position: 'sticky', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: '15px', padding: '15px', height:'410px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15px', marginLeft: '10px', minWidth: '15%' }}>
 									<div>
 									<b><label ></label></b> <label className="text-primary">{item.descripcion + " -"+ item.vehiculoid}</label> &nbsp;&nbsp; 

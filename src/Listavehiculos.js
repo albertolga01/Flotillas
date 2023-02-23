@@ -116,7 +116,7 @@ function Listavehiculos(props) {
 	async function getVehiculos() {
 		var id = "getVehiculos";
 		openModalLoad();
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 		setListaV(res.data);
 		closeModalLoad();
 		console.log(res.data);
@@ -283,8 +283,7 @@ async function EnviarCorreo(folio){
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 		console.log("EnviarCorreo: " +res.data);
 		closeModalLoad();
-		notify(res.data.trim());
-		//getVehiculos(); 
+		notify(res.data.trim()); 
 
 }
 
@@ -296,8 +295,7 @@ async function obtenerCorreos(folio){
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 		console.log("EnviarCorreo: " +res.data);
 		setListaVer(res.data);
-		//notify(res.data.trim());
-		//getVehiculos(); 
+		//notify(res.data.trim()); 
 
 }
 
@@ -315,8 +313,8 @@ async function EnviarUsuarioVehiculo(folio){
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 		console.log("EnviarCorreo: " +res.data);
 		closeModalLoad();
-		notify(res.data.trim());
-		//getVehiculos(); 
+		notify(res.data.trim()); 
+		obtenerUsuariosVehiculo(folioVehiculo1);
 
 }
 
@@ -328,8 +326,7 @@ async function obtenerUsuariosVehiculo(folio){
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 		console.log("EnviarCorreo: " +res.data);
 		setListaUsuario(res.data);
-		//notify(res.data.trim());
-		//getVehiculos(); 
+		//notify(res.data.trim()); 
 
 }
 

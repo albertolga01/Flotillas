@@ -49,11 +49,7 @@ function Seguros(props) {
     
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
  
- 
-	const [couno, setCouno] =  useState([]);  
-	const [codos, setCodos] =  useState([]);  
-	const [cotres, setCotres] =  useState([]);  
-	const [listav, setListaV] =  useState([]); 
+  
 	const [listap, setListaP] = useState([]);  
 	const [listapv, setListaPV] = useState([]);
 	const [listaver, setListaVer] = useState([]);
@@ -70,14 +66,14 @@ function Seguros(props) {
 }, [])  
 async function getSeguros() {
 	var id = "getSeguros";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 	setListaP(res.data);
 	setListaPD(res.data);
 	console.log(res.data);
 }
 async function getPlacasV() {
 	var id = "getSegurosProximo";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 	setListaPV(res.data);
 	console.log(res.data);
 }
@@ -93,17 +89,9 @@ function filterPlacaVehiculo() {
 }
 
 
-  useEffect(()=> {
-    getVehiculos();
+  useEffect(()=> { 
   }, [])
-
-  async function getVehiculos(){
-	var id = "getVehiculos";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
-	setListaV(res.data);
-	//console.log(res.data);
-
-  }
+ 
 
   async function addSeguro() {
 		
@@ -156,7 +144,7 @@ function format(todayy){
 		var today = new Date();
 		var vencimiento = new Date(fechafinal);
 		var diffDays = parseInt((vencimiento - today) / (1000 * 60 * 60 * 24), 10); 
-		return diffDays + " dias";
+		return diffDays + " días";
 	}
 	function estado(fechafinal){
 		var today = new Date();
@@ -215,13 +203,14 @@ function format(todayy){
     <div className="container ">
     <NabvarRe titulo="Seguros"/>    
 <div className="row p-3">
-	<div style={{width:'30%', height:'500px' }}>
+{(props.tipo == "1") ? 
+<div style={{width:'30%', height:'500px' }}>
 <div className="card p-2 mt-2 border-secondary"   >
       <h5>Seguro</h5>    
         
  
 		<select  id="vehiculoid"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-						{listav.map(item => ( 
+						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
@@ -241,13 +230,16 @@ function format(todayy){
       <button  className="btn btn-outline-success btn-sm" 	 onClick={() => addSeguro()} >Agregar <FaCheckCircle /></button> 
     </div> 
 	</div>
+:<></>
+}
+	
 
 	<div style={{ width: '70%' }}>
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'300px',overflow: "scroll"}}>
 						<span>Historial de seguros</span>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
 						<option value="0">Todos</option> 
-						{listav.map(item => ( 
+						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
@@ -316,7 +308,7 @@ function format(todayy){
 
 		<div style={{position: 'absolute', bottom:'10px',  backgroundColor:'white', border:'2px solid black', borderRadius:'5px', width:'80%', margin:'auto', padding:'5px'}}>
 		<div className="d-flex flex-row" style={{overflowX:'scroll'}} >
-		{ listav.map(item => (
+		{ props.vehiculos.map(item => (
 			
             <div className="card p-2 mt-2 border-secondary" key={item.id} style={{width:'15%', marginLeft:'15px', minWidth:'15%'}}>
                

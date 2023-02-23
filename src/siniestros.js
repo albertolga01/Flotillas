@@ -41,8 +41,7 @@ function Siniestros(props) {
 	const [listadocumentos, setListaDocumentos] =  useState([]);
 	const [folioVehiculo, setFolioVehiculo] = useState([]); 
 
-	const [modalIsOpenLoad, setIsOpenLoad] = useState(false); 
-	const [listav, setListaV] = useState([]); 
+	const [modalIsOpenLoad, setIsOpenLoad] = useState(false);  
 	const [listaver, setListaVer] = useState([]);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [modalIsOpen1, setIsOpen1] = useState(false);
@@ -76,8 +75,7 @@ function Siniestros(props) {
 	}
     
 	useEffect(()=> {
-		// getCargas();
-		 getVehiculos();
+		// getCargas(); 
 		 getSiniestros();
 		 getChoferes();
 	   }, [])
@@ -135,15 +133,7 @@ function Siniestros(props) {
 
 		}
 	}
-
-
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		console.log(res.data);
-	} 
-
+ 
 
 	let subtitle;
 	
@@ -227,7 +217,7 @@ function Siniestros(props) {
 
 		async function getSiniestros(){
 			var id = "getSiniestros";
-			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 		
 			setLista(res.data);
 			setListaPD(res.data);
@@ -286,7 +276,7 @@ function Siniestros(props) {
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
 						<option value="0">Todos</option>
 						
-						{listav.map(item => ( 
+						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
@@ -295,7 +285,11 @@ function Siniestros(props) {
 
 </div>
 <div style={{width:'100%'}} align="right">
+{(props.tipo == "1") ? 
 <button onClick={openModal} class="btn btn-outline-success btn-sm">Agregar Siniestro</button>
+:<></>
+}
+
       
 		  <Modal
         isOpen={modalIsOpen}
@@ -313,7 +307,7 @@ function Siniestros(props) {
 
         <div>Vehiculo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
-		  {listav.map(item => ( 
+		  {props.vehiculos.map(item => ( 
                      <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
   		  ))}
@@ -352,7 +346,7 @@ function Siniestros(props) {
                      <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.id}</td>
 					<td>{formatDate(item.fecha)}</td>
-					<td>{item.vehiculo}</td>
+					<td>{item.vehiculo  + " " + item.modelo + " " + item.numvehiculo}</td>
 					<td>{item.nombrechofer}</td>
                     <td>{item.descripcion}</td>
                     <td>{item.deducible}</td>
@@ -376,7 +370,7 @@ function Siniestros(props) {
 	 <div style={{ margin: 'auto', display:'none'}} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
 									<div>
 									<b><label ></label></b> <label className="text-primary">{item.descripcion + " -"+ item.vehiculoid}</label> &nbsp;&nbsp; 

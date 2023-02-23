@@ -59,8 +59,7 @@ function Expediente(props) {
 
 	const [couno, setCouno] = useState([]);
 	const [codos, setCodos] = useState([]);
-	const [cotres, setCotres] = useState([]);
-	const [listav, setListaV] = useState([]);
+	const [cotres, setCotres] = useState([]); 
 	const [docsVehi, setDocsVehi] = useState([]);
 	const [listaver, setListaVer] = useState([]);
 	const [listapd, setListaPD] = useState([]);  
@@ -72,21 +71,8 @@ function Expediente(props) {
 	let tipo = 0;
 	 let subtitle;
  
-	useEffect(() => {
-		getVehiculos();
-	}, [])
-
-
-	
-
-	async function getVehiculos() {
-		var id = "getVehiculos";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
-		setListaV(res.data);
-		//console.log(res.data);  process.env.REACT_APP_API_URL
-
-	}
-
+	 
+	 
  
 	function filterPlacaVehiculo() {
 		var tipo = document.getElementById('vehiculof').value;  
@@ -219,7 +205,7 @@ function Expediente(props) {
 							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
 							<option value="0">Todos</option>
 						
-						{listav.map(item => ( 
+						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
@@ -257,7 +243,7 @@ function Expediente(props) {
 				<div style={{ margin: 'auto' , display:'none'}} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>
 						<div className="d-flex flex-row" style={{ overflowX: 'scroll' }} >
-							{listav.map(item => (
+							{props.vehiculos.map(item => (
 
 								<div className="card p-2 mt-2 border-secondary" key={item.id} style={{ width: '15%', marginLeft: '15px', minWidth: '15%' }}>
 
