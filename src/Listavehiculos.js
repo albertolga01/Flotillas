@@ -284,6 +284,7 @@ async function EnviarCorreo(folio){
 		console.log("EnviarCorreo: " +res.data);
 		closeModalLoad();
 		notify(res.data.trim()); 
+		obtenerCorreos(folioVehiculo1);
 
 }
 

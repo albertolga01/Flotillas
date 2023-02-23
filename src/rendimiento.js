@@ -89,15 +89,15 @@ function Rendimiento(props) {
 
 	async function addCargaRendimiento() {
 		
-		var vehiculoid = document.getElementById("vehiculoid").value;
+		var vehiculoidfinmes = document.getElementById("vehiculoidfinmes").value;
 		var fechafinmes = document.getElementById("fechafinmes").value;
-		var fechafinmes = document.getElementById("kilometrajefinmes").value; 
+		var kilometrajefinmes = document.getElementById("kilometrajefinmes").value; 
 		
 		let fd = new FormData()
-			fd.append("id", "addCarga")
-			fd.append("vehiculoid", vehiculoid)
+			fd.append("id", "addCargaRendimiento")
+			fd.append("vehiculoid", vehiculoidfinmes)
 			fd.append("fechafinmes", fechafinmes) 
-			fd.append("fechafinmes", fechafinmes) 
+			fd.append("kilometrajefinmes", kilometrajefinmes) 
 
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 
@@ -201,34 +201,39 @@ function Rendimiento(props) {
   
 
   const [lista, setLista] =  useState([]);  
+  const [listaRendimientoM, setListaRendimientoM] =  useState([]);  
 	const [listapd, setListaPD] = useState([]);  
   
  
 
   useEffect(()=> {
-    getCargas();
+    getCargas(); 
   }, [])
 
-  async function getCargas(){
-	if(props.tipo == "1"){
+  async function getCargas(){ 
 		var id = "getCargas";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 	 
 		setLista(res.data);
 		setListaPD(res.data);
 		console.log(res.data);
-	}else{
-		var id = "getCargasVehiculosAsignados";
-		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&userid='+props.userid);
+	
+
+  }
+  
+  async function getRendimientoMensual(){ 
+		var id = "getRendimientoMensual";
+		let fecha = document.getElementById("input-fecha-rendimiento-mensual").value;
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&fecha='+fecha+'&tipo='+props.tipo+'&userid='+props.userid);
 	 
-		setLista(res.data);
-		setListaPD(res.data);
+		setListaRendimientoM(res.data); 
 		console.log(res.data);
-	}
+	 
 
 
   }
   
+
   async function getCargasDia(){
 	   
 	var id = "getCargasDia";
@@ -247,9 +252,10 @@ function Rendimiento(props) {
 	if(tipo == "0"){ 
 		setLista(listapd);
 	}else{
-		var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
+		var result = listapd.filter((x) => (x.vehiculoid == tipo)); 
 		setLista(result);
 	}
+	
 	 
 	
 }
@@ -332,6 +338,11 @@ function Rendimiento(props) {
 	  			</div>
 				<br></br>
 
+
+<label>Fecha: </label> 
+	<br></br>
+<input id="input-fecha-rendimiento-mensual" type="date" onChange={() => getRendimientoMensual()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+				
 				<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th class="header">Folio</th>
@@ -348,19 +359,19 @@ function Rendimiento(props) {
                     </tr>
 
                     {  
-                    lista.map(item => ( 
+                    listaRendimientoM.map(item => ( 
                      <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td>{item.folio}</td>
-					<td>{item.vehiculo}</td>
+					<td>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
                     <td>{item.modelo}</td>
-                    <td>{item.uso}</td>
-                    <td>inicial</td>
-                    <td>final</td>
-                    <td>Total</td>
+                    <td>{item.tipouso}</td>
+                    <td>{item.kilometrajeinicial}</td>
+                    <td>{item.kilometrajefinal}</td>
+                    <td>{item.total}</td>
                     <td>{item.litros}</td>
                     <td>{item.importe}</td>
-                    <td>Rendimiento</td>
-                    <td>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>
+                    <td>{item.rendimiento}</td>
+                    <td>{item.costokm + " Kms / Litro"}</td>
                     <td></td>
                     
                 </tr>
@@ -509,7 +520,7 @@ function Rendimiento(props) {
         <h2  style={{color:'black'}}>Nueva carga</h2>
         
         <div>Vehículo</div>
-		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
+		  <select id="vehiculoidfinmes" style={{width:'100%', marginTop:'5px'}}>
 			
 		  {props.vehiculos.map(item => ( 
                      <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>

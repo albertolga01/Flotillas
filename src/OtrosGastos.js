@@ -103,8 +103,7 @@ function OtrosGastos(props) {
 		closeModalLoad();
 		setListaS(res.data);
 		setListaSD(res.data);
-		console.log(res.data);
-		console.log(res.data.map(datum => Number(datum.precio)).reduce((a, b) => a + b));
+		console.log(res.data); 
 		
 		try{setRegistros( formatNumber(res.data.map(datum => Number(datum.precio)).reduce((a, b) => a + b, 0).toFixed(2)));}catch (e){}
 		//console.log(res.data);  process.env.REACT_APP_API_URL
