@@ -248,9 +248,12 @@ function Siniestros(props) {
 		
 		function filterPlacaVehiculo() {
 			var tipo = document.getElementById('vehiculof').value;  
+			if(tipo == "0"){ 
+				setLista(listapd);
+			}else{ 
 			var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 			setLista(result); 
-			
+			}
 		}
 
 		function agregarDoc(folio){
@@ -281,6 +284,8 @@ function Siniestros(props) {
 &nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
 <br></br><label>Vehiculo:</label>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+						<option value="0">Todos</option>
+						
 						{listav.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
@@ -334,9 +339,9 @@ function Siniestros(props) {
                     <tr>
                         <th class="header">Folio</th>
                         <th class="header">Fecha</th>
-                        <th class="header">Vehiculo</th>
+                        <th class="header">Vehículo</th>
                         <th class="header">Chofer</th>
-                        <th class="header">Descripcion</th>
+                        <th class="header">Descripción</th>
                         <th class="header">Deducible</th>
 						<th class="header">Archivo</th>
                          

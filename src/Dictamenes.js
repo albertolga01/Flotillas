@@ -88,6 +88,8 @@ function Dictamenes(props) {
 		var id = "getDictamenesVehiculo";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaS(res.data);
+		setListaSD(res.data);
+		console.log("getDictamenes- "+res.data);
 		 
 	}
 
@@ -106,16 +108,22 @@ function Dictamenes(props) {
 
 	function filterDictamenTipo() {
 		var tipo = document.getElementById('dictamenf').value;  
-		var result = listasd.filter((x) => (x.nombre === tipo)); 
-		setListaS(result); 
-		
+		if(tipo == "0"){ 
+			setListaS(listasd);
+		}else{ 
+		var result = listasd.filter((x) => (x.nombre == tipo));  
+		setListaS(result);  
+		}
 	}
 
 	function filterDictamenVehiculo() {
 		var tipo = document.getElementById('vehiculof').value;  
+		if(tipo == "0"){ 
+			setListaS(listasd);
+		}else{ 
 		var result = listasd.filter((x) => (x.vehiculoid === tipo)); 
-		setListaS(result); 
-		
+		setListaS(result);  
+		}
 	}
 
 
@@ -268,19 +276,25 @@ function Dictamenes(props) {
                      		<div style={{width:'100%', display: 'flex', flexDirection:'column'}}>
 							 <h6>Tipo Dictamen</h6>
 								<select  id="dictamenf"  onChange={() => filterDictamenTipo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-									<option value="Dictamen Humo">Dictamen Humo</option>
-									<option value="Dictamen Físico mecánico">Físico Mecánico</option>
-									<option value="Dictamen NOM 007 Tanques">Dictamen NOM 007 Tanques</option>
-									<option value="Dictamen Ultrasonido de tanque">Dictamen Ultrasonido de tanque</option>
-									<option value="Dictamen de calibración Pemex">Dictamen de calibración Pemex</option>
+								<option value="0">Todos</option>
+								<option value="Dictamen Humo">Dictamen Humo</option>
+                            <option value="Dictamen Físico Mecánico">Dictamen Físico Mecánico</option>
+                            <option value="Dictamen NOM 007 Tanques">Dictamen NOM 007 Tanques</option>
+                            <option value="Dictamen Ultrasonido de tanque">Dictamen Ultrasonido de tanque</option>
+                            <option value="Dictamen de calibración Pemex">Dictamen de calibración Pemex</option>
 								</select>
 						
                      		</div>
 							 <div style={{width:'100%', display: 'flex', flexDirection:'column'}}>
 							 <h6>Vehículo</h6>
 									<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+									<option value="0">Todos</option>
 										{listav.map(item => ( 
-													<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+											 (item.dictamen == "1") ?
+											 <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+											 :
+											 	<></>
+													
 										))}
 									</select>
                      		</div>
@@ -298,16 +312,16 @@ function Dictamenes(props) {
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr> 
-									<th style={{textAlign:'center'}}>Vehículo</th>
-									<th style={{textAlign:'center'}}>Tipo Dictamen</th>
-									<th style={{textAlign:'center'}}>Descripción</th>
-									<th style={{textAlign:'center'}}>Fecha</th>
-									<th style={{textAlign:'center'}}>Vencimiento</th>
-									<th style={{textAlign:'center'}}>Archivo</th>
+									<th class="header" style={{textAlign:'center'}}>Vehículo</th>
+									<th class="header" style={{textAlign:'center'}}>Tipo Dictamen</th>
+									<th class="header" style={{textAlign:'center'}}>Descripción</th>
+									<th class="header" style={{textAlign:'center'}}>Fecha</th>
+									<th class="header" style={{textAlign:'center'}}>Vencimiento</th>
+									<th class="header" style={{textAlign:'center'}}>Archivo</th>
 								</tr>
 								{listas.map(item => (
 								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}> 
-									<td style={{minWidth:'280px'}}>{item.vehiculo}</td>
+									<td style={{minWidth:'280px'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
 									<td style={{textAlign:'center', minWidth:'180px'}}>{item.nombre}</td>
 									<td style={{textAlign:'center', minWidth:'280px'}}>{item.descripcion}</td>
 									<td style={{textAlign:'center'}}>{formatDate(item.fecha)}</td>
@@ -325,26 +339,27 @@ function Dictamenes(props) {
 		<h6>Proximo a vencer (6 meses, 1 año, 3 años, 5 años, 10 años)</h6>
 						<h6>Vigencia</h6>
 						<select  id="vigenciaf"  onChange={(e) => getDictamenesVehiculoProximo(e.target.value)} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-                            <option value="6">6 Meses</option>
+                            <option value="2">2 Meses</option>
+                            {/* <option value="6">6 Meses</option>
                             <option value="12">1 año</option>
                             <option value="36">3 años</option>
                             <option value="60">5 años</option>
-                            <option value="120">10 años</option>
+                            <option value="120">10 años</option>*/}
                              
 						</select>
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr > 
-									<th style={{textAlign:'center'}}>Vehículo</th>
-									<th style={{textAlign:'center'}}>Tipo Dictamen</th>
-									<th style={{textAlign:'center'}}>Descripción</th> 
-									<th style={{textAlign:'center'}}>Fecha</th>
-									<th style={{textAlign:'center'}}>Vencimiento</th>
-									<th style={{textAlign:'center'}}>Archivo</th>
+									<th class="header" style={{textAlign:'center'}}>Vehículo</th>
+									<th class="header" style={{textAlign:'center'}}>Tipo Dictamen</th>
+									<th class="header" style={{textAlign:'center'}}>Descripción</th> 
+									<th class="header" style={{textAlign:'center'}}>Fecha</th>
+									<th class="header" style={{textAlign:'center'}}>Vencimiento</th>
+									<th class="header" style={{textAlign:'center'}}>Archivo</th>
 								</tr>
 								{listasvd.map(item => (
 								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}> 
-									<td style={{minWidth:'280px'}}>{item.vehiculo}</td>
+									<td style={{minWidth:'280px'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
 									<td style={{textAlign:'center', minWidth:'180px'}}>{item.nombre}</td>
 									<td style={{minWidth:'280px'}}>{item.descripcion}</td> 
 									<td style={{textAlign:'center'}}>{format(item.fecha)}</td>

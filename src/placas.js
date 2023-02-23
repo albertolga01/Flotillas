@@ -158,8 +158,12 @@ function Placas(props) {
 
 	function filterPlacaVehiculo() {
 		var tipo = document.getElementById('vehiculof').value;  
+		if(tipo == "0"){ 
+			setListaP(listapd);
+		}else{ 
 		var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 		setListaP(result); 
+		}
 		
 	}
 
@@ -217,8 +221,9 @@ function Placas(props) {
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'380px', overflow:'scroll'}}>
 						<h5>Historial de placas</h5>
 
-						<h6>Vehiculo</h6>
-						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						<h6>Vehículo</h6>
+						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginBottom:'5px'}}>
+						<option value="0">Todos</option>
 						{listav.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
@@ -229,7 +234,7 @@ function Placas(props) {
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th class="header">Placas</th>
-                        <th class="header">Vehiculo</th>
+                        <th class="header">Vehículo</th>
                         <th class="header">Fecha</th>
                         <th class="header">Vencimiento</th> 
                     </tr>
@@ -238,7 +243,7 @@ function Placas(props) {
                     listap.map(item => ( 
                      <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
                     <td className='id-orden' >{item.placas}</td>
-                    <td className='id-orden' >{item.vehiculo}</td>
+                    <td className='id-orden' >{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo }</td>
                     <td>{format(item.fechainicial)}</td>
                     <td>{format(item.fechafinal)}</td> 
                     
@@ -251,11 +256,11 @@ function Placas(props) {
 
 					<div style={{ width: '100%' }}>
 					<div className="card p-2 mt-2 border-secondary"  style={{ height:'180px', overflow:'scroll'}}>
-						<h5>Proximo a vencer  </h5>
+						<h5>Próximo a vencer (2 Meses) </h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
                         <th class="header">Placas</th>
-                        <th class="header">Vehiculo</th>
+                        <th class="header">Vehículo</th>
                         <th class="header">Fecha</th>
                         <th class="header">Vencimiento</th>  
                     </tr>
@@ -264,7 +269,7 @@ function Placas(props) {
                     listapv.map(item => ( 
                      <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
                     <td className='id-orden' >{item.placas}</td>
-					<td>{item.vehiculo}</td>
+					<td>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
                     <td>{format(item.fechainicial)}</td>
                     <td>{format(item.fechafinal)}</td>
                    

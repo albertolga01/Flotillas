@@ -7,7 +7,7 @@ import DocumentsServicio from './component/DocumentsServicio';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-import { BsArrowRepeat, BsEnvelopeFill } from "react-icons/bs";
+import { BsArrowRepeat, BsEnvelopeFill, BsFillXCircleFill } from "react-icons/bs";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -71,6 +71,10 @@ function OtrosGastos(props) {
 	const [value, setValue] = useState([]);
 
     const [listas, setListaS] = useState([]);  
+	const [listasd, setListaSD] = useState([]);  
+
+	const [registros, setRegistros] = useState([]);
+
 
 	let id = 0;
 	let tipo = 0;
@@ -94,6 +98,11 @@ function OtrosGastos(props) {
 		var id = "getGastos";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaS(res.data);
+		setListaSD(res.data);
+		console.log(res.data);
+		console.log(res.data.map(datum => Number(datum.precio)).reduce((a, b) => a + b));
+		
+		try{setRegistros( formatNumber(res.data.map(datum => Number(datum.precio)).reduce((a, b) => a + b, 0).toFixed(2)));}catch (e){}
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 
 	}
@@ -202,6 +211,19 @@ function OtrosGastos(props) {
 		}
 	
 	}
+
+	async function eliminarOtrosGastos(folio, id){
+		if(window.confirm('Desea eliminar el registro con folio: ' + id)){ 
+			let fd = new FormData() 
+			fd.append("id", "eliminarOtrosGastos") 
+			fd.append("folio", id)  
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);   
+			notify(res.data.trim());
+			getServicios();
+		}
+	
+	}
+
 	async function actualizarGastos(id, vehiculo, servicio){
 		if(window.confirm('Marcar registro como otros gastos: ' + vehiculo + ' ' + servicio)){ 
 			let fd = new FormData() 
@@ -215,6 +237,17 @@ function OtrosGastos(props) {
 	
 	}
 	
+	function filterDictamenVehiculo() {
+		var tipo = document.getElementById('vehiculof').value;  
+		if(tipo == "0"){ 
+			setListaS(listasd);
+			try{setRegistros( formatNumber(result.map(datum => Number(datum.precio)).reduce((a, b) => a + b, 0).toFixed(2)));}catch (e){}
+		}else{ 
+		var result = listasd.filter((x) => (x.vehiculoid == tipo));
+		setListaS(result);  
+		try{setRegistros( formatNumber(result.map(datum => Number(datum.precio)).reduce((a, b) => a + b, 0).toFixed(2)));}catch (e){}
+		}
+	}
 
 	// Dynamically create select list
 	let options = [];
@@ -223,15 +256,15 @@ function OtrosGastos(props) {
 	return (
 
 		<div className="container ">
-		 	<NabvarRe titulo="Gastos" />
+		 	<NabvarRe titulo="Gastos por Servicios" />
 			<div className="row p-3">
 				 
 
 				<div style={{ width: '100%' }}>
 					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'650px'}} >
-						<h5>Gastos</h5>
-						
-						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
+						<h5>Gastos por Servicios</h5>
+						{/**
+						 * <div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
 							<h6>Vehiculo: {lista}</h6>
  
 									<h6 id="id-displayexp" style={{fontWeight:"400"}}>{docsVehi.descripcion}</h6>
@@ -241,22 +274,37 @@ function OtrosGastos(props) {
 						 
 						</div>
 
+						 */}
+						 <div style={{width:'100%'}} align="left">
+								<h6>Vehículo:</h6>
+									<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+									<option value="0">Todos</option> 
+											
+											{listav.map(item => ( 
+												<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+												))}
+									</select>
+						</div>
+						
 						<div style={{height: "100%", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr>
-									<th style={{textAlign:'center'}}>Vehículo</th>
-									<th style={{textAlign:'center'}}>Servicio</th>
-									<th style={{textAlign:'center'}}>Odomentro</th>
-									<th style={{textAlign:'center'}}>Precio</th>
-									<th style={{textAlign:'center'}}>Fecha</th>
-									<th style={{textAlign:'center'}}>Próximo</th>
-									<th style={{textAlign:'center'}}>Factura</th>
-									<th style={{textAlign:'center'}}>Cotización</th>
-									<th style={{textAlign:'center'}}>Actualizar</th> 
+									<th class="header" style={{textAlign:'center'}}>Folio</th>
+									<th class="header" style={{textAlign:'center'}}>Vehículo</th>
+									<th class="header" style={{textAlign:'center'}}>Servicio</th>
+									<th class="header" style={{textAlign:'center'}}>Odomentro</th>
+									<th class="header" style={{textAlign:'center'}}>Precio</th>
+									<th class="header" style={{textAlign:'center'}}>Fecha</th>
+									<th class="header" style={{textAlign:'center'}}>Próximo</th>
+									<th class="header" style={{textAlign:'center'}}>Factura</th>
+									<th class="header" style={{textAlign:'center'}}>Cotización</th>
+									<th class="header" style={{textAlign:'center'}}>Actualizar</th> 
+									<th class="header" style={{textAlign:'center'}}>Borrar</th> 
 								</tr>
 								{listas.map(item => (
 								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-									<td  style={{ minWidth:'220px'}}>{item.vehiculo}</td>
+									<td  style={{ width:'10px'}} align="center">{item.id}</td>
+									<td  style={{ minWidth:'220px'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
 									<td style={{textAlign:'left', padding:'5px', minWidth:'280px'}}>{item.servicio}</td>
 									<td  ><input defaultValue={item.odometro} id={"odometro"+item.id} style={{width:'60px'}} ></input>KM</td>
 									<td>${item.precio}</td>
@@ -274,10 +322,15 @@ function OtrosGastos(props) {
 									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
 									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
+									<td><button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarOtrosGastos(item.vehiculoid, item.id)} style={{width:'100%' }}><BsFillXCircleFill /></button></td>
 							 	</tr>
 								))}
+								<tr>
+									<td colSpan={2}>Total: {registros}</td>
+								</tr>
 							</table>
 						</div>
+
 
 					</div>
 				</div>

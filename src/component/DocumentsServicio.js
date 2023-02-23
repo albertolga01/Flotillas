@@ -106,6 +106,7 @@ export default function Documents(props) {
             formData.append("servicio", document.getElementById("servicio").value);
             formData.append("odometro", document.getElementById("odometro").value);
             formData.append("descripcion", document.getElementById("descripcion").value);
+            formData.append("kilometraje", document.getElementById("kilometraje").value);
             formData.append("IDvehiculo", IDvehiInput.value);
             formData.append("documentoservicio", filedoc.files[0]);
             formData.append("cotizacionservicio", filedocdos.files[0]);
@@ -144,7 +145,10 @@ export default function Documents(props) {
 
                 <h6>Descripción</h6>
                 <input type="text" id="descripcion"  ></input>
-                
+
+                <h6>Kilometraje</h6>
+                <input type="text" id="kilometraje"  ></input>
+
                 <h6>Factura</h6>
                 <input id="documentoservicio" type="file" style={{display: "none"}}></input>
                 <input id="cotizacionservicio" type="file" style={{display: "none"}}></input>

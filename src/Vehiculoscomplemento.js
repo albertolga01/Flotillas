@@ -157,10 +157,13 @@ function Vehiculoscomplemento(props) {
  
 
 	function filterPlacaVehiculo() {
-		var tipo = document.getElementById('vehiculof').value;  
+		var tipo = document.getElementById('vehiculof').value; 
+		if(tipo == "0"){ 
+			setListaP(listapd);
+		}else{ 
 		var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 		setListaP(result); 
-		
+		}
 	}
 
  
@@ -213,7 +216,9 @@ function Vehiculoscomplemento(props) {
 						<h5>Historial de complementos</h5>
 
 						<h6>Vehiculo</h6>
+						
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						<option value="0">Todos</option>
 						{listav.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
@@ -237,7 +242,7 @@ function Vehiculoscomplemento(props) {
                     listap.map(item => ( 
                      <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
                     <td className='id-orden'  align='center' >{item.folio}</td>
-                    <td className='id-orden' style={{minWidth:'220px'}}>{item.vehiculo}</td>
+                    <td className='id-orden' style={{minWidth:'220px'}}>{item.vehiculo + item.modelo + " " + item.numvehiculo}</td>
                     <td  align='center'>{item.capacidad}</td>
                     <td>{item.serie}</td>
 					<td  align='center' style={{minWidth:'220px'}}>{item.descripcion}</td>  

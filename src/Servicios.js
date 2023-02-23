@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye } from 'react-icons/fa'
 import axios from 'axios';
 import { NabvarRe } from './component/Navbar';
@@ -16,6 +16,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 import Modal from 'react-modal';
+
+import { useDownloadExcel } from 'react-export-table-to-excel';
  
 const customStyles = {
 	content: {
@@ -72,6 +74,8 @@ function Servicios(props) {
 
     const [listas, setListaS] = useState([]);  
 
+	
+
 	let id = 0;
 	let tipo = 0;
 	 let subtitle;
@@ -95,7 +99,7 @@ function Servicios(props) {
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
 		setListaS(res.data);
 		//console.log(res.data);  process.env.REACT_APP_API_URL
-
+		setListaSD(res.data);
 	}
 	async function getVehiculos() {
 		var id = "getVehiculos";
@@ -105,7 +109,12 @@ function Servicios(props) {
 
 	}
  
-
+	const tableRef = useRef(null);
+    const { onDownload } = useDownloadExcel({
+        currentTableRef: tableRef.current,
+        filename: 'Servicios',
+        sheet: 'Servicios'
+    })
 
 	async function verVehiculo(vehiculoid) {
 		//document.getElementById("IDvehi-input").value = descripcion;
@@ -216,9 +225,30 @@ function Servicios(props) {
 	}
 	
 
+
 	// Dynamically create select list
 	let options = [];
 
+	const [listaSv, setListavs] = useState([]);
+	const [listasd, setListaSD] = useState([]);  
+
+	async function getVehiculos() {
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla);
+		setListavs(res.data);
+		console.log(res.data);
+	} 
+
+	function filterDictamenVehiculo() {
+		var tipo = document.getElementById('vehiculof').value;  
+		if(tipo == "0"){ 
+			setListaS(listasd);
+		}else{ 
+		var result = listasd.filter((x) => (x.vehiculoid == tipo)); 
+		//console.log(result);
+		setListaS(result);  
+		}
+	}
 
 	return (
 
@@ -252,35 +282,40 @@ function Servicios(props) {
 					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'650px'}} >
 						<h5>Servicios</h5>
 						
-						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
-							<h6>Vehiculo: {lista}</h6>
- 
-									<h6 id="id-displayexp" style={{fontWeight:"400"}}>{docsVehi.descripcion}</h6>
-								 
-						
-						 
-						 
+						<div id="display-expediente"  style={{width:'100%', marginBottom: '5px'}} align="left">
+									<h6>Vehículo:</h6>
+								<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+						<option value="0">Todos</option>
+										
+										{listaSv.map(item => ( 
+											<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+											))}
+								</select>
 						</div>
-
+						<button onClick={onDownload} class="btn btn-outline-success btn-sm" style={{ marginBottom: '5px', width:'150px'}}> Exportar excel </button>   
 						<div style={{height: "100%", overflow: "scroll"}}>
-							<table id="tbl-documentos" style={{width: "100%"}}>
+						
+							<table id="tbl-documentos" style={{width: "100%"}}  ref={tableRef}>
 								<tr>
-									<th style={{textAlign:'center'}}>Vehículo</th>
-									<th style={{textAlign:'center'}}>Servicio</th>
-									<th style={{textAlign:'center'}}>Odomentro</th>
-									<th style={{textAlign:'center'}}>Precio</th>
-									<th style={{textAlign:'center'}}>Fecha</th>
-									<th style={{textAlign:'center'}}>Próximo</th>
-									<th style={{textAlign:'center'}}>Factura</th>
-									<th style={{textAlign:'center'}}>Cotización</th>
-									<th style={{textAlign:'center'}}>Actualizar</th>
-									<th style={{textAlign:'center'}}>Gastos</th>
+									<th class="header" style={{textAlign:'center'}}>Vehículo</th>
+									<th class="header" style={{textAlign:'center'}}>Servicio</th>
+									<th class="header" style={{textAlign:'center'}}>Odomentro</th>
+									<th class="header" style={{textAlign:'center'}}>Kilometraje Próx. Servicio</th>
+									<th class="header" style={{textAlign:'center'}}>Precio</th>
+									<th class="header" style={{textAlign:'center'}}>Fecha</th>
+									<th class="header" style={{textAlign:'center'}}>Próximo</th>
+									<th class="header" style={{textAlign:'center'}}>Factura</th>
+									<th class="header" style={{textAlign:'center'}}>Cotización</th>
+									<th class="header" style={{textAlign:'center'}}>Orden de Compra</th>
+									<th class="header" style={{textAlign:'center'}}>Actualizar</th>
+									<th class="header" style={{textAlign:'center'}}>Gastos</th>
 								</tr>
 								{listas.map(item => (
 								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-									<td  style={{ minWidth:'220px'}}>{item.vehiculo}</td>
+									<td  style={{ minWidth:'220px'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
 									<td style={{textAlign:'left', padding:'5px', minWidth:'280px'}}>{item.servicio}</td>
 									<td  ><input defaultValue={item.odometro} id={"odometro"+item.id} style={{width:'60px'}} ></input>KM</td>
+									<td>{item.kilometraje} KM</td>
 									<td>${item.precio}</td>
 									<td style={{textAlign:'center'}}>{formatDate(item.fecha)}</td>
 									{(item.fechaproximo != null)?
@@ -295,6 +330,7 @@ function Servicios(props) {
 									
 									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
 									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
+									<td>{item.foliooc}</td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarGastos(item.id, item.vehiculo, item.servicio)} style={{width:'100%' }}><FaExternalLinkAlt /></button></td>
 								</tr>

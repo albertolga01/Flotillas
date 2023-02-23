@@ -114,7 +114,7 @@ export default function OpcionesMenu(props) {
                     {(props.tipo != "2") ?
                   <div id="sidebtn" onClick={() => { Seleccionar("OtrosGastos"); }}>
                     <img id="sideimg12" alt="" />
-                    <span>Otros Gastos</span>
+                    <span>Gastos por Servicios</span>
                 </div>
                 :
                 <label></label>
@@ -170,10 +170,10 @@ export default function OpcionesMenu(props) {
                 </div>
 
                 {(props.tipo != "2") ?
-                                               <div id="sidebtn" onClick={() => { Seleccionar("1"); }}>
-                                               <FaUser style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
-                                               <span>Usuarios</span>
-                                           </div>
+                    <div id="sidebtn" onClick={() => { Seleccionar("1"); }}>
+                    <FaUser style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
+                    <span>Usuarios</span>
+                    </div>
 
                     :
                     <label></label>

@@ -56,6 +56,7 @@ function Gastosvehiculo(props) {
 	const [listaver, setListaVer] = useState([]);
 	useEffect(() => {
 		getVehiculos();
+		gastosVehiculo();
 	}, [])
 
 	async function addCarga() {
@@ -80,8 +81,7 @@ function Gastosvehiculo(props) {
 		 
 		notify(res.data.trim());
 		if(res.data.trim() == "Carga agregada correctamente"){
-			closeModal();
-  getCargas()
+			closeModal(); 
 
 		}
 	}
@@ -198,18 +198,10 @@ function Gastosvehiculo(props) {
  
 
   useEffect(()=> {
-    getCargas();
+   
   }, [])
 
-  async function getCargas(){
-	var id = "getCargas";
-	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
  
-	setLista(res.data);
-	setListaPD(res.data);
-	console.log(res.data);
-
-  }
   
   async function getCargasDia(){
 	   
@@ -245,19 +237,26 @@ function Gastosvehiculo(props) {
 	 
 <div style={{width:'100%'}}>
 <label>Filtrar por fecha: </label> 
-
-&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+{/* onChange={() => getCargasDia()} */}
+&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
 &nbsp;&nbsp;&nbsp;<input id="input-fecha-final" type="date"   style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
 <br></br><label>Vehículo:</label>
-						<select  id="vehiculof"  onChange={() => gastosVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
-						{listav.map(item => ( 
+						<select  id="vehiculof"   className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+						<option value="0">Todos</option>
+						{listav.map(item => (  
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
 						))}
                              
 						</select>
+						<button className="btn btn-outline-success btn-sm" 
+									onClick={() => gastosVehiculo()} >
+										 Buscar
+									</button>
+									
+</div> 
 
-</div>
+
 <div style={{width:'100%'}} align="right">
  {/* <button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva carga</button>
     
@@ -305,8 +304,8 @@ function Gastosvehiculo(props) {
                     <tr> 
                         <th class="header">Vehículo</th>
 						<th class="header">Fecha</th>  
-                        <th style={{textAlign:'center'}}>Descripción</th>
-						<th style={{textAlign:'center'}}>Precio</th>   
+                        <th class="header" style={{textAlign:'center'}}>Descripción</th>
+						<th class="header" style={{textAlign:'center'}}>Precio</th>   
                     </tr>
 
                     {  
@@ -326,15 +325,15 @@ function Gastosvehiculo(props) {
                     <tr> 
                         <th class="header">Vehículo</th>
 						<th class="header">Fecha</th>  
-                        <th style={{textAlign:'center'}}>Descripción</th>
-						<th style={{textAlign:'center'}}>Precio</th>   
+                        <th class="header" style={{textAlign:'center'}}>Descripción</th>
+						<th class="header" style={{textAlign:'center'}}>Precio</th>   
                     </tr>
 
                     {  
                     listaservicios.map(item => ( 
                      <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.vehiculo}</td>
-					<td style={{textAlign:'center'}}>{format(item.fecha)}</td>
+					<td  style={{textAlign:'center'}}>{format(item.fecha)}</td>
 					<td>{item.descripcion}</td>
 					<td style={{textAlign:'center'}}>${item.precio}</td> 
                       

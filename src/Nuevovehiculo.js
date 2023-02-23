@@ -226,7 +226,7 @@ function Nuevovehiculo(props) {
 							
 
 							<tr>
-								<td><label>Descripcion:</label><br /><input id="descripcion" style={{ width: '556px', height: '20px' }} /></td>
+								<td><label>Descripción:</label><br /><input id="descripcion" style={{ width: '556px', height: '20px' }} /></td>
 								<td><input value={props.dptoid} hidden="hidden" /></td>
 							</tr>
 							
@@ -254,7 +254,7 @@ function Nuevovehiculo(props) {
 
 						<table>
 							<tr>
-								<th class="header"></th><td>Observaciones</td>
+								<th></th><td>Observaciones</td>
 							</tr>
 
 							<tr>

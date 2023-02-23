@@ -12,7 +12,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {ThreeDots } from  'react-loader-spinner'
 
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'; 
+import {  BsXCircleFill } from "react-icons/bs";
+
+
 
 
 const customStylesD = {
@@ -52,12 +55,13 @@ function Refacciones(props) {
 	}
     
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
-
-	const [listav, setListaV] = useState([]);
+ 
 
 	const [listainv, setListaInv] = useState([]);
 	
 	const [listaver, setListaVer] = useState([]);
+
+	const [listasd, setListaSD] = useState([]);  
 	useEffect(() => {
 		getVehiculos();
 		getInventarios();
@@ -100,6 +104,17 @@ function Refacciones(props) {
 		getInventarios();
 	}
 
+	async function eliminarRefaccion(folio){
+		if(window.confirm('Eliminar refacción con folio: ' + folio)){ 
+			let fd = new FormData() 
+			fd.append("id", "eliminarRefaccion") 
+			fd.append("folio", folio)  
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+			notify(res.data.trim()); 
+			getRefacciones();
+		}
+	
+	}
 
 	async function verRefeccion(vehiculoid) {
 	 
@@ -162,6 +177,7 @@ function Refacciones(props) {
   const [listapd, setListaPD] = useState([]);
   const [listap, setListaP] = useState([]);  
  
+  const [listav, setListaV] = useState([]);
 
   useEffect(()=> {
     getRefacciones();
@@ -173,6 +189,8 @@ function Refacciones(props) {
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla);
  	closeModalLoad();
 	setLista(res.data);
+
+	setListaSD(res.data);
 	
 	console.log(res.data);
 
@@ -248,6 +266,15 @@ function Refacciones(props) {
 
  
  
+  function filterDictamenVehiculo() {
+	var tipo = document.getElementById('vehiculof').value;  
+	if(tipo == "0"){ 
+		setLista(listasd);
+	}else{ 
+	var result = listasd.filter((x) => (x.vehiculoid == tipo));
+	setLista(result);  
+	}
+}
   // Dynamically create select list
   let options = [];
  
@@ -267,10 +294,21 @@ function Refacciones(props) {
 
 &nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
 <input id="input-fecha-final" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+<div style={{width:'100%'}} align="left">
+		<h6>Vehículo:</h6>
+			<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
+			<option value="0">Todos</option> 
+					
+					{listav.map(item => ( 
+						<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+						))}
+			</select>
+    </div>
 </div>
 <div style={{width:'100%'}} align="right">
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>
+<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>&nbsp;&nbsp;&nbsp;
 <button onClick={onDownload} class="btn btn-outline-success btn-sm"> Exportar excel </button>   
+
 		  <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -317,18 +355,20 @@ function Refacciones(props) {
       </Modal>
 	  </div>
 	  </div>
- <div  style={{maxHeight:'39vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+ <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
                 <table id="productstable"  style={{width:'100%'}}  ref={tableRef}> 
                     <tr>
                         <th class="header">Folio</th>
-                        <th class="header">Vehiculo</th>
+                        <th class="header">Vehículo</th>
 						<th class="header">Fecha Compra</th>
                         <th class="header">Proveedor</th>
                         <th class="header">Refacción</th>
-                        <th class="header">Descripcion</th> 
+                        <th class="header">Descripción</th> 
                         <th class="header">Precio</th>
                         <th class="header">Documento</th>
+						<th class="header" style={{textAlign:'center'}}>Orden de Compra</th>
 						<th class="header">Fecha Captura</th>
+						<th class="header">Borrar</th>
 
                     </tr>
 
@@ -336,14 +376,17 @@ function Refacciones(props) {
                     lista.map(item => ( 
                      <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
                     <td className='id-orden' >{item.folio}</td>
-                    <td style={{minWidth:'280px'}}>{item.vehiculo}</td>
+                    <td style={{minWidth:'280px'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
 					<td style={{ padding:'5px'}}>{format(item.fechacompra)}</td>
                     <td style={{minWidth:'250px', padding:'5px'}}>{item.proveedor}</td>
                     <td style={{minWidth:'350px'}}>{item.refaccion}</td>
                     <td style={{minWidth:'350px'}}>{item.descripcion}</td>
                     <td style={{minWidth:'50px', padding:'15px'}}>{formatNumber(item.precio)}</td>
                     <td style={{minWidth:'150px', padding:'5px'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
-                    <td>{format(item.fecha)}</td>
+                    <td>{item.foliooc}</td>
+					<td>{format(item.fecha)}</td>
+					<td><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccion(item.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+
                     
                 </tr>
                 

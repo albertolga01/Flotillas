@@ -206,18 +206,24 @@ function Multas(props) {
  
   function filterPlacaVehiculo() {
 	var tipo = document.getElementById('vehiculof').value;  
-	console.log(tipo);
+	 
+	if(tipo == "0"){ 
+		setLista(listapd);
+	}else{ 
 	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 	setLista(result); 
-	console.log(listapd);	
+	}
+	
 }
 
 function filterPlacaChofer() {
 	var tipo = document.getElementById('choferf').value;  
-	console.log(tipo);
+	if(tipo == "0"){ 
+		setLista(listapd);
+	}else{ 
 	var result = listapd.filter((x) => (x.idchofer === tipo)); 
 	setLista(result); 
-	console.log(listapd);	
+	}
 }
 
   // Dynamically create select list
@@ -241,6 +247,8 @@ function filterPlacaChofer() {
 <br></br><span>Vehículo:</span>
 <div>
 	<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'500px', marginTop:'5px', cursor: 'pointer'}}>
+	<option value="0">Todos</option>
+		
 		 {listav.map(item => ( 
 			<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
  ))} 
@@ -250,6 +258,8 @@ function filterPlacaChofer() {
 	 <span>Chofer:</span>
 	 <div>
 		 <select  id="choferf"  onChange={() => filterPlacaChofer()} className="form-control"  style={{width:'450px', marginTop:'5px', cursor: 'pointer'}}>
+		 <option value="0">Todos</option>
+			
 			 {listac.map(item => ( 
 				 <option value={item.id}>{item.nombre}</option>
  				))} 

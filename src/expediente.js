@@ -90,9 +90,12 @@ function Expediente(props) {
  
 	function filterPlacaVehiculo() {
 		var tipo = document.getElementById('vehiculof').value;  
+		if(tipo == "0"){ 
+			setDocsVehi(listapd);
+		}else{ 
 		var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 		setDocsVehi(result); 
-		
+		}
 	}
 
 	async function verVehiculo(vehiculoid) {
@@ -214,6 +217,8 @@ function Expediente(props) {
 							<span>Vehículo: {lista}</span>
 							
 							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
+							<option value="0">Todos</option>
+						
 						{listav.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 

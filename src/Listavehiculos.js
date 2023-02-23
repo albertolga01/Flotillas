@@ -246,6 +246,10 @@ function envioUsuario(folio){
 	if(document.getElementById("notificar"+folio).checked){
 		 notificar = 1;
 	} 
+	let dictamen = 0;
+	if(document.getElementById("dictamen"+folio).checked){
+		dictamen = 1;
+	} 
 	if(window.confirm('Actualizar los campos del vehiculo con folio: ' + folio)){ 
 		let fd = new FormData() 
 		fd.append("id", "actualizarVehiculo")
@@ -257,6 +261,7 @@ function envioUsuario(folio){
 		fd.append("numerovehiculo", document.getElementById("numerovehiculo"+folio).value)
 		fd.append("gps", document.getElementById("gps"+folio).value)
 		fd.append("notificar", notificar)
+		fd.append("dictamen", dictamen)
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 		console.log("actualizarVehiculo: " +res.data);
 		notify(res.data.trim());
@@ -369,14 +374,15 @@ async function getTiposCorreo() {
 						<th class="header">Correo</th>
 						<th class="header">Usuario</th>
 						<th class="header">Notificar</th>
+						<th class="header">Dictamenes</th>
 
                     </tr>
 
                     {  
                     listav.map(item => ( 
                      <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-                    <td className='id-orden' align='center'>{item.vehiculoid}</td>
-                    <td style={{minWidth:'250px'}}>{item.descripcion}</td>
+                    <td className='id-orden' align='center'>{item.vehiculoid }</td>
+                    <td style={{minWidth:'250px'}}>{item.descripcion + " " + item.numvehiculo}</td>
                     <td>{item.modelo}</td>
                     <td><input defaultValue={item.responsable} id={"responsable"+item.vehiculoid} ></input></td>
                     <td  align='center'>{item.serievehiculo}</td>
@@ -395,7 +401,21 @@ async function getTiposCorreo() {
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarVehiculo(item.vehiculoid)} style={{minWidth:'100%' }}><BsArrowRepeat /></button></td>
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => envioCorreo(item.vehiculoid)}  style={{minWidth:'100%' }}><BsEnvelopeFill /></button></td>
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => envioUsuario(item.vehiculoid)}  style={{minWidth:'100%' }}><BsFillPersonPlusFill /></button></td>
-					<td>< input checked={item.notificar} type="checkbox" id={"notificar"+item.vehiculoid} style={{minWidth:'50px'}}></input></td>
+					<td>
+						{(item.notificar == "1")?
+						< input defaultChecked type="checkbox" id={"notificar"+item.vehiculoid} style={{minWidth:'50px'}}></input>
+						:
+						< input  type="checkbox" id={"notificar"+item.vehiculoid} style={{minWidth:'50px'}}></input>
+						}
+						
+					</td>
+					<td>
+					{(item.dictamen == "1")?
+						< input defaultChecked type="checkbox" id={"dictamen"+item.vehiculoid} style={{minWidth:'50px'}}></input>
+						:
+						< input  type="checkbox" id={"dictamen"+item.vehiculoid} style={{minWidth:'50px'}}></input>
+						}
+						</td>
 
                     
                 </tr>

@@ -66,6 +66,7 @@ function Rendimiento(props) {
 		var kilometrajefinal = document.getElementById("kilometrajefinal").value;
 		var litros = document.getElementById("litros").value;
 		var importe = document.getElementById("importe").value;
+		var ticket = document.getElementById("ticket").value;
 		
 		let fd = new FormData()
 			fd.append("id", "addCarga")
@@ -75,6 +76,7 @@ function Rendimiento(props) {
 			fd.append("kilometrajefinal", kilometrajefinal)
 			fd.append("litros", litros)
 			fd.append("importe", importe)
+			fd.append("ticket", ticket)
 
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 
@@ -82,6 +84,29 @@ function Rendimiento(props) {
 		if(res.data.trim() == "Carga agregada correctamente"){
 			closeModal();
   getCargas()
+
+		}
+	}
+
+
+	async function addCargaRendimiento() {
+		
+		var vehiculoid = document.getElementById("vehiculoid").value;
+		var fechafinmes = document.getElementById("fechafinmes").value;
+		var fechafinmes = document.getElementById("kilometrajefinmes").value; 
+		
+		let fd = new FormData()
+			fd.append("id", "addCarga")
+			fd.append("vehiculoid", vehiculoid)
+			fd.append("fechafinmes", fechafinmes) 
+			fd.append("fechafinmes", fechafinmes) 
+
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
+		 
+		notify(res.data.trim());
+		if(res.data.trim() == "Carga agregada correctamente"){
+			closeModal();
+  			getCargas();
 
 		}
 	}
@@ -119,6 +144,20 @@ function Rendimiento(props) {
   
 	function closeModal() {
 	  setIsOpen(false);
+	}
+
+
+	const [modalIsOpenNv, setIsOpenNv] = React.useState(false);
+  
+	function openModalNv() {
+	  setIsOpenNv(true);
+	}
+  
+	function afterOpenModalNv() { 
+	}
+  
+	function closeModalNv() {
+	  setIsOpenNv(false);
 	}
 
 
@@ -223,8 +262,13 @@ function Rendimiento(props) {
  
   function filterPlacaVehiculo() {
 	var tipo = document.getElementById('vehiculof').value;  
-	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
-	setLista(result); 
+	if(tipo == "0"){ 
+		setLista(listapd);
+	}else{
+		var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
+		setLista(result);
+	}
+	 
 	
 }
 
@@ -252,6 +296,8 @@ function Rendimiento(props) {
 &nbsp;&nbsp;&nbsp;<input id="input-fecha-final" type="date"  onChange={() => getCargasDia()}style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
 <br></br><label>Vehículo:</label>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+						
+						<option value="0">Todos</option>
 						{listav.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
@@ -264,7 +310,7 @@ function Rendimiento(props) {
 	  </div>
 
 	 
- <div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+ <div  style={{overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
 	 
                 <table id="productstable"  style={{width:'100%'}}> 
                     <tr>
@@ -275,6 +321,7 @@ function Rendimiento(props) {
                         <th class="header">Importe</th>
                         <th class="header">Kilometraje Inicial</th>
                         <th class="header">Kilometraje Final</th>
+                        <th class="header">Ticket</th>
                         <th class="header">Rendimiento</th> 
                     </tr>
 
@@ -288,6 +335,7 @@ function Rendimiento(props) {
                     <td>{formatNumber(item.importe)}</td>
                     <td>{formatN(item.kilometraje)}</td>
                     <td>{formatN(item.kilometrajefinal)}</td>
+                    <td>{item.ticket}</td>
                     <td>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>
                     <td></td>
                     
@@ -296,6 +344,49 @@ function Rendimiento(props) {
         ))}	
                         <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
                 </table> 
+				<br></br>
+				<div style={{width:'100%'}} align="right">
+					<button onClick={openModalNv} class="btn btn-outline-success btn-sm">Nuevo Registro</button>
+	  			</div>
+				<br></br>
+
+				<table id="productstable"  style={{width:'100%'}}> 
+                    <tr>
+                        <th class="header">Folio</th>
+                        <th class="header">Vehículo</th>
+                        <th class="header">Modelo</th>
+                        <th class="header">Uso</th>
+                        <th class="header">Inicial</th>
+                        <th class="header">Final</th>
+                        <th class="header">Total</th>
+                        <th class="header">Litros</th>
+                        <th class="header">Importe</th>
+                        <th class="header">Rendimiento</th>
+                        <th class="header">Costo KM</th>
+                    </tr>
+
+                    {  
+                    lista.map(item => ( 
+                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
+                    <td>{item.folio}</td>
+					<td>{item.vehiculo}</td>
+                    <td>{item.modelo}</td>
+                    <td>{item.uso}</td>
+                    <td>inicial</td>
+                    <td>final</td>
+                    <td>Total</td>
+                    <td>{item.litros}</td>
+                    <td>{item.importe}</td>
+                    <td>Rendimiento</td>
+                    <td>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>
+                    <td></td>
+                    
+                </tr>
+                
+        ))}	
+                        <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
+                </table> 
+				<br></br>
 	 </div>
  
  
@@ -400,6 +491,7 @@ function Rendimiento(props) {
         
         <div>Vehículo</div>
 		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
+			
 		  {listav.map(item => ( 
                      <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
@@ -407,21 +499,52 @@ function Rendimiento(props) {
 		  </select>
 		  <div>Fecha de carga</div>
 		  <input id="fechacarga" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje inicial</div>
+		  <div>Kilometraje </div>
 		  <input  id="kilometraje" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje final</div>
-		  <input  id="kilometrajefinal" type="number" style={{width:'100%', marginTop:'5px'}}/>
+		  <div hidden>Kilometraje final</div>
+		  <input hidden id="kilometrajefinal" type="number" style={{width:'100%', marginTop:'5px'}}/>
 		  <div>Litros</div>
 		  <input id="litros" type="number" style={{width:'100%', marginTop:'5px'}}/>
 		  <div>Importe</div>
 		  <input id="importe" type="number" style={{width:'100%', marginTop:'5px'}} />
-		  
+		  <h6>Ticket</h6>
+          <input id="ticket" type="text" style={{width:'100%', marginTop:'5px'}}></input>
+              
         
 <br></br>
 <br></br>
 		<button style={{width:'45%', marginLeft:'20px'}} onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button>  
 		<button style={{width:'45%', marginLeft:'25px'}} onClick={() => addCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
       </Modal>
+
+	  <Modal
+        isOpen={modalIsOpenNv}
+        onAfterOpen={afterOpenModalNv}
+        onRequestClose={closeModalNv}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h2  style={{color:'black'}}>Nueva carga</h2>
+        
+        <div>Vehículo</div>
+		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
+			
+		  {listav.map(item => ( 
+                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+
+  		  ))}
+		  </select>
+		  <div>Fecha de carga</div>
+		  <input id="fechafinmes" type="date" style={{width:'100%', marginTop:'5px'}}/>
+		  <div>Kilometraje Final</div>
+		  <input  id="kilometrajefinmes" type="number" style={{width:'100%', marginTop:'5px'}}/> 
+		<br></br>
+		<br></br>
+				<button style={{width:'45%', marginLeft:'20px'}} onClick={closeModalNv} class="btn btn-outline-danger btn-sm ">Cancelar</button>  
+				<button style={{width:'45%', marginLeft:'25px'}} onClick={() => addCargaRendimiento()} class="btn btn-outline-success btn-sm" >Guardar</button>
+			</Modal>
+
+
         </div>
  
  
