@@ -79,11 +79,17 @@ body{
     flex-direction: column;
     background-color: #0071ce;
     /* max-height: 100vh; */
-    height: 100vh;
+    /*height: 100vh;*/
     width: 15vmax;
     padding: 0 .3vmax;
     position: sticky;
     top: 0;
+}
+@media (max-width: 740px){
+    #sidepanel{
+        height: 100vh;
+    }
+    
 }
 
 #sidebtn{
@@ -230,7 +236,7 @@ body{
     width: 36px;
     height: 30px;
     left: 36px;
-    top: 36px;
+    top: 10px;
     }
     
     /* Color/shape of burger icon bars */

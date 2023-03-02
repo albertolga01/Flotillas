@@ -261,106 +261,89 @@ function Siniestros(props) {
   return (
   
     <div className="container ">
-     
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Siniestros"/>    
-<div style={{display:'flex', flexDirection:'row', width:'100%'}}>
-
-
-     
-	 
-<div style={{width:'100%'}}>
-<label>Filtrar por fecha de siniestro: </label> 
-
-&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<br></br><label>Vehiculo:</label>
-						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
-						<option value="0">Todos</option>
-						
-						{props.vehiculos.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
-
-						))}
-                             
-						</select>
-
-</div>
-<div style={{width:'100%'}} align="right">
-{(props.tipo == "1") ? 
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Agregar Siniestro</button>
-:<></>
-}
-
-      
-		  <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nuevo Siniestro</h2>
-        
-		<div>Chofer</div>
-		  
-		<input id="choferNombre" type="text" style={{width:'100%', marginTop:'5px'}}/>
-	 
-
-        <div>Vehiculo</div>
-		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
-		  {props.vehiculos.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
-
-  		  ))}
-		  </select>
-		  <div>Fecha del siniestro</div>
-		  <input id="fechasiniestro" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Descripción</div>
-		  <input  id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}}/> 
-		  <div>Deducible</div>
-		  <input id="deducible" type="text" style={{width:'100%', marginTop:'5px'}}/>
-		  
-        
-<br></br>
-<br></br>
-		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button onClick={() => addSiniestro()} class="btn btn-outline-success btn-sm" >Guardar</button>
-      </Modal>
+      <div className='titulos'>
+	  	<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Siniestros"/>    
 	  </div>
-	  </div>
- <div  style={{ Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-	 
-                <table id="productstable"  style={{width:'100%'}}> 
-                    <tr>
-                        <th class="header">Folio</th>
-                        <th class="header">Fecha</th>
-                        <th class="header">Vehículo</th>
-                        <th class="header">Chofer</th>
-                        <th class="header">Descripción</th>
-                        <th class="header">Deducible</th>
-						<th class="header">Archivo</th>
-                         
-                    </tr>
 
-                    {  
-                    lista.map(item => ( 
-                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.id}</td>
-					<td>{formatDate(item.fecha)}</td>
-					<td>{item.vehiculo  + " " + item.modelo + " " + item.numvehiculo}</td>
-					<td>{item.nombrechofer}</td>
-                    <td>{item.descripcion}</td>
-                    <td>{item.deducible}</td>
-					<td><button style={{width:'100%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(item.vehiculoid)}><BsUpload /></button></td>
+	<div className='apartado-modal'>
+		{(props.tipo == "1") ? 
+			<button onClick={openModal} class="btn btn-outline-success btn-sm" id='botonMulta'>Agregar Siniestro</button>
+			:<></>
+		}
+		<Modal
+        	isOpen={modalIsOpen}
+        	onAfterOpen={afterOpenModal}
+        	onRequestClose={closeModal}
+        	style={customStyles}
+        	contentLabel="Example Modal"
+      	>
+        	<h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nuevo Siniestro</h2>    
+			<div>Chofer</div>		  
+			<input id="choferNombre" type="text" style={{width:'100%', marginTop:'5px'}}/>	 
 
-                     
-                    <td></td>
-                    
-                </tr>
-                
-        ))}	
-                        <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
-                </table> 
-	 </div>
+        	<div>Vehiculo</div>
+		  	<select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
+		  		{props.vehiculos.map(item => ( 
+                	<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+  		  		))}
+		  	</select>
+		  	<div>Fecha del siniestro</div>
+		  	<input id="fechasiniestro" type="date" style={{width:'100%', marginTop:'5px'}}/>
+		  	<div>Descripción</div>
+		  	<input  id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}}/> 
+		  	<div>Deducible</div>
+		  	<input id="deducible" type="text" style={{width:'100%', marginTop:'5px'}}/>		      
+			<br></br>
+			<br></br>
+			<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button onClick={() => addSiniestro()} class="btn btn-outline-success btn-sm" >Guardar</button>
+      	</Modal>
+	</div>
+
+	<div className='apartado-filtro'>
+		<div style={{display:'flex',alignItems:'center'}}>
+			<h6 className='h6Multas' >Filtrar por fecha de siniestro:</h6>	
+			<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '65%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
+		</div>
+
+		<div style={{display:'flex',alignItems:'center'}}>		
+			<h6 className='h6Multas'>Vehículos:</h6>	
+			<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'65%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+				<option value="0">Todos</option>						
+					{props.vehiculos.map(item => ( 
+						<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+					))}                             
+			</select>
+		</div>
+	</div>
+
+ 	<div  style={{ Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}> 
+        <table id="productstable"  style={{width:'100%'}}> 
+            <tr>
+				<th class="header">Folio</th>
+				<th class="header">Fecha</th>
+				<th class="header">Vehículo</th>
+				<th class="header">Chofer</th>
+				<th class="header">Descripción</th>
+				<th class="header">Deducible</th>
+				<th class="header">Archivo</th>                         
+            </tr>
+                {  
+                	lista.map(item => ( 
+                    	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'11px'}}>
+                    		<td style={{border: '2px solid rgb(171,178,185)'}} className='id-orden' >{item.id}</td>
+							<td style={{border: '2px solid rgb(171,178,185)'}}>{formatDate(item.fecha)}</td>
+							<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo  + " " + item.modelo + " " + item.numvehiculo}</td>
+							<td style={{border: '2px solid rgb(171,178,185)'}}>{item.nombrechofer}</td>
+                    		<td style={{border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td>
+                    		<td style={{border: '2px solid rgb(171,178,185)'}}>{item.deducible}</td>
+							<td ><button style={{width:'100%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(item.vehiculoid)}><BsUpload /></button></td>                     
+                    		<td></td>                    
+                		</tr>                
+        		))}	
+                <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
+        </table> 
+	</div>
  
  
 

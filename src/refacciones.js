@@ -273,131 +273,117 @@ function Refacciones(props) {
   return (
   
     <div className="container ">
+		<div className='titulos'>
+			<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Refacciones"/>  
+		</div>
      
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Refacciones"/>    
-<div style={{display:'flex', flexDirection:'row', width:'100%'}}>
+  
 
+	<div className='apartado-modal'>
+		{(props.tipo == "1") ? 
+			<button onClick={openModal} class="btn btn-outline-success btn-sm" id='botonMulta'>Nueva refacción</button>
+			: <></>
+		}		
+		<button onClick={onDownload} class="btn btn-outline-success btn-sm" id='botonMulta'> Exportar excel </button>   
 
-     
-	 
-<div style={{width:'100%'}}>
-<label>Filtrar por fecha de compra: </label> 
-
-&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<input id="input-fecha-final" type="date" onChange={() => getRefaccionesDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<div style={{width:'100%'}} align="left">
-		<h6>Vehículo:</h6>
-		{/**onChange={() => filterDictamenVehiculo()} */}
-			<select  id="vehiculof"   className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-			<option value="0">Todos</option> 
-					
-					{props.vehiculos.map(item => ( 
-						<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
-						))}
+		<Modal
+			isOpen={modalIsOpen}
+			onAfterOpen={afterOpenModal}
+			onRequestClose={closeModal}
+			style={customStyles}
+			contentLabel="Example Modal"
+		>
+			<h2   style={{color:'black'}} >Nueva Refacción</h2>
+		
+			<div>Vehículo</div>
+			<select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
+				{props.vehiculos.map(item => ( 
+					<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+					))}
 			</select>
-    </div>
-	<button onClick={() => getRefaccionesDia()} class="btn btn-outline-success btn-sm">Buscar</button>
-</div>
-<div style={{width:'100%'}} align="right">
-{(props.tipo == "1") ? 
-<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva refacción</button>
-	: <></>
-}
-&nbsp;&nbsp;&nbsp;
-<button onClick={onDownload} class="btn btn-outline-success btn-sm"> Exportar excel </button>   
+			<div>Refacción</div>
+			<select id="refaccionid" onChange={() => filterRefaccion()} style={{width:'100%', marginTop:'5px'}}>
+				<option value="0">Seleccione </option>
+				{listaSelecInventario.map(item => ( 			 		 
+					<option value={item.folio}>{item.producto + " - " + item.descripcion}</option>
+				))}
+			</select>
+			<div>Fecha de compra</div>
+			<input id="fechacompra" type="date" style={{width:'100%', marginTop:'5px'}}/>
+			<div>Proveedor</div>
+			<input id="proveedor" type="text" style={{width:'100%', marginTop:'5px'}}/>
+			<div>Refacción</div>
+			<input id="refaccion" type="text" style={{width:'100%', marginTop:'5px'}}/>
+			<div>Descripción</div>
+			<input id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}} />
+			<div>Precio</div>
+			<input  id="precio" type="number" style={{width:'100%', marginTop:'5px'}}/>
+			<div>Documento</div>
+			<input id="documentorefaccion" type="file" style={{ height: '50px'}} />                
+			<br></br>
+			<br></br>
+			<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button onClick={() => addRefaccion()} class="btn btn-outline-success btn-sm" >Guardar</button>
+		</Modal>
+	</div>
 
-		  <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <h2   style={{color:'black'}} >Nueva Refacción</h2>
-        
-        <div>Vehículo</div>
-		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
-		  {props.vehiculos.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+	<div className='apartado-filtro'>
+		<div style={{display:'flex',alignItems:'center'}}>
+			<h6 className='h6Multas' >Filtrar por fecha de compra:</h6>
+			<input id="input-fecha" type="date" onChange={() => getRefaccionesDia()} style={{width: '32%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
+			<input id="input-fecha-final" type="date" onChange={() => getRefaccionesDia()} style={{width: '32%', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
+		</div>
+		<div style={{display:'flex',alignItems:'center'}}>
+			<h6 className='h6Multas'>Vehículo:</h6>
+			<select  id="vehiculof"   className="form-control"  style={{width:'65%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+        		<option value="0">Todos</option> 					
+            	{props.vehiculos.map(item => ( 
+                	<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+            	))}
+    		</select>
+		</div>
+		<div style={{display:'flex',alignItems:'center'}}>
+			<button onClick={() => getRefaccionesDia()} class="btn btn-outline-success btn-xl">Buscar</button>
+		</div>
+	</div>
 
-  		  ))}
-		  </select>
-		  <div>Refacción</div>
-		  <select id="refaccionid" onChange={() => filterRefaccion()} style={{width:'100%', marginTop:'5px'}}>
-		  <option value="0">Seleccione </option>
-		  {listaSelecInventario.map(item => ( 
-			 		 
-                     <option value={item.folio}>{item.producto + " - " + item.descripcion}</option>
-
-  		  ))}
-		  </select>
-		  <div>Fecha de compra</div>
-		  <input id="fechacompra" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Proveedor</div>
-		  <input id="proveedor" type="text" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Refacción</div>
-		  <input id="refaccion" type="text" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Descripción</div>
-		  <input id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}} />
-		  <div>Precio</div>
-		  <input  id="precio" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Documento</div>
-		  <input id="documentorefaccion" type="file" style={{ height: '50px'}} />
-        
-        
-<br></br>
-<br></br>
-		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button onClick={() => addRefaccion()} class="btn btn-outline-success btn-sm" >Guardar</button>
-      </Modal>
-	  </div>
-	  </div>
- <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-                <table id="productstable"  style={{width:'100%'}}  ref={tableRef}> 
-                    <tr>
-                        <th class="header">Folio</th>
-                        <th class="header">Vehículo</th>
-						<th class="header" style={{textAlign:'center', minWidth:'160px'}}>Fecha Compra</th>
-                        <th class="header">Proveedor</th>
-                        <th class="header">Refacción</th>
-                        <th class="header">Descripción</th> 
-                        <th class="header">Precio</th>
-                        <th class="header">Documento</th>
-						<th class="header" style={{textAlign:'center', minWidth:'160px'}}>Orden de Compra</th>
-						<th class="header">Captura</th>
-						<th class="header">Borrar</th>
-
-                    </tr>
-
-                    {  
-                    lista.map(item => ( 
-                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.folio}</td>
-                    <td style={{minWidth:'280px'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
-					<td style={{ padding:'5px'}}>{format(item.fechacompra)}</td>
-                    <td style={{minWidth:'250px', padding:'5px'}}>{item.proveedor}</td>
-                    <td style={{minWidth:'350px'}}>{item.refaccion}</td>
-                    <td style={{minWidth:'350px'}}>{item.descripcion}</td>
-                    <td style={{minWidth:'50px', padding:'15px'}}>{formatNumber(item.precio)}</td>
-                    <td style={{minWidth:'150px', padding:'5px'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
-                    <td>{item.foliooc}</td>
-					<td>{format(item.fecha)}</td>
-					{(props.tipo == "1") ? 
-					<td><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccion(item.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
-					:<></>
-					}
-					
-
-                    
-                </tr>
-                
-        ))}	
-                        <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
-                </table> 
-
-				
-
-	 </div>
+ 	<div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+        <table id="productstable"  style={{width:'100%'}}  ref={tableRef}> 
+        	<tr>
+            	<th class="header">Folio</th>
+                <th class="header">Vehículo</th>
+				<th class="header" style={{textAlign:'center', minWidth:'50px'}}>Fecha Compra</th>
+				<th class="header">Proveedor</th>
+				<th class="header">Refacción</th>
+				<th class="header">Descripción</th> 
+				<th class="header">Precio</th>
+				<th class="header">Documento</th>
+				<th class="header" style={{textAlign:'center', minWidth:'20px'}}>Orden de Compra</th>
+				<th class="header">Captura</th>
+				<th class="header">Borrar</th>
+            </tr>
+            {  
+                lista.map(item => ( 
+                    <tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'11px'}}>
+                    	<td className='id-orden' >{item.folio}</td>
+                    	<td style={{minWidth:'180px',border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
+						<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{format(item.fechacompra)}</td>
+                    	<td style={{minWidth:'130px', padding:'5px',border: '2px solid rgb(171,178,185)'}}>{item.proveedor}</td>
+                    	<td style={{minWidth:'150px',border: '2px solid rgb(171,178,185)'}}>{item.refaccion}</td>
+                    	<td style={{minWidth:'160px',border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td>
+                    	<td style={{padding:'15px',border: '2px solid rgb(171,178,185)'}}>{formatNumber(item.precio)}</td>
+                    	<td style={{minWidth:'100px', padding:'5px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.foliooc}</td>
+						<td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fecha)}</td>
+						{(props.tipo == "1") ? 
+							<td><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccion(item.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							:<></>
+						}				                    
+                	</tr>                
+        	))}	
+            <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
+        </table> 				
+	</div>
  
  
 

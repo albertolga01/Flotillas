@@ -155,12 +155,15 @@ function Nuevovehiculo(props) {
 
 	return (
 		<div className="container ">
-			<NabvarRe titulo="Nuevo Vehículo"/>
+			<div className='titulos'>
+				<NabvarRe titulo="Nuevo Vehículo"/>
+			</div>
+			
 
 			<div className="row p-3">
 				<div style={{ margin: 'auto' }} >
 					<br></br>
-					<div style={{ backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '600px', margin: 'auto', padding: '12px' }}>
+					<div className='formulario-nuevoVehiculo'>
 						<table>
 							<tr>
 								<th colSpan="2" style={{ borderRadius: '20px 20px 0px 0px', height: '30px', fontFamily: 'Roboto, sans-serif', fontSize: '10px' }}>
@@ -170,7 +173,7 @@ function Nuevovehiculo(props) {
 
 							<tr>
 								<td><label>Tipo de Vehículo:</label><br></br>
-									<select id="tipoid" style={{ width: '556px', height: '25px' }} onChange={(e) => setListadepartamento(e.target.value)}>
+									<select id="tipoid" className='input-nuevoVehiculo' onChange={(e) => setListadepartamento(e.target.value)}>
 										{dptos.map(item => (
 											<option value={item.dptoid}> {item.name}</option>))
 										}
@@ -178,37 +181,37 @@ function Nuevovehiculo(props) {
 								</td>
 							</tr>
 							<tr>
-								<td><label>Modelo (Año):</label><br /><input id="modelo" style={{ width: '556px', height: '20px' }} /></td>
+								<td><label>Modelo (Año):</label><br /><input id="modelo" className='input-nuevoVehiculo' /></td>
 								 
 							</tr>
 							<tr>
-								<td><label>Responsable:</label><br /><input id="responsable" style={{ width: '556px', height: '20px' }} /></td>
+								<td><label>Responsable:</label><br /><input id="responsable" className='input-nuevoVehiculo'/></td>
 								 
 							</tr>
 							<tr>
 								<td>
 									<label>Número de vehículo</label><br />
-									<input id="numvehiculo" style={{ width: '556px', height: '20px' }}   />
+									<input id="numvehiculo" className='input-nuevoVehiculo'  />
 								</td> 
 							</tr>
 							<tr>
 								<td> 
 									<label>Serie del vehículo:</label><br />
-									<input id="serievehiculo" style={{ width: '556px', height: '20px' }}   />
+									<input id="serievehiculo" className='input-nuevoVehiculo'   />
 								</td> 
 							</tr>
 
 							<tr>
 								<td>
 									<label>Serie del motor:</label><br />
-									<input id="seriemotor" style={{ width: '556px', height: '20px' }}   />
+									<input id="seriemotor" className='input-nuevoVehiculo'   />
 								</td> 
 							</tr>
 
 							<tr>
 								<td>
 									<label>Uso:</label><br />
-									<input id="tipouso" style={{ width: '556px', height: '20px' }}   />
+									<input id="tipouso" className='input-nuevoVehiculo'  />
 								</td> 
 							</tr>
 
@@ -216,7 +219,7 @@ function Nuevovehiculo(props) {
 								<td>
 									<label>Empresa:</label><br />
 									
-									<select id="empresa"style={{ width: '556px', height: '25px' }} onChange={(e) => setListaEmpresas(e.target.value)}>
+									<select id="empresa" className='input-nuevoVehiculo' onChange={(e) => setListaEmpresas(e.target.value)}>
 										{empresas.map(item => (
 											<option value={item.id}> {item.nombre}</option>))
 										}</select>
@@ -226,18 +229,18 @@ function Nuevovehiculo(props) {
 							
 
 							<tr>
-								<td><label>Descripción:</label><br /><input id="descripcion" style={{ width: '556px', height: '20px' }} /></td>
+								<td><label>Descripción:</label><br /><input id="descripcion" className='input-nuevoVehiculo' /></td>
 								<td><input value={props.dptoid} hidden="hidden" /></td>
 							</tr>
 							
 							<tr>
-								<td><label>GPS:</label><br /><input id="gps" style={{ width: '556px', height: '20px' }} /></td>
+								<td><label>GPS:</label><br /><input id="gps" className='input-nuevoVehiculo' /></td>
 								 
 							</tr>
 							<tr>
 								<td>
 									<label>Guardado por:</label><br />
-									<input style={{ width: '556px', height: '20px' }} value={props.name} />
+									<input className='input-nuevoVehiculo' value={props.name} />
 								</td>
 
 								<td><input value={props.dptoid} hidden="hidden" /></td>
@@ -246,7 +249,7 @@ function Nuevovehiculo(props) {
 							<tr>
 								<td>
 									<label>Imagen:</label><br />
-									<input id="img-vehi" type="file" style={{ width: '556px'}} />
+									<input id="img-vehi" type="file" className='input-img' />
 								</td>
 							</tr>
 							
@@ -259,7 +262,7 @@ function Nuevovehiculo(props) {
 
 							<tr>
 								<td></td>
-								<td> <textarea rows="2" id="observaciones" style={{ width: '556px', resize: 'none' }}></textarea></td>
+								<td> <textarea rows="2" id="observaciones" className='input-textarea'></textarea></td>
 							</tr>
 
 							<tr>

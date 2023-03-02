@@ -170,9 +170,12 @@ function Expediente(props) {
 	return (
 
 		<div className="container ">
-		 	<NabvarRe titulo="Expediente" />
+			<div className='titulos'>
+				<NabvarRe titulo="Expediente" />
+			</div>
+		 	
 			<div className="row p-3">
-				<div style={{ width: '30%' }}>
+				<div className='formularios'>
 						<div className="card p-2 mt-2 border-secondary">
 						{/* 
 							<h5>Expediente</h5>
@@ -191,16 +194,16 @@ function Expediente(props) {
 							<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 						*/}
 							
-							<Documents flotilla={props.flotilla} getDocumentosTodos={getDocumentosTodos} />
+							<Documents vehiculos={props.vehiculos} flotilla={props.flotilla} getDocumentosTodos={getDocumentosTodos} />
 						</div> 
 				</div>
 
-				<div style={{ width: '70%' }}>
+				<div className='Divtablas'>
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'100%'}} >
-						<h5>Expediente</h5>
+						<h5 style={{textAlign:'center'}}>Expediente</h5>
 						
 						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
-							<span>Vehículo: {lista}</span>
+							<span style={{marginTop: '10px'}}>Vehículo: {lista}</span>
 							
 							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
 							<option value="0">Todos</option>

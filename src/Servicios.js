@@ -238,10 +238,13 @@ function Servicios(props) {
 	return (
 
 		<div className="container ">
-		 	<NabvarRe titulo="Servicios" />
+			<div className='titulos'>
+				<NabvarRe titulo="Servicios" />
+			</div>
+		 	
 			<div className="row p-3">
 			{(props.tipo == "1") ? 
-				<div style={{ width: '30%' }}>
+				<div className='formularios'>
 				<div className="card p-2 mt-2 border-secondary">
 				{/* 
 					<h5>Expediente</h5>
@@ -267,59 +270,60 @@ function Servicios(props) {
 			}
 			
 
-				<div style={{ width: '70%' }}>
-					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'650px'}} >
-						<h5>Servicios</h5>
-						
-						<div id="display-expediente"  style={{width:'100%', marginBottom: '5px'}} align="left">
-									<h6>Vehículo:</h6>
-								<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-						<option value="0">Todos</option>
+				<div className='Divtablas'>
+					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'100%',width:'110%'}} >
+						<h5 style={{textAlign:'center'}}>Servicios</h5>
+						<div style={{display:'flex',alignItems:'center',marginBottom:'5px',marginBottom:'10px',flexWrap:'wrap'}}>
+							<h6 style={{marginTop: '10px'}}>Vehículos:</h6>
+							<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'70%', marginTop:'5px',marginLeft:'5px'}}>
+								<option value="0">Todos</option>
 										
 										{listaSv.map(item => ( 
 											<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
 											))}
 								</select>
+								<button onClick={onDownload} class="btn btn-outline-success btn-sm" style={{ marginLeft: '10px', width:'150px',marginTop:'10px'}}> Exportar excel </button>   
 						</div>
-						<button onClick={onDownload} class="btn btn-outline-success btn-sm" style={{ marginBottom: '5px', width:'150px'}}> Exportar excel </button>   
+										
+						
 						<div style={{height: "100%", overflow: "scroll"}}>
 						
 							<table id="tbl-documentos" style={{width: "100%"}}  ref={tableRef}>
 								<tr>
-									<th class="header" style={{textAlign:'center'}}>Vehículo</th>
-									<th class="header" style={{textAlign:'center'}}>Servicio</th>
-									<th class="header" style={{textAlign:'center'}}>Odomentro</th>
-									<th class="header" style={{textAlign:'center'}}>Kilometraje Próx. Servicio</th>
-									<th class="header" style={{textAlign:'center'}}>Precio</th>
-									<th class="header" style={{textAlign:'center'}}>Fecha</th>
-									<th class="header" style={{textAlign:'center'}}>Próximo</th>
-									<th class="header" style={{textAlign:'center'}}>Factura</th>
-									<th class="header" style={{textAlign:'center'}}>Cotización</th>
-									<th class="header" style={{textAlign:'center'}}>Orden de Compra</th>
-									<th class="header" style={{textAlign:'center'}}>Actualizar</th>
-									<th class="header" style={{textAlign:'center'}}>Gastos</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Vehículo</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Servicio</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Odomentro</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Kilometraje Próx. Servicio</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Precio</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Fecha</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Próximo</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Factura</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Cotización</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Orden de Compra</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Actualizar</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Gastos</th>
 								</tr>
 								{listas.map(item => (
-								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-									<td  style={{ minWidth:'220px'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
-									<td style={{textAlign:'left', padding:'5px', minWidth:'280px'}}>{item.servicio}</td>
-									<td  ><input defaultValue={item.odometro} id={"odometro"+item.id} style={{width:'60px'}} ></input>KM</td>
-									<td>{item.kilometraje} KM</td>
-									<td>${item.precio}</td>
-									<td style={{textAlign:'center'}}>{formatDate(item.fecha)}</td>
+								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'11px'}}>
+									<td  style={{ minWidth:'180px',border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
+									<td style={{textAlign:'left', padding:'5px', minWidth:'180px',border: '2px solid rgb(171,178,185)'}}>{item.servicio}</td>
+									<td style={{border: '2px solid rgb(171,178,185)'}} ><input defaultValue={item.odometro} id={"odometro"+item.id} style={{width:'60px'}} ></input>KM</td>
+									<td style={{border: '2px solid rgb(171,178,185)'}}  align='center'>{item.kilometraje} KM</td>
+									<td style={{border: '2px solid rgb(171,178,185)'}}>${item.precio}</td>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{formatDate(item.fecha)}</td>
 									{(item.fechaproximo != null)?
-									<td style={{textAlign:'center'}}>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
 									<input type="date" defaultValue={item.fechaproximo} id={"fechaproximo"+item.id} ></input>
 									</td> 
 									:
-									<td style={{textAlign:'center'}}>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
 										 
 									</td>
 									}
 									
-									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
-									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
-									<td>{item.foliooc}</td>
+									<td style={{textAlign:'center', minWidth:'130px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
+									<td style={{textAlign:'center', minWidth:'130px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
+									<td style={{border: '2px solid rgb(171,178,185)'}}>{item.foliooc}</td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarGastos(item.id, item.vehiculo, item.servicio)} style={{width:'100%' }}><FaExternalLinkAlt /></button></td>
 								</tr>

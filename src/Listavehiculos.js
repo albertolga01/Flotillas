@@ -344,8 +344,11 @@ async function getTiposCorreo() {
   return (
   
     <div className="container ">
+		<div className='titulos'>
+			<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Vehículos"/>  
+		</div>
      
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Vehículos"/>    
+  
 <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
  
 	 
@@ -355,7 +358,7 @@ async function getTiposCorreo() {
 	  </div>
  <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
                 <table id="productstable"  style={{width:'100%'}} > 
-                    <tr>
+                    <tr style={{borderWidth:'1px'}}>
                         <th class="header">Folio</th>
                         <th class="header">Vehículo</th>
                         <th class="header">Modelo</th> 
@@ -378,24 +381,24 @@ async function getTiposCorreo() {
 
                     {  
                     listav.map(item => ( 
-                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-                    <td className='id-orden' align='center'>{item.vehiculoid }</td>
-                    <td style={{minWidth:'250px'}}>{item.descripcion + " " + item.numvehiculo}</td>
-                    <td>{item.modelo}</td>
-                    <td><input defaultValue={item.responsable} id={"responsable"+item.vehiculoid} ></input></td>
-                    <td  align='center'>{item.serievehiculo}</td>
-                    <td  align='center'>{item.seriemotor}</td>
-                    <td><input defaultValue={item.tipouso} id={"tipouso"+item.vehiculoid}  ></input></td>
-                    <td><select id={"empresa"+item.vehiculoid} style={{ width: '210px', height: '25px' }} onChange={(e) => setListaEmpresas(e.target.value)}>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9 !important', fontSize:'12px'}}>
+                    <td style={{border: '2px solid rgb(171,178,185)'}} className='id-orden' align='center'>{item.vehiculoid }</td>
+                    <td style={{minWidth:'180px',border: '2px solid rgb(171,178,185) '}}>{item.descripcion + " " + item.numvehiculo}</td>
+                    <td  style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{item.modelo}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}><input defaultValue={item.responsable} id={"responsable"+item.vehiculoid} ></input></td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}  align='center'>{item.serievehiculo}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}} align='center'>{item.seriemotor}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}><input defaultValue={item.tipouso} id={"tipouso"+item.vehiculoid}  ></input></td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}><select id={"empresa"+item.vehiculoid} style={{ width: '200px', height: '25px' }} onChange={(e) => setListaEmpresas(e.target.value)}>
 										<option value={item.idempresa}> {item.empresa}</option>
 										{empresas.map(item => (
 											<option value={item.id}> {item.nombre}</option>))
 										}</select></td>
-                    <td>{item.placas}</td>
-                    <td><input defaultValue={item.gps} id={"gps"+item.vehiculoid}  style={{ width: '60px'}}></input></td>
-                    <td><input defaultValue={item.numvehiculo} id={"numerovehiculo"+item.vehiculoid} style={{ width: '60px' }}></input></td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{item.placas}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}><input defaultValue={item.gps} id={"gps"+item.vehiculoid}  style={{ width: '60px'}}></input></td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}><input defaultValue={item.numvehiculo} id={"numerovehiculo"+item.vehiculoid} style={{ width: '60px' }}></input></td>
                     {/*<td><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/Vehiculos/" + item.icon}>{item.icon}</a></td>
-					*/}<td><input defaultValue={item.pernota} id={"pernota"+item.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></td>
+					*/}<td style={{border: '2px solid rgb(171,178,185)'}}><input defaultValue={item.pernota} id={"pernota"+item.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></td>
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarVehiculo(item.vehiculoid)} style={{minWidth:'100%' }}><BsArrowRepeat /></button></td>
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => envioCorreo(item.vehiculoid)}  style={{minWidth:'100%' }}><BsEnvelopeFill /></button></td>
 					<td><button  className='btn btn-outline-success btn-sm' onClick={() => envioUsuario(item.vehiculoid)}  style={{minWidth:'100%' }}><BsFillPersonPlusFill /></button></td>

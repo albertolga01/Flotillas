@@ -235,9 +235,12 @@ function Dictamenes(props) {
 	return (
 
 		<div className="container ">
-		 	<NabvarRe titulo="Dictámenes" />
+			<div className='titulos'>
+				<NabvarRe titulo="Dictámenes" />	
+			</div>
+		 	
 			<div className="row p-3">
-				<div style={{ width: '30%' }}>
+				<div className='formularios'>
 						<div className="card p-2 mt-2 border-secondary">
 						{/* 
 							<h5>Expediente</h5>
@@ -260,7 +263,7 @@ function Dictamenes(props) {
 						</div> 
 				</div>
 
-				<div style={{ width: '70%' }}>
+				<div className='Divtablas'>
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'450px'}} >
 						<h5>Dictámenes</h5>
 
@@ -312,33 +315,37 @@ function Dictamenes(props) {
 									<th class="header" style={{textAlign:'center'}}>Archivo</th>
 								</tr>
 								{listas.map(item => (
-								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}> 
-									<td style={{minWidth:'280px'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
-									<td style={{textAlign:'center', minWidth:'180px'}}>{item.nombre}</td>
-									<td style={{textAlign:'center', minWidth:'280px'}}>{item.descripcion}</td>
-									<td style={{textAlign:'center'}}>{formatDate(item.fecha)}</td>
-									<td style={{textAlign:'center'}}>{formatDate(item.fechafinal)}</td>
-									<td style={{ minWidth:'280px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
+								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'11px'}}> 
+									<td style={{minWidth:'200px',border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
+									<td style={{textAlign:'center', minWidth:'80px',border: '2px solid rgb(171,178,185)'}}>{item.nombre}</td>
+									<td style={{textAlign:'center', minWidth:'110px',border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{formatDate(item.fecha)}</td>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{formatDate(item.fechafinal)}</td>
+									<td style={{ minWidth:'180px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 								</tr>
 								))}
 							</table>
 						</div>
 						 
 					</form>
-					<div style={{ width: '100%' }}> 
-	 <div className="card p-2 mt-2 border-secondary"  style={{ height:'450px', overflow:'scroll'}}>
-	 
-		<h6>Proximo a vencer (6 meses, 1 año, 3 años, 5 años, 10 años)</h6>
-						<h6>Vigencia</h6>
-						<select  id="vigenciaf"  onChange={(e) => getDictamenesVehiculoProximo(e.target.value)} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-                            <option value="2">2 Meses</option>
-                            {/* <option value="6">6 Meses</option>
-                            <option value="12">1 año</option>
-                            <option value="36">3 años</option>
-                            <option value="60">5 años</option>
-                            <option value="120">10 años</option>*/}
-                             
-						</select>
+					<div style={{ width: '100%' }}> 					
+	 					<div className="card p-2 mt-2 border-secondary"  style={{ height:'450px', overflow:'scroll'}}>
+							<h6>Proximo a vencer (6 meses, 1 año, 3 años, 5 años, 10 años)</h6>
+							<div style={{display:'flex',alignItems:'center',marginBottom:'10px'}}>						 	
+								<h6 style={{marginTop: '10px'}}>Vigencia:</h6>
+								<select  id="vigenciaf"  onChange={(e) => getDictamenesVehiculoProximo(e.target.value)} className="form-control"  style={{width:'100%', marginTop:'5px',marginLeft:'5px'}}>
+                            		<option value="2">2 Meses</option>
+                            		{/* <option value="6">6 Meses</option>
+                            			<option value="12">1 año</option>
+                            			<option value="36">3 años</option>
+                            			<option value="60">5 años</option>
+                            			<option value="120">10 años</option>*/
+									}                             
+								</select>
+							</div>
+						
+						
+					
 						<div style={{height: "300px", overflow: "scroll"}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr > 
@@ -350,13 +357,13 @@ function Dictamenes(props) {
 									<th class="header" style={{textAlign:'center'}}>Archivo</th>
 								</tr>
 								{listasvd.map(item => (
-								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}> 
-									<td style={{minWidth:'280px'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
-									<td style={{textAlign:'center', minWidth:'180px'}}>{item.nombre}</td>
-									<td style={{minWidth:'280px'}}>{item.descripcion}</td> 
-									<td style={{textAlign:'center'}}>{format(item.fecha)}</td>
-									<td style={{textAlign:'center'}}>{format(item.fechafinal)}</td>
-									<td style={{ minWidth:'280px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
+								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'11px'}}> 
+									<td style={{minWidth:'190px',border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
+									<td style={{textAlign:'center', minWidth:'80px',border: '2px solid rgb(171,178,185)'}}>{item.nombre}</td>
+									<td style={{minWidth:'110px',border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td> 
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{format(item.fecha)}</td>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{format(item.fechafinal)}</td>
+									<td style={{ minWidth:'180px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoverificacion}>{item.documentoverificacion}</a></td>
 								</tr>
 								))}
 							</table>

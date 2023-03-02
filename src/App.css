@@ -77,7 +77,125 @@ color: white;
 }
 
 .header{    
-  padding: 10px; 
+  padding: 5px; 
   background-color: #0071ce38; 
-  border: 1px solid;
+  border: .5px solid;
+  font-size: 13px;
+  text-align: center;
+}
+
+
+.formulario-nuevoVehiculo{
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 600px;
+  margin: auto;
+  padding: 12px;
+}
+
+.input-nuevoVehiculo{
+  width: 556px;
+  height: 25px;
+}
+.input-img{
+  width: 556px;
+}
+.input-textarea{
+  width: 556px;
+  resize: none;
+}
+
+.border{
+  border: 2px solid rgb(171,178,185) !important;
+}
+.formularios{
+  width: 30% !important;
+}
+.Divtablas{
+  width: 70% !important;
+}
+.apartado-modal{
+  width:100%;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  float: right;
+}
+#botonMulta{
+  float: right;
+}
+.apartado-filtro{
+  clear: both;
+  width:70%;
+  padding-top: 10px;
+}
+.h6Multas{
+  margin-top: 10px;
+  width: 25%;
+}
+
+
+@media (max-width: 740px){
+  .formularios{
+    width: 100% !important;
+  }
+  .Divtablas{
+    width: 100% !important;
+  }
+  .tabla-complementos{
+    overflow: scroll;
+  }
+  .label-filtro{
+    width: 100%;
+  }
+  #input-fecha{
+    margin-left: 0px !important;
+    width: 47% !important;
+  }
+  #input-fecha-final{
+    width: 47% !important;
+  }
+  .h6-titulo{
+    margin-left: 0px !important;
+    margin-top: 10px;
+    width: 25%;
+  }
+  #vehiculof{
+    width: 70% !important;
+    margin-top: 10px;
+  }
+  #boton-Buscar{
+    width: 100%;
+    margin-top: 10px ;
+  }
+  .apartado-filtro{
+    clear: both;
+    width:100%;
+    padding-top: 10px;
+  }
+  .h6Multas{    
+    width: 30%;
+  }
+  .bm-burger-button{
+    left: 15px !important;
+    top: 13px !important;
+  }
+  .titulos{
+    margin-left: 50px;
+  }
+  .formulario-nuevoVehiculo{
+    width: 100%;
+  }
+  .input-nuevoVehiculo{
+    width: 100%;
+    height: 25px;
+  }
+  .input-img{
+    width: 100%;
+  }
+  .input-textarea{
+    width: 180%;
+    resize: none;
+  }
+ 
 }

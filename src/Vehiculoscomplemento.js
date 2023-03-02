@@ -169,10 +169,13 @@ function Vehiculoscomplemento(props) {
 	return (
 		<div className="container ">
 			<input id='input-cotizacion' type='file' style={{ display: 'none' }} ></input>
-			<NabvarRe titulo="Complementos del Vehículo" />
+			<div className='titulos'>
+				<NabvarRe titulo="Complementos del Vehículo" />
+			</div>
+			
 			<div className="row p-3">
 				{(props.tipo == "1") ? 
-				<div style={{ width: '30%'}}>
+				<div className='formularios'>
 					 
 				<div className="card p-2 mt-2 border-secondary" style={{height:'530px',overflow:'scroll'}}>
 					<h5>Vehículo</h5>
@@ -208,22 +211,25 @@ function Vehiculoscomplemento(props) {
 				}
 				
 
-				<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'85vh', overflow:'scroll'}}>
-						<h5>Historial de complementos</h5>
+				<div className='Divtablas'>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{  overflow:'scroll'}}>
+						<h5 style={{textAlign:'center'}}>Historial de complementos</h5>
 
-						<h6>Vehiculo</h6>
-						
-						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-						<option value="0">Todos</option>
-						{props.vehiculos.map(item => ( 
+						<div style={{display:'flex',alignItems:'center',marginBottom: '20px'}}>
+							<h6 style={{marginTop: '10px'}}>Vehiculos:</h6>
+							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px',marginLeft:'5px'}}>
+								<option value="0">Todos</option>
+									{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 
-						))}
-                             
-						</select>
+									))}                             
+							</select>
+						</div>
+						
+						
+		
 
-						<table id="productstable"  style={{width:'100%'}}> 
+						<table id="productstable" className='tabla-complementos'> 
                     <tr>
 					<th class="header">Folio</th>
                         <th class="header" style={{textAlign:'center'}}>Vehiculo</th>
@@ -237,15 +243,15 @@ function Vehiculoscomplemento(props) {
 
                     {  
                     listap.map(item => ( 
-                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-                    <td className='id-orden'  align='center' >{item.folio}</td>
-                    <td className='id-orden' style={{minWidth:'220px'}}>{item.vehiculo + item.modelo + " " + item.numvehiculo}</td>
-                    <td  align='center'>{item.capacidad}</td>
-                    <td>{item.serie}</td>
-					<td  align='center' style={{minWidth:'220px'}}>{item.descripcion}</td>  
-					<td style={{minWidth:'220px'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/DocumentoTanque/" + item.factura}>{item.factura}</a></td> 
-                    <td>{format(item.fechafactura)}</td>
-                    <td>{format(item.fechacaptura)}</td>
+                     <tr id="tabletr" style={{border: '.5px solid #ABB2B9', fontSize:'11px'}}>
+                    <td className='id-orden' style={{border: '2px solid rgb(171,178,185)'}}  align='center' >{item.folio}</td>
+                    <td className='id-orden' style={{minWidth:'150px',border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + item.modelo + " " + item.numvehiculo}</td>
+                    <td style={{minWidth:'30px',border: '2px solid rgb(171,178,185)'}} align='center'>{item.capacidad}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}} align='center'>{item.serie}</td>
+					<td  align='center' style={{minWidth:'110px',border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td>  
+					<td style={{minWidth:'150px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/DocumentoTanque/" + item.factura}>{item.factura}</a></td> 
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechafactura)}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechacaptura)}</td>
                     
                     
                     

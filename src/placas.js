@@ -176,10 +176,13 @@ function Placas(props) {
 	return (
 		<div className="container ">
 			<input id='input-cotizacion' type='file' style={{ display: 'none' }} ></input>
-			<NabvarRe titulo="Placas" />
+			<div className='titulos'>
+				<NabvarRe titulo="Placas" />
+			</div>
+			
 			<div className="row p-3">
 			{(props.tipo == "1") ? 
-				<div style={{ width: '30%'}}>
+				<div className='formularios'>
 					 
 					<div className="card p-2 mt-2 border-secondary" style={{ overflow:'scroll'}}>
 						<h5>Placas</h5>
@@ -211,19 +214,19 @@ function Placas(props) {
 				</div>
 				: <></>
 				}
-				<div style={{ width: '70%' }}>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'380px', overflow:'scroll'}}>
-						<h5>Historial de placas</h5>
-
-						<h6>Vehículo</h6>
-						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginBottom:'5px'}}>
-						<option value="0">Todos</option>
-						{props.vehiculos.map(item => ( 
+				<div className='Divtablas'>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'320px', overflow:'scroll'}}>
+						<h5 style={{textAlign:'center'}}>Historial de placas</h5>
+						<div style={{display:'flex',alignItems:'center'}}>
+							<h6 style={{marginTop: '10px'}}>Vehículos:</h6>
+							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginBottom:'5px',marginLeft:'5px'}}>
+								<option value="0">Todos</option>
+								{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
-
-						))}
-                             
-						</select>
+								))}                             
+							</select>
+						</div>
+				
 
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
@@ -236,10 +239,10 @@ function Placas(props) {
                     {  
                     listap.map(item => ( 
                      <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-                    <td className='id-orden' >{item.placas}</td>
-                    <td className='id-orden' >{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo }</td>
-                    <td>{format(item.fechainicial)}</td>
-                    <td>{format(item.fechafinal)}</td> 
+                    <td className='id-orden' style={{border: '2px solid rgb(171,178,185)'}} >{item.placas}</td>
+                    <td className='id-orden' style={{border: '2px solid rgb(171,178,185)'}} >{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo }</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechainicial)}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechafinal)}</td> 
                     
                 </tr>
                 
@@ -249,7 +252,7 @@ function Placas(props) {
 					</form>
 
 					<div style={{ width: '100%' }}>
-					<div className="card p-2 mt-2 border-secondary"  style={{ height:'180px', overflow:'scroll'}}>
+					<div className="card p-2 mt-2 border-secondary"  style={{ height:'280px', overflow:'scroll'}}>
 						<h5>Próximo a vencer (2 Meses) </h5>
 						<table id="productstable"  style={{width:'100%'}}> 
                     <tr>
@@ -262,10 +265,10 @@ function Placas(props) {
                     {  
                     listapv.map(item => ( 
                      <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-                    <td className='id-orden' >{item.placas}</td>
-					<td>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
-                    <td>{format(item.fechainicial)}</td>
-                    <td>{format(item.fechafinal)}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}} className='id-orden' >{item.placas}</td>
+					<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechainicial)}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechafinal)}</td>
                    
                     
                 </tr>

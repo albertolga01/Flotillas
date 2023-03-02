@@ -267,120 +267,105 @@ function Rendimiento(props) {
   return (
   
     <div className="container ">
-     
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Rendimiento"/>    
-<div style={{width:'100%'}} align="right">
-				<button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva carga</button>
-	  </div>
-<div style={{display:'flex', flexDirection:'row', width:'100%'}}>
+    	<div className='titulos'>
+			<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Rendimiento"/> 
+		</div>
+   
+	<div className='apartado-modal'>
+		<button onClick={openModal} class="btn btn-outline-success btn-sm" id='botonMulta'>Nueva carga</button>
+	</div>
 
-
-     
+	<div className='apartado-filtro'>
+		<div style={{display:'flex',alignItems:'center'}}>
+			<h6 className='h6Multas' >Filtrar por fecha:</h6>
+			<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '32%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
+			<input id="input-fecha-final" type="date"  onChange={() => getCargasDia()} style={{width: '32%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
+		</div>
+		<div style={{display:'flex',alignItems:'center'}}>
+			<h6 className='h6Multas' >Vehículo:</h6>
+			<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control" style={{width:'65%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>						
+				<option value="0">Todos</option>
+				{props.vehiculos.map(item => ( 
+					<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+				))}                             
+			</select>
+		</div>
+	</div>
 	 
-<div style={{width:'100%'}}>
-<label>Filtrar por fecha: </label> 
-	<br></br>
-<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-&nbsp;&nbsp;&nbsp;<input id="input-fecha-final" type="date"  onChange={() => getCargasDia()}style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<br></br><label>Vehículo:</label>
-						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
+ 	<div  style={{overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
+        <table id="productstable"  style={{width:'100%'}}> 
+            <tr>
+				<th class="header">Folio</th>
+				<th class="header">Vehículo</th>
+				<th class="header">Fecha Carga</th>
+				<th class="header">Litros</th>
+				<th class="header">Importe</th>
+				<th class="header">Kilometraje Inicial</th>
+				<th class="header">Kilometraje Final</th>
+				<th class="header">Ticket</th>
+				<th class="header">Rendimiento</th> 
+			</tr>
+            {  
+                lista.map(item => ( 
+                    <tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
+                    	<td className='id-orden' >{item.folio}</td>
+						<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatDate(item.fechacarga)}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.litros)}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatNumber(item.importe)}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.kilometraje)}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.kilometrajefinal)}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.ticket}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>                    	    
+                	</tr>                
+        	))}	
+            <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
+        </table> 
+		<br></br>
+		<div className='apartado-modal'>
+			<button onClick={openModalNv} class="btn btn-outline-success btn-sm" id='botonMulta'>Nuevo Registro</button>
+		</div>	
+		<div className='apartado-filtro'>
+			<div style={{display:'flex',alignItems:'center'}}>
+				<h6 className='h6Multas' >Fecha:</h6>
+				<input id="input-fecha-rendimiento-mensual" type="date" onChange={() => getRendimientoMensual()}  style={{width: '32%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
+			</div>	
+		</div>
 						
-						<option value="0">Todos</option>
-						{props.vehiculos.map(item => ( 
-									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
-
-						))}
-                             
-						</select>
-
-</div>
-
-	  </div>
-
-	 
- <div  style={{overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-	 
-                <table id="productstable"  style={{width:'100%'}}> 
-                    <tr>
-                        <th class="header">Folio</th>
-                        <th class="header">Vehículo</th>
-                        <th class="header">Fecha Carga</th>
-                        <th class="header">Litros</th>
-                        <th class="header">Importe</th>
-                        <th class="header">Kilometraje Inicial</th>
-                        <th class="header">Kilometraje Final</th>
-                        <th class="header">Ticket</th>
-                        <th class="header">Rendimiento</th> 
-                    </tr>
-
-                    {  
-                    lista.map(item => ( 
-                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.folio}</td>
-					<td>{item.vehiculo}</td>
-                    <td>{formatDate(item.fechacarga)}</td>
-                    <td>{formatN(item.litros)}</td>
-                    <td>{formatNumber(item.importe)}</td>
-                    <td>{formatN(item.kilometraje)}</td>
-                    <td>{formatN(item.kilometrajefinal)}</td>
-                    <td>{item.ticket}</td>
-                    <td>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>
-                    <td></td>
-                    
-                </tr>
-                
-        ))}	
-                        <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
-                </table> 
-				<br></br>
-				<div style={{width:'100%'}} align="right">
-					<button onClick={openModalNv} class="btn btn-outline-success btn-sm">Nuevo Registro</button>
-	  			</div>
-				<br></br>
-
-
-<label>Fecha: </label> 
-	<br></br>
-<input id="input-fecha-rendimiento-mensual" type="date" onChange={() => getRendimientoMensual()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-				
-				<table id="productstable"  style={{width:'100%'}}> 
-                    <tr>
-                        <th class="header">Folio</th>
-                        <th class="header">Vehículo</th>
-                        <th class="header">Modelo</th>
-                        <th class="header">Uso</th>
-                        <th class="header">Inicial</th>
-                        <th class="header">Final</th>
-                        <th class="header">Total</th>
-                        <th class="header">Litros</th>
-                        <th class="header">Importe</th>
-                        <th class="header">Rendimiento</th>
-                        <th class="header">Costo KM</th>
-                    </tr>
-
-                    {  
-                    listaRendimientoM.map(item => ( 
-                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td>{item.folio}</td>
-					<td>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
-                    <td>{item.modelo}</td>
-                    <td>{item.tipouso}</td>
-                    <td>{item.kilometrajeinicial}</td>
-                    <td>{item.kilometrajefinal}</td>
-                    <td>{item.total}</td>
-                    <td>{item.litros}</td>
-                    <td>{item.importe}</td>
-                    <td>{item.rendimiento}</td>
-                    <td>{item.costokm + " Kms / Litro"}</td>
-                    <td></td>
-                    
-                </tr>
-                
-        ))}	
-                        <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
-                </table> 
-				<br></br>
-	 </div>
+		<table id="productstable"  style={{width:'100%'}}> 
+            <tr>
+				<th class="header">Folio</th>
+				<th class="header">Vehículo</th>
+				<th class="header">Modelo</th>
+				<th class="header">Uso</th>
+				<th class="header">Inicial</th>
+				<th class="header">Final</th>
+				<th class="header">Total</th>
+				<th class="header">Litros</th>
+				<th class="header">Importe</th>
+				<th class="header">Rendimiento</th>
+				<th class="header">Costo KM</th>
+			</tr>
+			{  
+                listaRendimientoM.map(item => ( 
+                	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
+                    	<td>{item.folio}</td>
+						<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.modelo}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.tipouso}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.kilometrajeinicial}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.kilometrajefinal}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.total}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.litros}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.importe}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.rendimiento}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.costokm + " Kms / Litro"}</td>                                        
+                	</tr>                
+        	))}	
+            <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
+        </table> 
+		<br></br>
+	</div>
  
  
 

@@ -222,120 +222,64 @@ function Gastosvehiculo(props) {
   return (
   
     <div className="container ">
-     
-<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Gastos por vehículo"/>    
-<div style={{display:'flex', flexDirection:'row', width:'100%'}}>
+    	<div className='titulos'>
+			<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Gastos por vehículo" className="titulos"/>   
+		</div>
+	
+
+	<div style={{display:'flex',alignItems:'center',flexWrap:'wrap'}}>
+		<label style={{fontSize:'14px',fontWeight:'500'}} className="label-filtro">Filtrar por fecha: </label> 
+		<input id="input-fecha" type="date"  style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'5px'}}/>
+		<input id="input-fecha-final" type="date"   style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'5px'}}/>
+		<h6 style={{marginLeft:'15px'}} className="h6-titulo">Vehículo:</h6>	
+		<select  id="vehiculof"   className="form-control"  style={{width:'45%',marginLeft:'5px'}}>
+			<option value="0">Todos</option>
+			{props.vehiculos.map(item => (  
+				<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
+			))}                             
+		</select>
+		<button className="btn btn-outline-success btn-sm" onClick={() => gastosVehiculo()} style={{marginLeft:'5px'}} id='boton-Buscar'>Buscar</button>
+	</div>
 
 
-     
-	 
-<div style={{width:'100%'}}>
-<label>Filtrar por fecha: </label> 
-{/* onChange={() => getCargasDia()} */}
-&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-&nbsp;&nbsp;&nbsp;<input id="input-fecha-final" type="date"   style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-<br></br><label>Vehículo:</label>
-						<select  id="vehiculof"   className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>
-						<option value="0">Todos</option>
-						{props.vehiculos.map(item => (  
-									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
-
-						))}
-                             
-						</select>
-						<button className="btn btn-outline-success btn-sm" 
-									onClick={() => gastosVehiculo()} >
-										 Buscar
-									</button>
-									
-</div> 
-
-
-<div style={{width:'100%'}} align="right">
- {/* <button onClick={openModal} class="btn btn-outline-success btn-sm">Nueva carga</button>
-    
-	 <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nueva carga</h2>
-        
-        <div>Vehiculo</div>
-		  <select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
-		  {listav.map(item => ( 
-                     <option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
-
-  		  ))}
-		  </select>
-		  <div>Fecha de carga</div>
-		  <input id="fechacarga" type="date" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje inicial</div>
-		  <input  id="kilometraje" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Kilometraje final</div>
-		  <input  id="kilometrajefinal" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Litros</div>
-		  <input id="litros" type="number" style={{width:'100%', marginTop:'5px'}}/>
-		  <div>Importe</div>
-		  <input id="importe" type="number" style={{width:'100%', marginTop:'5px'}} />
-		  
-        
-	<br></br>
-	<br></br>
-		<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button onClick={() => addCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
-      </Modal>
-	 
-	 */}
-		  
-	  </div>
-	  </div>
- <div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-	 
-                <table id="productstable"  style={{width:'100%'}}> 
-                    <tr> 
-                        <th class="header">Vehículo</th>
-						<th class="header">Fecha</th>  
-                        <th class="header" style={{textAlign:'center'}}>Descripción</th>
-						<th class="header" style={{textAlign:'center'}}>Precio</th>   
-                    </tr>
-
-                    {  
-                    lista.map(item => ( 
-                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
-					<td style={{textAlign:'center'}}>{format(item.fecha)}</td>
-					<td>{item.descripcion}</td>
-					<td style={{textAlign:'left'}}>${item.precio}</td> 
-                      
-                    
-                </tr>
-                ))}	 
-                </table>
-				<h3>Servicios</h3>
-				<table id="productstable"  style={{width:'100%'}}> 
-                    <tr> 
-                        <th class="header">Vehículo</th>
-						<th class="header">Fecha</th>  
-                        <th class="header" style={{textAlign:'center'}}>Descripción</th>
-						<th class="header" style={{textAlign:'center'}}>Precio</th>   
-                    </tr>
-
-                    {  
-                    listaservicios.map(item => ( 
-                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9'}}>
-                    <td className='id-orden' >{item.vehiculo}</td>
-					<td  style={{textAlign:'center'}}>{format(item.fecha)}</td>
-					<td>{item.descripcion}</td>
-					<td style={{textAlign:'center'}}>${item.precio}</td> 
-                      
-                    
-                </tr>
-                ))}	 
-                </table> 
-	 </div>
+ 	<div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
+        <table id="productstable"  style={{width:'100%'}}> 
+            <tr> 
+                <th class="header">Vehículo</th>
+				<th class="header">Fecha</th>  
+                <th class="header" style={{textAlign:'center'}}>Descripción</th>
+				<th class="header" style={{textAlign:'center'}}>Precio</th>   
+            </tr>
+            {  
+            	lista.map(item => ( 
+                	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
+                    	<td className='id-orden' style={{border: '2px solid rgb(171,178,185)',minWidth:'80px'}} >{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
+						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{format(item.fecha)}</td>
+						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.descripcion}</td>
+						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>${item.precio}</td>                                           
+                	</tr>
+            ))}	 
+        </table>
+		
+		<h3>Servicios</h3>
+		<table id="productstable"  style={{width:'100%'}}> 
+            <tr> 
+                <th class="header">Vehículo</th>
+				<th class="header">Fecha</th>  
+                <th class="header" style={{textAlign:'center'}}>Descripción</th>
+				<th class="header" style={{textAlign:'center'}}>Precio</th>   
+            </tr>
+            {  
+                listaservicios.map(item => ( 
+                	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
+                    	<td className='id-orden' style={{border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{item.vehiculo}</td>
+						<td  style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{format(item.fecha)}</td>
+						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.descripcion}</td>
+						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>${item.precio}</td>                                           
+            		</tr>
+            ))}	 
+        </table> 
+	</div>
  
  
 <br></br>

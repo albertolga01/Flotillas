@@ -253,7 +253,10 @@ function OtrosGastos(props) {
 	return (
 
 		<div className="container ">
-		 	<NabvarRe titulo="Gastos por Servicios" />
+			<div className='titulos'>
+				<NabvarRe titulo="Gastos por Servicios" />
+			</div>
+		 	
 			<div className="row p-3">
 				 
 
@@ -273,29 +276,23 @@ function OtrosGastos(props) {
 
 						 */}
 						 
-							<div style={{width:'100%'}}>
-							<label>Filtrar por fecha de compra: </label> 
-
-							&nbsp;&nbsp;&nbsp;<input id="input-fecha" type="date" onChange={() => getServicios()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-							<input id="input-fecha-final" type="date" onChange={() => getServicios()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer'}}/>
-							 
-
-							<h6>Vehículo:</h6>
-								{/** onChange={() => filterDictamenVehiculo()}  */}
-									<select  id="vehiculof"  className="form-control"  style={{width:'100%', marginTop:'5px'}}>
-									<option value="0">Todos</option> 
-											
-											{props.vehiculos.map(item => ( 
-												<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
-												))}
-									</select>
-								<button onClick={() => getServicios()} class="btn btn-outline-success btn-sm">Buscar</button>
-							
-							
-							</div>
+						 <div style={{display:'flex',alignItems:'center',flexWrap:'wrap'}}>
+						 	<label style={{fontSize:'14px',fontWeight:'500'}} className="label-filtro">Filtrar por fecha de compra: </label> 
+							<input id="input-fecha" type="date" onChange={() => getServicios()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'5px'}}/>
+							<input id="input-fecha-final" type="date" onChange={() => getServicios()} style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'5px'}}/>
+							<h6 style={{marginLeft:'15px'}} className="h6-titulo">Vehículo:</h6>
+							<select  id="vehiculof"  className="form-control"  style={{width:'45%',marginLeft:'5px'}}>
+								<option value="0">Todos</option> 											
+									{props.vehiculos.map(item => ( 
+										<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+									))}
+							</select>
+							<button style={{marginLeft:'5px'}} onClick={() => getServicios()} class="btn btn-outline-success btn-sm" id='boton-Buscar'>Buscar</button>
+						 </div>
+			
 						 
 						
-						<div style={{height: "100%", overflow: "scroll"}}>
+						<div style={{height: "100%", overflow: "scroll",marginTop:'30px'}}>
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr>
 									<th class="header" style={{textAlign:'center'}}>Folio</th>
@@ -311,25 +308,25 @@ function OtrosGastos(props) {
 									<th class="header" style={{textAlign:'center'}}>Borrar</th> 
 								</tr>
 								{listas.map(item => (
-								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-									<td  style={{ width:'10px'}} align="center">{item.id}</td>
-									<td  style={{ minWidth:'220px'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
-									<td style={{textAlign:'left', padding:'5px', minWidth:'280px'}}>{item.servicio}</td>
-									<td  ><input defaultValue={item.odometro} id={"odometro"+item.id} style={{width:'60px'}} ></input>KM</td>
-									<td>${item.precio}</td>
-									<td style={{textAlign:'center'}}>{formatDate(item.fecha)}</td>
+								<tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'12px'}}>
+									<td  style={{ width:'10px',border: '2px solid rgb(171,178,185)'}} align="center">{item.id}</td>
+									<td  style={{ minWidth:'200px',border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
+									<td style={{textAlign:'left', padding:'5px', minWidth:'220px',border: '2px solid rgb(171,178,185)'}}>{item.servicio}</td>
+									<td style={{border: '2px solid rgb(171,178,185)'}} ><input defaultValue={item.odometro} id={"odometro"+item.id} style={{width:'60px'}} ></input>KM</td>
+									<td style={{border: '2px solid rgb(171,178,185)'}}>${item.precio}</td>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{formatDate(item.fecha)}</td>
 									{(item.fechaproximo != null)?
-									<td style={{textAlign:'center'}}>
-									<input type="date" defaultValue={item.fechaproximo} id={"fechaproximo"+item.id} ></input>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+									<input  type="date" defaultValue={item.fechaproximo} id={"fechaproximo"+item.id} ></input>
 									</td> 
 									:
-									<td style={{textAlign:'center'}}>
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
 										 
 									</td>
 									}
 									
-									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
-									<td style={{textAlign:'center', minWidth:'130px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
+									<td style={{textAlign:'center', minWidth:'100px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
+									<td style={{textAlign:'center', minWidth:'100px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
 									<td><button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarOtrosGastos(item.vehiculoid, item.id)} style={{width:'100%' }}><BsFillXCircleFill /></button></td>
 							 	</tr>

@@ -201,10 +201,13 @@ function format(todayy){
   return (
   
     <div className="container ">
-    <NabvarRe titulo="Seguros"/>    
+		<div className='titulos'>
+			<NabvarRe titulo="Seguros"/>  
+		</div>
+     
 <div className="row p-3">
 {(props.tipo == "1") ? 
-<div style={{width:'30%', height:'500px' }}>
+<div className='formularios'>
 <div className="card p-2 mt-2 border-secondary"   >
       <h5>Seguro</h5>    
         
@@ -234,10 +237,10 @@ function format(todayy){
 }
 	
 
-	<div style={{ width: '70%' }}>
+	<div className='Divtablas'>
 					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'300px',overflow: "scroll"}}>
-						<span>Historial de seguros</span>
-						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
+						<h6>Historial de seguros</h6>
+						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%',marginBottom:'10px' }}>
 						<option value="0">Todos</option> 
 						{props.vehiculos.map(item => ( 
 									<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
@@ -256,12 +259,12 @@ function format(todayy){
                     </tr>
 					{  
                     listap.map(item => ( 
-                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-                    <td  style={{minWidth:'280px'}} >{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
-                    <td  style={{minWidth:'180px'}}  >{item.noseguro}</td>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'11px'}}>
+                    <td  style={{minWidth:'200px',border: '2px solid rgb(171,178,185)'}} >{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
+                    <td  style={{minWidth:'120px',border: '2px solid rgb(171,178,185)'}}  >{item.noseguro}</td>
                     <td  >{item.compania}</td>
-                    <td style={{minWidth:'100px'}}>{format(item.fechainicial)}</td>
-                    <td>{format(item.fechafinal)}</td>  
+                    <td style={{minWidth:'100px',border: '2px solid rgb(171,178,185)'}}>{format(item.fechainicial)}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechafinal)}</td>  
                     <td>{estado(item.fechafinal)}</td>  
                     
                 </tr>
@@ -286,12 +289,12 @@ function format(todayy){
                         <th class="header" style={{textAlign:'center'}}>Restante</th>
                     </tr>
 					{listapv.map(item => ( 
-                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'14px'}}>
-                    <td  style={{minWidth:'280px'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
-                    <td  style={{minWidth:'180px'}} >{item.noseguro}</td>
+                     <tr id="tabletr" style={{border: '2px solid #ABB2B9', fontSize:'11px'}}>
+                    <td  style={{minWidth:'200px',border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo +" "+ item.numvehiculo}</td>
+                    <td  style={{minWidth:'120px',border: '2px solid rgb(171,178,185)'}} >{item.noseguro}</td>
                     <td className='id-orden' >{item.compania}</td>
-                    <td style={{minWidth:'100px'}}>{format(item.fechainicial)}</td>
-                    <td>{format(item.fechafinal)}</td>  
+                    <td style={{minWidth:'100px',border: '2px solid rgb(171,178,185)'}}>{format(item.fechainicial)}</td>
+                    <td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fechafinal)}</td>  
                     <td>{dias(item.fechafinal)}</td>  
                     
                 </tr>
