@@ -7,7 +7,7 @@ import {NabvarRe} from './component/Navbar';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import './App.css'; 
-
+import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
 
@@ -154,13 +154,7 @@ function Refacciones(props) {
 	
 	
 	
-		
-	  function formatNumber(importe){
-		   
-		return ((Number(importe)).toLocaleString('en-US', {
-		  style: 'currency',
-		  currency: 'USD',}));
-		}
+	 
   
 
   const [lista, setLista] =  useState([]);  

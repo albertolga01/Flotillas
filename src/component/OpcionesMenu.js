@@ -142,6 +142,11 @@ export default function OpcionesMenu(props) {
                     <span>Refacciones</span>
                 </div> 
 
+                <div id="sidebtn" onClick={() => { Seleccionar("Accesorios"); }}>
+                    <FaWhmcs style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
+                    <span>Accesorios</span>
+                </div> 
+
                 <div id="sidebtn" onClick={() => { Seleccionar("6"); }}>
                     <FaGasPump style={{ width: '20px', height: '20px', marginLeft: '5px' }} />
                     <span>Rendimiento</span>

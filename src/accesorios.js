@@ -35,7 +35,7 @@ const customStyles = {
 	},
   };
 
-function Gastosvehiculo(props) {
+function Accesorios(props) {
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -56,14 +56,16 @@ function Gastosvehiculo(props) {
 	useEffect(() => { 
 		gastosVehiculo();
 	}, [])
- 
+
+	 
+
 	async function gastosVehiculo(){
 		var vehiculoid = document.getElementById("vehiculof").value;
 		var fechainicio = document.getElementById("input-fecha").value;
 		var fechafinal = document.getElementById("input-fecha-final").value;
 
 		let fd = new FormData()
-			fd.append("id", "gastosVehiculo")
+			fd.append("id", "accesoriosVehiculo")
 			fd.append("vehiculoid", vehiculoid)
 			fd.append("fechainicio", fechainicio)
 			fd.append("fechafinal", fechafinal) 
@@ -72,21 +74,10 @@ function Gastosvehiculo(props) {
 			 
 			openModalLoad();
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
+		closeModalLoad();
 		console.log(res.data);
 		setLista(res.data);
-
-
-		let fd1 = new FormData()
-		fd1.append("id", "gastosVehiculoServicios")
-		fd1.append("vehiculoid", vehiculoid)
-		fd1.append("fechainicio", fechainicio)
-		fd1.append("fechafinal", fechafinal) 
-			 
-
-		const res1 = await axios.post(process.env.REACT_APP_API_URL, fd1);
-		console.log(res1.data);
-		setListaServicios(res1.data);
-		closeModalLoad();
+ 
 	}
 
  
@@ -145,8 +136,7 @@ function Gastosvehiculo(props) {
 		  setIsOpen1(false);
 		}
 		
-	 
-
+	  
 		function formatN(importe){
 		   
 			return ((Number(importe)).toLocaleString('en-US'));
@@ -193,7 +183,7 @@ function Gastosvehiculo(props) {
   
     <div className="container ">
     	<div className='titulos'>
-			<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Gastos por vehículo" className="titulos"/>   
+			<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Accesorios" className="titulos"/>   
 		</div>
 	
 
@@ -216,39 +206,29 @@ function Gastosvehiculo(props) {
         <table id="productstable"  style={{width:'100%'}}> 
             <tr> 
                 <th class="header">Vehículo</th>
-				<th class="header">Fecha</th>  
+                <th class="header" style={{textAlign:'center'}}>Accesorio</th>
                 <th class="header" style={{textAlign:'center'}}>Descripción</th>
+                <th class="header" style={{textAlign:'center'}}>Proveedor</th>
+				<th class="header">Fecha</th>  
+
 				<th class="header" style={{textAlign:'center'}}>Precio</th>   
             </tr>
             {  
             	lista.map(item => ( 
                 	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
                     	<td className='id-orden' style={{border: '2px solid rgb(171,178,185)',minWidth:'80px'}} >{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
-						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{format(item.fecha)}</td>
+						
+						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.accesorio}</td>
 						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.descripcion}</td>
+						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.proveedor}</td>
+						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{format(item.fecha)}</td>
+
 						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{formatNumber(item.precio)}</td>                                           
                 	</tr>
             ))}	 
         </table>
 		
-		<h3>Servicios</h3>
-		<table id="productstable"  style={{width:'100%'}}> 
-            <tr> 
-                <th class="header">Vehículo</th>
-				<th class="header">Fecha</th>  
-                <th class="header" style={{textAlign:'center'}}>Descripción</th>
-				<th class="header" style={{textAlign:'center'}}>Precio</th>   
-            </tr>
-            {  
-                listaservicios.map(item => ( 
-                	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
-                    	<td className='id-orden' style={{border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{item.vehiculo}</td>
-						<td  style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{format(item.fecha)}</td>
-						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.descripcion}</td>
-						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>${item.precio}</td>                                           
-            		</tr>
-            ))}	 
-        </table> 
+		 
 	</div>
  
  
@@ -363,4 +343,4 @@ function Gastosvehiculo(props) {
 
 
 
-export default Gastosvehiculo;
+export default Accesorios;

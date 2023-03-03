@@ -9,7 +9,7 @@ import './App.css';
 import { BsUpload } from "react-icons/bs";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
+import formatNumber from './formatNumber';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -195,13 +195,7 @@ function Siniestros(props) {
 		  setIsOpen1(false);
 		}
 		
-	  function formatNumber(importe){
-		   
-		return ((Number(importe)).toLocaleString('en-US', {
-		  style: 'currency',
-		  currency: 'USD',}));
-		}
-
+	 
 		function formatN(importe){
 		   
 			return ((Number(importe)).toLocaleString('en-US'));
@@ -336,7 +330,7 @@ function Siniestros(props) {
 							<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo  + " " + item.modelo + " " + item.numvehiculo}</td>
 							<td style={{border: '2px solid rgb(171,178,185)'}}>{item.nombrechofer}</td>
                     		<td style={{border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td>
-                    		<td style={{border: '2px solid rgb(171,178,185)'}}>{item.deducible}</td>
+                    		<td style={{border: '2px solid rgb(171,178,185)'}}>{formatNumber(item.deducible)}</td>
 							<td ><button style={{width:'100%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(item.vehiculoid)}><BsUpload /></button></td>                     
                     		<td></td>                    
                 		</tr>                

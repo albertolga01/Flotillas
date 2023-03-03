@@ -16,6 +16,7 @@ import Gastosvehiculo from '../Gastosvehiculo';
 import OtrosGastos from '../OtrosGastos';
 import axios from '../../node_modules/axios'; 
 import { ToastContainer, toast } from 'react-toastify';
+import Accesorios from '../accesorios';
 
 
 
@@ -89,6 +90,8 @@ export default function SideMenu(props) {
             return <Gastosvehiculo vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }else if (selected == 'OtrosGastos') {
             return <OtrosGastos vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
+        }else if (selected == 'Accesorios') {
+            return <Accesorios vehiculos={listav} flotilla={flotilla1} tipo={props.tipo} departamento={props.departamento} dptoid={props.dptoid} userid={props.userid} usuario={props.usuario} name={props.name} />;
         }
         else {
             return (<div style={{ width: '100%', textAlign: 'center', backgroundColor: '', margin: 'auto' }}><h1>Error al Cargar</h1></div>);

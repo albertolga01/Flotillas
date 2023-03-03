@@ -6,7 +6,7 @@ import {NabvarRe} from './component/Navbar';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import './App.css'; 
-
+import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
 
@@ -186,12 +186,7 @@ function Rendimiento(props) {
 		  setIsOpen1(false);
 		}
 		
-	  function formatNumber(importe){
-		   
-		return ((Number(importe)).toLocaleString('en-US', {
-		  style: 'currency',
-		  currency: 'USD',}));
-		}
+ 
 
 		function formatN(importe){
 		   
