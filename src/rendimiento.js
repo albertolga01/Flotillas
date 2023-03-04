@@ -9,7 +9,7 @@ import './App.css';
 import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
+import { BsXCircleFill} from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -250,9 +250,29 @@ function Rendimiento(props) {
 		var result = listapd.filter((x) => (x.vehiculoid == tipo)); 
 		setLista(result);
 	}
-	
-	 
-	
+}
+
+	async function eliminarRendimiento(folio){
+			 
+			if(window.confirm('Desea eliminar el registro del rendimiento ' + folio)){ 
+				let fd = new FormData() 
+				fd.append("id", "eliminarRendimiento")
+				fd.append("folio", folio) 
+				const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+				notify(res.data.trim());
+				getRendimientoMensual();
+			}
+	}
+	async function eliminarCarga(folio){
+			 
+		if(window.confirm('Desea eliminar el registro de carga ' + folio)){ 
+			let fd = new FormData() 
+			fd.append("id", "eliminarCarga")
+			fd.append("folio", folio) 
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+			notify(res.data.trim());
+			getCargas();
+		}
 }
 
   // Dynamically create select list
@@ -299,6 +319,7 @@ function Rendimiento(props) {
 				<th class="header">Kilometraje Final</th>
 				<th class="header">Ticket</th>
 				<th class="header">Rendimiento</th> 
+				<th class="header">Eliminar</th> 
 			</tr>
             {  
                 lista.map(item => ( 
@@ -312,7 +333,9 @@ function Rendimiento(props) {
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.kilometrajefinal)}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.ticket}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>                    	    
-                	</tr>                
+                    	<td><button  id="bttn-eliminar-carga" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(item.folio)}><BsXCircleFill /></button></td>                                        
+                	
+					</tr>                
         	))}	
             <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
         </table> 
@@ -340,6 +363,7 @@ function Rendimiento(props) {
 				<th class="header">Importe</th>
 				<th class="header">Rendimiento</th>
 				<th class="header">Costo KM</th>
+				<th class="header">Eliminar</th>
 			</tr>
 			{  
                 listaRendimientoM.map(item => ( 
@@ -355,7 +379,8 @@ function Rendimiento(props) {
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.importe}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.rendimiento}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.costokm + " Kms / Litro"}</td>                                        
-                	</tr>                
+                    	<td><button  id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarRendimiento(item.folio)}><BsXCircleFill /></button></td>                                        
+                	</tr>
         	))}	
             <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
         </table> 
