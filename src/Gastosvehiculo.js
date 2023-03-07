@@ -81,7 +81,9 @@ function Gastosvehiculo(props) {
 		fd1.append("vehiculoid", vehiculoid)
 		fd1.append("fechainicio", fechainicio)
 		fd1.append("fechafinal", fechafinal) 
-			 
+		fd1.append("userid", props.userid) 
+		fd1.append("tipo", props.tipo)        
+			                    
 
 		const res1 = await axios.post(process.env.REACT_APP_API_URL, fd1);
 		console.log(res1.data);
