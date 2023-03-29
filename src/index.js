@@ -10,9 +10,9 @@ import HttpsRedirect from 'react-https-redirect';
 
 ReactDOM.render(
 
-  <HttpsRedirect>
+  
     <Login isLoggedIn={false} />
-  </HttpsRedirect>,
+  ,
   document.getElementById('root')
 
   );

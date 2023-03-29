@@ -44,6 +44,7 @@ export default function SideMenu(props) {
             if(res.data[0].res == "1"){   
          
             setFlotilla(value);   
+            getVehiculos();
             //props.unmountMe(res.data[0].rzonsocial, res.data[0].dptoid);    
             }else{ 
                         notify("No tiene acceso a esta flotilla"); 
@@ -103,6 +104,7 @@ export default function SideMenu(props) {
     const [isMenuOpen1, SetIsMenuOpen1] = useState(true);
 
     function logOut() {
+        
         window.location.reload();
     }
 

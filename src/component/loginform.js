@@ -9,6 +9,35 @@ import 'react-toastify/dist/ReactToastify.css';
  
 
 	const Login = (isLoggedIna) => {
+
+
+		const [defUser, setDefUser] = useState([]);
+		const [defPass, setDefPass] = useState([]);
+	
+
+		
+	
+	window.event = new Event('event');
+
+	window.addEventListener('event', function(info) {
+		//recive de las preferencias 
+		 
+	if(String(info.detail.user) != "" && info.detail.pass != ""    ){
+		setDefUser(info.detail.user);
+		setDefPass(info.detail.pass);
+		
+		
+		//	console.log("consumidor: " + info.detail.consumidor); 
+  
+		
+		} 
+ 
+		//alert("a");
+		//Login();
+	//	document.getElementById("form-btn").click();
+	}, false);
+
+
 	const [usuario, setUsuario] = useState("null");
 	const [userid, setUserid] = useState("null");
 	const [name, setName] = useState("null");
@@ -20,7 +49,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	const [isLoggedIn, setisLoggedIn] = useState(isLoggedIna);
 	const [flotilla, setFlotilla] = useState([]);
 	const [defSelected, setDefSelected] = useState([]);
-
+	
 	useEffect(() => {
 		getDepartamentos();
 		getTiposCorreo();
@@ -42,6 +71,9 @@ import 'react-toastify/dist/ReactToastify.css';
     function notify(message){
 		toast(message);
 	}
+
+
+
     
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 	const [listac, setListaC] = useState([]); 
@@ -72,9 +104,14 @@ import 'react-toastify/dist/ReactToastify.css';
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		//console.log(res.data);
 		if (res.data[0].res == "1") {
+			
+			if (window.Android){
+				window.Android.showToast(user, pass, document.getElementById("flotilla").value, "1");
+				}
+
 			setFlotilla(flo);
 			
-			setUsuario(res.data[0].usuario);
+			setUsuario(res.data[0].user);
 			setUserid(res.data[0].userid);
 			setName(res.data[0].name);
 			setDepartamento(res.data[0].departamento);
@@ -100,6 +137,14 @@ import 'react-toastify/dist/ReactToastify.css';
 		//console.log(Data[0]);
 	}
 
+
+			const [nombres, setnombres] = useState("null"); 
+			const [correo, setCorreo] = useState("null"); 
+			const [numero_consumidor, setnumero_consumidor] = useState("null"); 
+			const [nuevoConsumidor, setNuevoConsumidor] = useState();
+			const [nuevoTelefono, setNuevoTelefono] = useState();
+ 
+
 	if (isLoggedIn) {
 		return (
 			<div>
@@ -111,9 +156,9 @@ import 'react-toastify/dist/ReactToastify.css';
 					<div id="div-form">
 						<h1>Sistema Flotilla</h1>
 						<span>Usuario</span>
-						<input id="form-usuario" onKeyPress={handleKeyPress} type="text" style={{ height: '30px' }} placeholder="Usuario" />
+						<input defaultValue={defUser} id="form-usuario" onKeyPress={handleKeyPress} type="text" style={{ height: '30px' }} placeholder="Usuario" />
 						<span>Contraseña</span>
-						<input id="form-password" onKeyPress={handleKeyPress} type="password" style={{ height: '30px' }} placeholder="Contraseña" />
+						<input   defaultValue={defPass} id="form-password" onKeyPress={handleKeyPress} type="password" style={{ height: '30px' }} placeholder="Contraseña" />
 
 						<span>Seleccione</span>
 						
@@ -137,7 +182,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	} else {
 		return (
 			<div >
-				<SideMenu dptos={listac} flotilla1={flotilla} dptoid={listadepartamento} departamento={nombredepartamento} usuario={usuario} userid={userid} name={name} selected={defSelected} tipo={tipo} />
+				<SideMenu correo={correo}   nombres={nombres}   numero_consumidor={numero_consumidor}   dptos={listac} flotilla1={flotilla} dptoid={listadepartamento} departamento={nombredepartamento} usuario={usuario} userid={userid} name={name} selected={defSelected} tipo={tipo} />
 			</div>
 		);
 	}

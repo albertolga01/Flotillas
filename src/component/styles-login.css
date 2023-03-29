@@ -37,6 +37,27 @@ body{
     content: url("./Camion.svg");
 }
 
+@media all and (min-width:321px) and (max-width: 699px) { 
+ 
+    #div-img{
+        max-width: 100%;
+    }
+    #body-content{ 
+        display: flex; 
+        flex-direction: column;  
+        margin: auto;  
+        margin-top: 10vh; 
+        margin-bottom: 15vh; 
+        background-color: #fff;  
+        width: 100%;  
+        border-radius: 2px;  
+        align-self: center; 
+        height: 70vh; 
+        box-shadow: 0 10px 20px #fff, 0 6px 6px #fff; 
+    } 
+
+}
+
 #div-form{
     display: flex; 
     flex: 1; 

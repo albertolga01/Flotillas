@@ -29,7 +29,13 @@ export default function OpcionesMenu(props) {
     
    
     function logOut() {
-        window.location.reload();
+        if (window.Android){
+            window.Android.showToast("", "", "", "0");
+            window.location.reload();
+            //alert(res);
+        }else{
+            window.location.reload();
+        } 
     }
 
     async function CambiarRzon(){  

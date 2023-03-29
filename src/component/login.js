@@ -4,6 +4,7 @@ import App from '../App';
 import LoginForm from './loginform';
 import Greeting from '../index';
 import { render } from '@testing-library/react';
+import HttpsRedirect from 'react-https-redirect';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -15,7 +16,7 @@ class Login extends React.Component {
 		const isLoggedIn = this.state.isLoggedIn;
 		// console.log(this.state);
 		if (!isLoggedIn) {
-			return <LoginForm isLoggedIn={false} />;
+			return <HttpsRedirect><LoginForm isLoggedIn={false} /></HttpsRedirect>
 		} else {
 			return <App />;
 		}

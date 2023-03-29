@@ -262,7 +262,7 @@ function Nuevovehiculo(props) {
 
 							<tr>
 								<td></td>
-								<td> <textarea rows="2" id="observaciones" className='input-textarea'></textarea></td>
+								<td> <textarea  id="observaciones" className='input-textarea'></textarea></td>
 							</tr>
 
 							<tr>

@@ -82,6 +82,7 @@ function Rendimiento(props) {
 		if(res.data.trim() == "Carga agregada correctamente"){
 			closeModal();
   getCargas()
+  getRendimientoMensual()
 
 		}
 	}
@@ -105,7 +106,7 @@ function Rendimiento(props) {
 		if(res.data.trim() == "Carga agregada correctamente"){
 			closeModal();
   			getCargas();
-
+			  getRendimientoMensual();
 		}
 	}
 
@@ -207,7 +208,10 @@ function Rendimiento(props) {
 
   async function getCargas(){ 
 		var id = "getCargas";
+	openModalLoad();
+
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
+		closeModalLoad();
 	 
 		setLista(res.data);
 		setListaPD(res.data);
@@ -261,6 +265,7 @@ function Rendimiento(props) {
 				const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
 				notify(res.data.trim());
 				getRendimientoMensual();
+			getCargas();
 			}
 	}
 	async function eliminarCarga(folio){
@@ -272,6 +277,7 @@ function Rendimiento(props) {
 			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
 			notify(res.data.trim());
 			getCargas();
+			getRendimientoMensual();
 		}
 }
 
@@ -298,13 +304,17 @@ function Rendimiento(props) {
 		</div>
 		<div style={{display:'flex',alignItems:'center'}}>
 			<h6 className='h6Multas' >Vehículo:</h6>
-			<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control" style={{width:'65%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>						
+			{/* onChange={() => filterPlacaVehiculo()} */}
+			<select  id="vehiculof"   className="form-control" style={{width:'65%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>						
 				<option value="0">Todos</option>
 				{props.vehiculos.map(item => ( 
 					<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
 				))}                             
-			</select>
+			</select>&nbsp;&nbsp;&nbsp;&nbsp;
+			<button  style={{height:'38px', margintop:'5px'}} onClick={() => getCargasDia()} class="btn btn-outline-success btn-sm">Filtrar</button>
+
 		</div>
+
 	</div>
 	 
  	<div  style={{overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
@@ -333,8 +343,14 @@ function Rendimiento(props) {
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.kilometrajefinal)}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.ticket}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(((item.kilometrajefinal - item.kilometraje)/ item.litros)) + " Kms / Litro"}</td>                    	    
-                    	<td><button  id="bttn-eliminar-carga" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(item.folio)}><BsXCircleFill /></button></td>                                        
-                	
+                    	{(props.tipo == "1")?
+						<td>
+						<button id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(item.folio)}><BsXCircleFill /></button>
+						</td>                                        
+
+							:
+							<td></td>
+						}
 					</tr>                
         	))}	
             <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
@@ -379,7 +395,15 @@ function Rendimiento(props) {
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.importe}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.rendimiento}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.costokm + " Kms / Litro"}</td>                                        
-                    	<td><button  id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarRendimiento(item.folio)}><BsXCircleFill /></button></td>                                        
+                    	{(props.tipo == "1")?
+						<td>
+						<button id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarRendimiento(item.folio)}><BsXCircleFill /></button>
+						</td>                                        
+
+							:
+							<td></td>
+						}
+						
                 	</tr>
         	))}	
             <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
@@ -522,7 +546,7 @@ function Rendimiento(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2  style={{color:'black'}}>Nueva carga</h2>
+        <h2  style={{color:'black'}}>Nuevo registro</h2>
         
         <div>Vehículo</div>
 		  <select id="vehiculoidfinmes" style={{width:'100%', marginTop:'5px'}}>
@@ -532,7 +556,7 @@ function Rendimiento(props) {
 
   		  ))}
 		  </select>
-		  <div>Fecha de carga</div>
+		  <div>Fecha</div>
 		  <input id="fechafinmes" type="date" style={{width:'100%', marginTop:'5px'}}/>
 		  <div>Kilometraje Final</div>
 		  <input  id="kilometrajefinmes" type="number" style={{width:'100%', marginTop:'5px'}}/> 

@@ -278,7 +278,7 @@ function Servicios(props) {
 							<select  id="vehiculof"  onChange={() => filterDictamenVehiculo()} className="form-control"  style={{width:'70%', marginTop:'5px',marginLeft:'5px'}}>
 								<option value="0">Todos</option>
 										
-										{listaSv.map(item => ( 
+										{props.vehiculos.map(item => ( 
 											<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
 											))}
 								</select>
