@@ -43,8 +43,8 @@ export default function SideMenu(props) {
                 
             if(res.data[0].res == "1"){   
          
-            setFlotilla(value);   
-            getVehiculos();
+                setFlotilla(value);   
+                getVehiculos1(select);
             //props.unmountMe(res.data[0].rzonsocial, res.data[0].dptoid);    
             }else{ 
                         notify("No tiene acceso a esta flotilla"); 
@@ -141,6 +141,13 @@ export default function SideMenu(props) {
     async function getVehiculos() {
 		var id = "getVehiculos";
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+flotilla1+'&tipo='+props.tipo+'&userid='+props.userid);
+		setListaV(res.data);
+		//console.log(res.data);  process.env.REACT_APP_API_URL
+
+	}
+    async function getVehiculos1(idflotilla2) {
+		var id = "getVehiculos";
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+idflotilla2+'&tipo='+props.tipo+'&userid='+props.userid);
 		setListaV(res.data);
 		//console.log(res.data);  process.env.REACT_APP_API_URL
 

@@ -334,7 +334,7 @@ function Rendimiento(props) {
             {  
                 lista.map(item => ( 
                     <tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
-                    	<td className='id-orden' >{item.folio}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}} className='id-orden' >{item.folio}</td>
 						<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatDate(item.fechacarga)}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.litros)}</td>
@@ -384,15 +384,15 @@ function Rendimiento(props) {
 			{  
                 listaRendimientoM.map(item => ( 
                 	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
-                    	<td>{item.folio}</td>
-						<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.folio}</td>
+						<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.modelo}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.tipouso}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.kilometrajeinicial}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.kilometrajefinal}</td>
-                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.total}</td>
-                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.litros}</td>
-                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.importe}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.total)}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.litros)}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatNumber(item.importe)}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.rendimiento}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.costokm + " Kms / Litro"}</td>                                        
                     	{(props.tipo == "1")?
