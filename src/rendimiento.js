@@ -56,6 +56,14 @@ function Rendimiento(props) {
 	useEffect(() => { 
 	}, [])
 
+	function isLastDay(dt) {
+		var test = new Date(dt.getTime()),
+			month = test.getMonth();
+	
+		test.setDate(test.getDate() + 1);
+		return test.getMonth() !== month;
+	}
+
 	async function addCarga() {
 		
 		var vehiculoid = document.getElementById("vehiculoid").value;
@@ -89,9 +97,20 @@ function Rendimiento(props) {
 
 
 	async function addCargaRendimiento() {
+
+		var fechafinmes = document.getElementById("fechafinmes").value;
+			var test = new Date(fechafinmes);
+			test.setDate(test.getDate() + 1);
+			//console.log(test);
+			let ultimoDia = test.getDate() == new Date(test.getFullYear(),test.getMonth()+1,0).getDate();
+			if(ultimoDia == false){
+				notify("Ingrese el último día del mes para continuar");
+				return;
+			}
+		
 		
 		var vehiculoidfinmes = document.getElementById("vehiculoidfinmes").value;
-		var fechafinmes = document.getElementById("fechafinmes").value;
+		
 		var kilometrajefinmes = document.getElementById("kilometrajefinmes").value; 
 		
 		let fd = new FormData()
@@ -108,6 +127,7 @@ function Rendimiento(props) {
   			getCargas();
 			  getRendimientoMensual();
 		}
+		
 	}
 
 
@@ -221,11 +241,15 @@ function Rendimiento(props) {
   }
   
   async function getRendimientoMensual(){ 
+		document.getElementById("fechai").innerHTML = "Inicial";
+		document.getElementById("fechaf").innerHTML = "Final";
 		var id = "getRendimientoMensual";
 		let fecha = document.getElementById("input-fecha-rendimiento-mensual").value;
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&fecha='+fecha+'&tipo='+props.tipo+'&userid='+props.userid);
 	 
 		setListaRendimientoM(res.data); 
+		document.getElementById("fechai").innerHTML = document.getElementById("fechai").innerHTML + " " + res.data[0].fechamesanterior;
+		document.getElementById("fechaf").innerHTML = document.getElementById("fechaf").innerHTML + " " + res.data[0].fecha;
 		console.log(res.data);
 	 
 
@@ -372,8 +396,9 @@ function Rendimiento(props) {
 				<th class="header">Vehículo</th>
 				<th class="header">Modelo</th>
 				<th class="header">Uso</th>
-				<th class="header">Inicial</th>
-				<th class="header">Final</th>
+				<th class="header">Fecha</th>
+				<th class="header" id="fechai">Inicial</th>
+				<th class="header" id="fechaf">Final</th>
 				<th class="header">Total</th>
 				<th class="header">Litros</th>
 				<th class="header">Importe</th>
@@ -388,6 +413,7 @@ function Rendimiento(props) {
 						<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.modelo}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.tipouso}</td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center', width:'70px'}}>{item.fecha}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.kilometrajeinicial}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.kilometrajefinal}</td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatN(item.total)}</td>

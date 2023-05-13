@@ -130,13 +130,13 @@ export default function Documents(props) {
                 <h6>Servicio</h6>
                 <input type="text" id="servicio" ></input>
                 
-                <h6>Odometro</h6>
+                <h6>Odometro Actual</h6>
                 <input type="text" id="odometro" ></input>
 
                 <h6>Descripción</h6>
                 <input type="text" id="descripcion"  ></input>
 
-                <h6>Kilometraje</h6>
+                <h6>Kilometraje Próx. Servicio</h6>
                 <input type="text" id="kilometraje"  ></input>
 
                 <h6>Factura</h6>
