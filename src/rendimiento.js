@@ -261,8 +261,7 @@ function Rendimiento(props) {
 		document.getElementById("fechai").innerHTML = document.getElementById("fechai").innerHTML + " " + res.data[0].fechamesanterior;
 		document.getElementById("fechaf").innerHTML = document.getElementById("fechaf").innerHTML + " " + res.data[0].fecha;
 
-		document.getElementById("input-fecha-rendimiento-mensual").value = document.getElementById("fechai").innerHTML + " " + res.data[0].fechamesanterior;
-
+		
 		console.log(res.data);
 	 
 
