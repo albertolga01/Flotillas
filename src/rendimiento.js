@@ -241,6 +241,16 @@ function Rendimiento(props) {
   }
   
   async function getRendimientoMensual(){ 
+	setListaRendimientoM([]);
+	let fechafinmes = document.getElementById("input-fecha-rendimiento-mensual").value;
+	let test = new Date(fechafinmes);
+	test.setDate(test.getDate() + 1);
+
+	let ultimoDia = test.getDate() == new Date(test.getFullYear(),test.getMonth()+1,0).getDate();
+			if(ultimoDia == false){
+				notify("Ingrese el último día del mes para continuar");
+				return;
+			}
 		document.getElementById("fechai").innerHTML = "Inicial";
 		document.getElementById("fechaf").innerHTML = "Final";
 		var id = "getRendimientoMensual";
@@ -250,6 +260,9 @@ function Rendimiento(props) {
 		setListaRendimientoM(res.data); 
 		document.getElementById("fechai").innerHTML = document.getElementById("fechai").innerHTML + " " + res.data[0].fechamesanterior;
 		document.getElementById("fechaf").innerHTML = document.getElementById("fechaf").innerHTML + " " + res.data[0].fecha;
+
+		document.getElementById("input-fecha-rendimiento-mensual").value = document.getElementById("fechai").innerHTML + " " + res.data[0].fechamesanterior;
+
 		console.log(res.data);
 	 
 
