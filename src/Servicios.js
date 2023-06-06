@@ -7,7 +7,7 @@ import DocumentsServicio from './component/DocumentsServicio';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-import { BsArrowRepeat, BsEnvelopeFill } from "react-icons/bs";
+import { BsArrowRepeat, BsEnvelopeFill, BsXCircleFill } from "react-icons/bs";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -202,6 +202,21 @@ function Servicios(props) {
 		}
 	
 	}
+
+
+	async function eliminarServicio(folio, id){
+		if(window.confirm('Desea eliminar el registro con folio: ' + id)){ 
+			let fd = new FormData() 
+			fd.append("id", "eliminarServicio") 
+			fd.append("folio", id)  
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);   
+			notify(res.data.trim());
+			getServicios();
+		}
+	
+	}
+
+
 	async function actualizarGastos(id, vehiculo, servicio){
 		if(window.confirm('Marcar registro como otros gastos: ' + vehiculo + ' ' + servicio)){ 
 			let fd = new FormData() 
@@ -301,6 +316,7 @@ function Servicios(props) {
 									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Cotización</th>
 									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Orden de Compra</th>
 									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Actualizar</th>
+									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Eliminar</th>
 									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Gastos</th>
 								</tr>
 								{listas.map(item => (
@@ -325,6 +341,7 @@ function Servicios(props) {
 									<td style={{textAlign:'center', minWidth:'130px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
 									<td style={{border: '2px solid rgb(171,178,185)'}}>{item.foliooc}</td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
+									<td><button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsXCircleFill /></button></td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarGastos(item.id, item.vehiculo, item.servicio)} style={{width:'100%' }}><FaExternalLinkAlt /></button></td>
 								</tr>
 								))}
