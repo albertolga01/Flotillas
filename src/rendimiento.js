@@ -269,12 +269,15 @@ function Rendimiento(props) {
 		
 
 		async function getCargasDia(){
-			
+			setLista([]);
+			setListaPD([]);
 			var id = "getCargasDia";
 			var fecha = document.getElementById("input-fecha").value;
 			var fechafinal = document.getElementById("input-fecha-final").value;
 			var vehiculoid = document.getElementById("vehiculof").value;
-			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&fechafinal='+fechafinal+'&idflotilla='+props.flotilla+'&vehiculoid='+vehiculoid);
+			openModalLoad();
+			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&fechafinal='+fechafinal+'&idflotilla='+props.flotilla+'&vehiculoid='+vehiculoid+'&userid='+props.userid+'&tipo='+props.tipo);
+			closeModalLoad();
 			setLista(res.data);
 			setListaPD(res.data);
 			console.log(res.data);
@@ -390,7 +393,7 @@ function Rendimiento(props) {
 						lista.map(item => ( 
 							<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
 								<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}} className='id-orden' >{item.folio}</td>
-								<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo}</td>
+								<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
 								<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{formatDate(item.fechacarga)}</td>
 								<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}><input defaultValue={formatN(item.litros)} id={"litros"+item.folio}></input></td>
 								<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}><input defaultValue={formatNumber(item.importe)} id={"importe"+item.folio}></input></td>

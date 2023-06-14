@@ -9,7 +9,7 @@ import './App.css';
 import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-import { BsArrowRepeat, BsEnvelopeFill, BsFillPersonPlusFill } from "react-icons/bs";
+import { BsArrowRepeat, BsEnvelopeFill, BsFillPersonPlusFill, BsXCircleFill} from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -257,6 +257,7 @@ function envioUsuario(folio){
 		fd.append("gps", document.getElementById("gps"+folio).value)
 		fd.append("notificar", notificar)
 		fd.append("dictamen", dictamen)
+		fd.append("descripcion", document.getElementById("descripcionVehiculo"+folio).value)
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 		console.log("actualizarVehiculo: " +res.data);
 		notify(res.data.trim());
@@ -295,6 +296,23 @@ async function obtenerCorreos(folio){
 
 }
 
+async function eliminarUsuarioVehiculo(folio, vehiculoid){
+
+	var userid = document.getElementById("useridusuario").value;
+
+	if(window.confirm('Desea eliminar el usuario del vehiculo ' + folio)){ 
+		openModalLoad();
+		let fd = new FormData() 
+		fd.append("id", "eliminarUsuarioVehiculo")
+		fd.append("vehiculoid", vehiculoid)
+		fd.append("folio", folio)
+		fd.append("userid", userid) 
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+		closeModalLoad();
+		notify(res.data.trim());
+		obtenerUsuariosVehiculo(vehiculoid);
+	}
+}
 
 
 async function EnviarUsuarioVehiculo(folio){
@@ -378,7 +396,8 @@ async function getTiposCorreo() {
                     listav.map(item => ( 
                      <tr id="tabletr" style={{border: '2px solid #ABB2B9 !important', fontSize:'12px'}}>
                     <td style={{border: '2px solid rgb(171,178,185)'}} className='id-orden' align='center'>{item.vehiculoid }</td>
-                    <td style={{minWidth:'180px',border: '2px solid rgb(171,178,185) '}}>{item.descripcion + " " + item.numvehiculo}</td>
+                    {/*<td style={{minWidth:'180px',border: '2px solid rgb(171,178,185) '}}>{item.descripcion + " " + item.numvehiculo }</td>*/}
+                    <td style={{minWidth:'180px',border: '2px solid rgb(171,178,185) '}}><textarea type="text"  rows="2" cols="50" defaultValue={item.descripcion} id={"descripcionVehiculo"+item.vehiculoid} ></textarea>{item.numvehiculo}</td>
                     <td  style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>{item.modelo}</td>
                     <td style={{border: '2px solid rgb(171,178,185)'}}><input defaultValue={item.responsable} id={"responsable"+item.vehiculoid} ></input></td>
                     <td style={{border: '2px solid rgb(171,178,185)'}}  align='center'>{item.serievehiculo}</td>
@@ -473,20 +492,22 @@ async function getTiposCorreo() {
         contentLabel="Example Modal"
       >
         <h2  style={{color:'black', fontSize:'32px'}}>Agregar Usuario</h2>
-		<tr >  
-							<th class="header">Usuario</th>   
-			
-							  
-						</tr>
+		<tr>
+			<th class="header">Folio</th>   
+			<th class="header">Usuario</th>   
+			<th class="header">Eliminar</th>   
+		</tr>
 			{ listaUsuario.map(item => ( 
 							 
 							 <tr id="tabletr" style={{  fontSize:'14px', border: '2px solid #ABB2B9'}}>
 								  
 								  
+								 <td >{item.folio}</td>
 								 <td >{item.name + " (" + item.usuario+")"}</td>
-								 
+								 <td><button id="bttn-eliminar-usuario" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarUsuarioVehiculo(item.folio, item.vehiculoid)}><BsXCircleFill /></button> </td>
 							 </tr> 
-							 ))}	
+							 ))}
+			    
 		<div>Usuario</div> 
 	 
 				<select  id="useridusuario"  className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer'}}>

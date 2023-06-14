@@ -13,7 +13,7 @@ import {ThreeDots } from  'react-loader-spinner'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-import {  BsXCircleFill } from "react-icons/bs";
+import {  BsXCircleFill, BsFillPlusCircleFill } from "react-icons/bs";
 
 
 
@@ -113,6 +113,38 @@ function Refacciones(props) {
 			getRefacciones();
 		}
 	
+		
+	}
+
+	async function eliminarRefaccionStock(folio){
+		if(window.confirm('Eliminar refacción de stock con folio: ' + folio)){ 
+			let fd = new FormData() 
+			fd.append("id", "eliminarRefaccionStock") 
+			fd.append("folio", folio)  
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+			notify(res.data.trim()); 
+			getRefaccionesStock();
+		} 
+
+	}
+	async function asignarRefaccion(folio){
+		var vehiculoid = document.getElementById("vehiculoid"+folio).value;
+		if(vehiculoid == "0"){
+			alert("Seleccione un vehiculo");
+			return;
+		}
+		
+		if(window.confirm('Asignar refacción con folio: ' + folio )){ 
+			let fd = new FormData() 
+			fd.append("id", "asignarRefaccion") 
+			fd.append("folio", folio)  
+			fd.append("vehiculoid", vehiculoid)
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+			notify(res.data.trim()); 
+			getRefaccionesStock();
+			getRefacciones();
+		}
+	
 	}
 
 	async function verRefeccion(vehiculoid) {
@@ -152,9 +184,7 @@ function Refacciones(props) {
 	   return today;
 		}
 	
-	
-	
-	 
+  const [listaStock, setListaStock] =  useState([]);  
   
 
   const [lista, setLista] =  useState([]);  
@@ -165,6 +195,7 @@ function Refacciones(props) {
 
   useEffect(()=> {
     getRefacciones();
+	getRefaccionesStock();
   }, [])
 
   async function getRefacciones(){
@@ -172,13 +203,25 @@ function Refacciones(props) {
 	openModalLoad();
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
  	closeModalLoad();
-	setLista(res.data);
-
+	setLista(res.data); 
 	setListaSD(res.data);
 	
 	console.log(res.data);
 
+  } 
+
+  async function getRefaccionesStock(){
+	setListaStock([]);
+	var id = "getRefaccionesStock";
+	openModalLoad();
+	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
+ 	closeModalLoad(); 
+	setListaStock(res.data); 
+	
+	console.log(res.data);
+
   }
+   
   const tableRef = useRef(null);
 
     const { onDownload } = useDownloadExcel({
@@ -353,7 +396,7 @@ function Refacciones(props) {
 				<th class="header">Precio</th>
 				<th class="header">Documento</th>
 				<th class="header" style={{textAlign:'center', minWidth:'20px'}}>Orden de Compra</th>
-				<th class="header">Captura</th>
+				<th class="header">Captura</th> 
 				<th class="header">Borrar</th>
             </tr>
             {  
@@ -369,6 +412,7 @@ function Refacciones(props) {
                     	<td style={{minWidth:'100px', padding:'5px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
                     	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.foliooc}</td>
 						<td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fecha)}</td>
+						
 						{(props.tipo == "1") ? 
 							<td><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccion(item.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
 							:<></>
@@ -379,7 +423,67 @@ function Refacciones(props) {
         </table> 				
 	</div>
  
+         
+<br></br>
+<br></br>
  
+<div style={{display:'flex',alignItems:'center', width:'100%'}}>
+	<h6 style={{color:'black'}} >Inventario Refacciones</h6> 
+		<button className="btn btn-outline-success btn-sm" onClick={() => getRefaccionesStock()} style={{marginLeft:'5px'}} id='boton-Buscar'>Buscar</button>
+	</div>
+
+<div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
+<table id="tableStock"  style={{width:'100%'}}  ref={tableRef}> 
+        	<tr>
+            	<th class="header">Folio</th>
+            	<th class="header">Vehiculo</th>
+				<th class="header" style={{textAlign:'center', minWidth:'50px'}}>Fecha Compra</th>
+				<th class="header">Proveedor</th>
+				<th class="header">Refacción</th>
+				<th class="header">Descripción</th> 
+				<th class="header">Precio</th>
+				<th class="header">Documento</th>
+				<th class="header" style={{textAlign:'center', minWidth:'20px'}}>Orden de Compra</th>
+				<th class="header">Captura</th>
+				<th class="header">Asignar</th>
+				<th class="header">Borrar</th>
+            </tr>
+            {  
+                listaStock.map(item => ( 
+                    <tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'11px'}}>
+                    	<td className='id-orden' >{item.folio}</td>
+						<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}>
+						<select  id={"vehiculoid"+item.folio}   className="form-control"  style={{width:'85%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+						<option  value="0" >Seleccione</option> 					
+						{props.vehiculos.map(item => ( 
+							<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+						))}
+						</select>
+						</td>
+						<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{format(item.fechacompra)}</td>
+                    	<td style={{minWidth:'130px', padding:'5px',border: '2px solid rgb(171,178,185)'}}>{item.proveedor}</td>
+                    	<td style={{minWidth:'150px',border: '2px solid rgb(171,178,185)'}}>{item.refaccion}</td>
+                    	<td style={{minWidth:'160px',border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td>
+                    	<td style={{padding:'15px',border: '2px solid rgb(171,178,185)'}}>{formatNumber(item.precio)}</td>
+                    	<td style={{minWidth:'100px', padding:'5px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentorefaccion}>{item.documentorefaccion}</a></td>
+                    	<td style={{border: '2px solid rgb(171,178,185)',textAlign:'center'}}>{item.foliooc}</td>
+						<td style={{border: '2px solid rgb(171,178,185)'}}>{format(item.fecha)}</td>
+						{(props.tipo == "1") ? 
+							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-success btn-sm' onClick={() => asignarRefaccion(item.folio, item.vehiculoid)} style={{width:'100%' }}><BsFillPlusCircleFill /></button></td>
+							:<></>
+						}
+						{(props.tipo == "1") ? 
+							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccionStock(item.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							:<></>
+						}				                    
+                	</tr>                
+        	))}	
+            <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
+        </table> 					
+	</div>
+
+<br></br>
+<br></br>
 
 	 <div style={{ margin: 'auto' , display:'none'}} >
 					<div style={{ position: 'absolute', bottom: '10px', backgroundColor: 'white', border: '2px solid black', borderRadius: '5px', width: '80%', margin: 'auto', padding: '5px' }}>

@@ -9,7 +9,7 @@ import './App.css';
 import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
+import {  BsXCircleFill, BsFillPlusCircleFill } from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -55,6 +55,7 @@ function Accesorios(props) {
 	const [listaver, setListaVer] = useState([]);
 	useEffect(() => { 
 		gastosVehiculo();
+		getAccesoriosStock();
 	}, [])
 
 	 
@@ -147,12 +148,22 @@ function Accesorios(props) {
   	const [lista, setLista] =  useState([]);  
 	const [listapd, setListaPD] = useState([]);  
 	const [listaservicios, setListaServicios] = useState([]);  
+	const [listastock, setListaStock] = useState([]);  
 
-  
+	async function getAccesoriosStock(){
+		setListaStock([]);
+		var id = "getAccesoriosStock";
+		openModalLoad();
+		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
+		 closeModalLoad(); 
+		setListaStock(res.data); 
+		
+		console.log(res.data);
+	
+	  }
  
 
   useEffect(()=> {
-   
   }, [])
 
  
@@ -173,6 +184,38 @@ function Accesorios(props) {
 	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 	setLista(result); 
 	
+}
+
+async function asignarRefaccion(folio){
+	var vehiculoid = document.getElementById("vehiculoid"+folio).value;
+	if(vehiculoid == "0"){
+		alert("Seleccione un vehiculo");
+		return;
+	}
+	
+	if(window.confirm('Asignar accesorio con folio: ' + folio )){ 
+		let fd = new FormData() 
+		fd.append("id", "asignarAccesorio") 
+		fd.append("folio", folio)  
+		fd.append("vehiculoid", vehiculoid)
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+		notify(res.data.trim()); 
+		getAccesoriosStock();
+		gastosVehiculo();
+	}
+
+}
+
+async function eliminarRefaccionStock(folio){
+	if(window.confirm('Eliminar accesorio de stock con folio: ' + folio)){ 
+		let fd = new FormData() 
+		fd.append("id", "eliminarAccesorioStock") 
+		fd.append("folio", folio)  
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+		notify(res.data.trim()); 
+		getAccesoriosStock();
+	} 
+
 }
 
   // Dynamically create select list
@@ -205,6 +248,7 @@ function Accesorios(props) {
  	<div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
         <table id="productstable"  style={{width:'100%'}}> 
             <tr> 
+				<th class="header">Folio</th>
                 <th class="header">Vehículo</th>
                 <th class="header" style={{textAlign:'center'}}>Accesorio</th>
                 <th class="header" style={{textAlign:'center'}}>Descripción</th>
@@ -216,6 +260,8 @@ function Accesorios(props) {
             {  
             	lista.map(item => ( 
                 	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
+						<td className='id-orden' >{item.folio}</td>
+
                     	<td className='id-orden' style={{border: '2px solid rgb(171,178,185)',minWidth:'80px'}} >{item.vehiculo + " " + item.modelo + " " + item.numvehiculo}</td>
 						
 						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.accesorio}</td>
@@ -224,6 +270,62 @@ function Accesorios(props) {
 						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{format(item.fecha)}</td>
 
 						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{formatNumber(item.precio)}</td>                                           
+                	</tr>
+            ))}	 
+        </table>
+		
+		 
+	</div>
+	<br></br>
+	<br></br>
+ 
+	<div style={{display:'flex',alignItems:'center', width:'100%'}}>
+	<h6 style={{color:'black'}} >Inventario Accesorios</h6>
+
+		<button className="btn btn-outline-success btn-sm" onClick={() => getAccesoriosStock()} style={{marginLeft:'5px'}} id='boton-Buscar'>Buscar</button>
+	</div>
+
+
+
+	<div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
+        <table id="tableStockAccesorios"  style={{width:'100%'}}> 
+            <tr> 
+				<th class="header">Folio</th>
+                <th class="header">Vehículo</th>
+                <th class="header" style={{textAlign:'center'}}>Accesorio</th>
+                <th class="header" style={{textAlign:'center'}}>Descripción</th>
+                <th class="header" style={{textAlign:'center'}}>Proveedor</th>
+				<th class="header">Fecha</th>
+				<th class="header" style={{textAlign:'center'}}>Precio</th>
+				<th class="header">Asignar</th>
+				<th class="header">Borrar</th>
+            </tr>
+            {  
+            	listastock.map(item => ( 
+                	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
+						<td className='id-orden' >{item.folio}</td>
+						<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}>
+						<select  id={"vehiculoid"+item.folio}   className="form-control"  style={{width:'85%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+						<option  value="0" >Seleccione</option> 					
+						{props.vehiculos.map(item => ( 
+							<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>
+						))}
+						</select>
+						</td> 
+						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.accesorio}</td>
+						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.descripcion}</td>
+						<td style={{border: '2px solid rgb(171,178,185)',minWidth:'150px'}}>{item.proveedor}</td>
+						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{format(item.fecha)}</td> 
+						<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)',minWidth:'80px'}}>{formatNumber(item.precio)}</td>
+						{(props.tipo == "1") ? 
+							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-success btn-sm' onClick={() => asignarRefaccion(item.folio, item.vehiculoid)} style={{width:'100%' }}><BsFillPlusCircleFill /></button></td>
+							:<></>
+						}
+						
+						{(props.tipo == "1") ? 
+							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccionStock(item.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							:<></>
+						}                                       
                 	</tr>
             ))}	 
         </table>
