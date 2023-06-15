@@ -406,7 +406,7 @@ function OtrosGastos(props) {
 											
 											/>
 						</DataTableExtensions>	
-							<table id="tbl-documentos" style={{width: "100%"}}>
+							<table id="tbl-documentos" style={{width: "100%"}} hidden>
 								<tr>
 									<th class="header" style={{textAlign:'center'}}>Folio</th>
 									<th class="header" style={{textAlign:'center'}}>Vehículo</th>

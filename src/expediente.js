@@ -260,6 +260,7 @@ function Expediente(props) {
 						</div>
 
 						<div style={{height: "300px", overflow: "scroll"}}>
+						<button  style={{height:'38px', margintop:'5px'}} onClick={() => getDocumentosTodos()} class="btn btn-outline-success btn-sm">Filtrar</button>
 						<DataTableExtensions
 							columns={columns}
 							data={docsVehi}
