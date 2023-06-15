@@ -12,6 +12,9 @@ import {ThreeDots } from  'react-loader-spinner'
 import formatNumber from './formatNumber';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
 
 const customStylesD = {
 	content: {
@@ -36,6 +39,59 @@ const customStyles = {
   };
 
 function Siniestros(props) {
+
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.id,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => formatDate(row.fecha),
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Chofer',  
+			selector: row => row.nombrechofer,
+			sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		},
+		{
+			name: 'Deducible',  
+			selector: row => formatNumber(row.deducible),
+			sortable: true,
+		}, 
+		{
+			name: 'Archivo',   
+			cell: (row) => {
+				return (
+					<td ><button style={{width:'100%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(row.vehiculoid)}><BsUpload /></button></td>
+				)
+			}, 
+		}, 
+	];
+
+	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
+
 
 	const [modalIsOpenArchivo, setIsOpenArchivo] = React.useState(false);
 	const [listadocumentos, setListaDocumentos] =  useState([]);
@@ -312,7 +368,24 @@ function Siniestros(props) {
 	</div>
 
  	<div  style={{ Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}> 
-        <table id="productstable"  style={{width:'100%'}}> 
+	 <DataTableExtensions
+					columns={columns}
+					data={lista}
+					print={true}
+					export={true} 
+					>
+							<DataTable
+										columns={columns}
+										data={lista}
+										fixedHeader={true}
+										fixedHeaderScrollHeight={'100%'}
+										pagination
+										customStyles={tableCustomStyles}
+										highlightOnHover={true}
+									
+									/>
+				</DataTableExtensions>
+		<table id="productstable"  style={{width:'100%'}} hidden> 
             <tr>
 				<th class="header">Folio</th>
 				<th class="header">Fecha</th>

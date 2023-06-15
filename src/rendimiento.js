@@ -12,6 +12,9 @@ import {ThreeDots } from  'react-loader-spinner'
 import { BsXCircleFill, BsPencilSquare, BsArrowRepeat} from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
 
 const customStylesD = {
 	content: {
@@ -36,7 +39,177 @@ const customStyles = {
   };
 
 function Rendimiento(props) {
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.folio,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Fecha Carga',  
+			selector: row => formatDate(row.fechacarga),
+			sortable: true,
+		},
+		{
+			name: 'Litros',  
+			cell: (row) => {
+				return (
+					<input defaultValue={formatN(row.litros)} id={"litros"+row.folio}></input>
+				)
+			}
+		}, 
+		{
+			name: 'Importe',  
+			cell: (row) => {
+				return (
+					<input defaultValue={formatNumber(row.importe)} id={"importe"+row.folio}></input>
+				)
+			}
+		}, 
+		{
+			name: 'KM Inicial',   
+			cell: (row) => {
+				return (
+					<input defaultValue={formatN(row.kilometraje)} id={"kilometraje"+row.folio}></input>
+				)
+			}
+		}, 
+		{
+			name: 'KM Final',   
+			selector: row => formatN(row.kilometrajefinal),
+			sortable: true,
+		},
+		{
+			name: 'Ticket',   
+			selector: row => row.ticket,
+			sortable: true,
+		},
+		{
+			name: 'Rendimiento',   
+			selector: row => formatN(((row.kilometrajefinal - row.kilometraje)/ row.litros)) + " Kms / Litro",
+			sortable: true,
+		},
+		{
+			name: 'Editar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1")?
+								<td>
+								<button id="bttn-editar-rendimiento" style={{width:'100%'}} className='btn btn-outline-success btn-sm' onClick={() => editarCarga(row.vehiculoid, row.folio)}><BsArrowRepeat /></button>
+								</td>                                        
 
+									:
+									<td></td>
+				)
+			}
+		},
+		{
+			name: 'Eliminar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1")?
+					<td>
+					<button id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(row.folio)}><BsXCircleFill /></button>
+					</td>                                        
+
+						:
+						<td></td>
+				)
+			}
+		},
+	];
+
+	const columns1 = [
+		{
+			name: 'Folio',  
+			selector: row => row.folio,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Modelo',  
+			selector: row => row.modelo,
+			sortable: true,
+		}, 
+		{
+			name: 'Uso',  
+			selector: row => row.tipouso,
+			sortable: true,
+		}, 
+		{
+			name: 'Fecha',  
+			selector: row => row.fecha,
+			sortable: true,
+		}, 
+		{
+			name: 'Inicial',  
+			selector: row => row.kilometrajeinicial,
+			sortable: true,
+		}, 
+		{
+			name: 'Final',  
+			selector: row => row.kilometrajefinal,
+			sortable: true,
+		}, 
+		{
+			name: 'Total',  
+			selector: row => formatN(row.total),
+			sortable: true,
+		}, 
+		{
+			name: 'Litros',  
+			selector: row => formatN(row.litros),
+			sortable: true,
+		}, 
+		{
+			name: 'Importe',  
+			selector: row => formatNumber(row.importe),
+			sortable: true,
+		}, 
+		{
+			name: 'Rendimiento',  
+			selector: row => row.rendimiento,
+			sortable: true,
+		}, 
+		{
+			name: 'Costo KM',  
+			selector: row => row.costokm + " Kms / Litro",
+			sortable: true,
+		}, 
+		{ 
+			name: 'Uso',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1")?
+					<td>
+					<button id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarRendimiento(row.folio)}><BsXCircleFill /></button>
+					</td>                                        
+
+						:
+						<td></td>
+				)
+			}
+		},
+	];
+	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 			function openModalLoad() { 
 				setIsOpenLoad(true); 
 			}  
@@ -226,6 +399,8 @@ function Rendimiento(props) {
 		}, [])
 
 		async function getCargas(){ 
+			setLista([]);
+				setListaPD([]);
 				var id = "getCargas";
 			openModalLoad();
 
@@ -375,7 +550,24 @@ function Rendimiento(props) {
 			</div>
 			
 			<div  style={{overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
-				<table id="productstable"  style={{width:'100%'}}> 
+			
+			<DataTableExtensions
+							columns={columns}
+							data={lista}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={lista}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>				<table id="productstable"  style={{width:'100%'}} hidden> 
 					<tr>
 						<th class="header">Folio</th>
 						<th class="header">Vehículo</th>
@@ -430,8 +622,24 @@ function Rendimiento(props) {
 						<input id="input-fecha-rendimiento-mensual" type="date" onChange={() => getRendimientoMensual()}  style={{width: '32%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
 					</div>	
 				</div>
-								
-				<table id="productstable"  style={{width:'100%'}}> 
+				<DataTableExtensions
+							columns={columns1}
+							data={listaRendimientoM}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns1}
+												data={listaRendimientoM}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>				
+				<table id="productstable"  style={{width:'100%'}} hidden> 
 					<tr>
 						<th class="header">Folio</th>
 						<th class="header">Vehículo</th>

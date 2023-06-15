@@ -12,6 +12,10 @@ import {ThreeDots } from  'react-loader-spinner'
 import {  BsXCircleFill, BsFillPlusCircleFill } from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
+
 
 const customStylesD = {
 	content: {
@@ -36,6 +40,119 @@ const customStyles = {
   };
 
 function Accesorios(props) {
+
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.folio,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Accesorio',  
+			selector: row => row.accesorio,
+			sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		}, 
+		{
+			name: 'Proveedor',  
+			selector: row => row.proveedor,
+			sortable: true,
+		}, 
+		{
+			name: 'Fecha',   
+			selector: row => format(row.fecha),
+			sortable: true,
+		}, 
+		{
+			name: 'Precio',   
+			selector: row => formatNumber(row.precio),
+			sortable: true,
+		},
+	];
+	const columns1 = [
+		{
+			name: 'Folio',  
+			selector: row => row.folio,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			cell: (row) => {
+				return (
+					<select  id={"vehiculoid"+row.folio}   className="form-control"  style={{width:'85%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+						<option  value="0" >Seleccione</option> 					
+						{props.vehiculos.map(row => ( 
+							<option value={row.vehiculoid}>{row.descripcion + " " + row.modelo + " " + row.numvehiculo  }</option>
+						))}
+						</select>
+				)
+			}
+		},
+		{
+			name: 'Accesorio',  
+			selector: row => row.accesorio,
+			sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		}, 
+		{
+			name: 'Proveedor',  
+			selector: row => row.proveedor,
+			sortable: true,
+		}, 
+		{
+			name: 'Fecha',   
+			selector: row => format(row.fecha),
+			sortable: true,
+		}, 
+		{
+			name: 'Precio',   
+			selector: row => formatNumber(row.precio),
+			sortable: true,
+		},  
+		{
+			name: 'Asignar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-success btn-sm' onClick={() => asignarRefaccion(row.folio, row.vehiculoid)} style={{width:'100%' }}><BsFillPlusCircleFill /></button></td>
+							:<></>
+				)
+			}
+		}, 
+		{
+			name: 'Borrar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+					<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccionStock(row.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+					:<></>
+				)
+			}
+		}, 
+	];
+
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -246,7 +363,24 @@ async function eliminarRefaccionStock(folio){
 
 
  	<div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
-        <table id="productstable"  style={{width:'100%'}}> 
+	 <DataTableExtensions
+							columns={columns}
+							data={lista}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={lista}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+	    <table id="productstable"  style={{width:'100%'}} hidden> 
             <tr> 
 				<th class="header">Folio</th>
                 <th class="header">Vehículo</th>
@@ -288,7 +422,24 @@ async function eliminarRefaccionStock(folio){
 
 
 	<div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
-        <table id="tableStockAccesorios"  style={{width:'100%'}}> 
+	<DataTableExtensions
+							columns={columns1}
+							data={listastock}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns1}
+												data={listastock}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+		<table id="tableStockAccesorios"  style={{width:'100%'}} hidden> 
             <tr> 
 				<th class="header">Folio</th>
                 <th class="header">Vehículo</th>

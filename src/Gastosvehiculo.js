@@ -12,6 +12,11 @@ import {ThreeDots } from  'react-loader-spinner'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
+
+
 
 const customStylesD = {
 	content: {
@@ -36,6 +41,64 @@ const customStyles = {
   };
 
 function Gastosvehiculo(props) {
+
+
+	const columns = [
+		{
+			name: 'Vehiculo',  
+			selector: row => row.vehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => format(row.fecha),
+			//sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		},
+		{
+			name: 'Precio',  
+			selector: row => formatNumber(row.precio),
+			sortable: true,
+		},
+	];
+	
+	const columns1 = [
+		{
+			name: 'Vehiculo',  
+			selector: row => row.vehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => format(row.fecha),
+			//sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		},
+		{
+			name: 'Precio',  
+			selector: row => formatNumber(row.precio),
+			sortable: true,
+		},
+	];
+	
+	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -214,8 +277,27 @@ function Gastosvehiculo(props) {
 	</div>
 
 
- 	<div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	 
-        <table id="productstable"  style={{width:'100%'}}> 
+ 	<div  style={{Height:'100%', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>	
+		<DataTableExtensions
+					columns={columns}
+					data={lista}
+					print={true}
+					export={true} 
+					>
+                    <DataTable
+                                columns={columns}
+                                data={lista}
+                                fixedHeader={true}
+                                fixedHeaderScrollHeight={'100%'}
+                                pagination
+                                customStyles={tableCustomStyles}
+                                highlightOnHover={true}
+                               
+                            />
+         </DataTableExtensions>
+
+
+        <table id="productstable"  style={{width:'100%'}} hidden> 
             <tr> 
                 <th class="header">Vehículo</th>
 				<th class="header">Fecha</th>  
@@ -234,7 +316,26 @@ function Gastosvehiculo(props) {
         </table>
 		
 		<h3>Servicios</h3>
-		<table id="productstable"  style={{width:'100%'}}> 
+		<DataTableExtensions
+                columns={columns1}
+                data={listaservicios}
+                print={true}
+                export={true}
+                
+                >
+                    <DataTable
+                                columns={columns}
+                                data={listaservicios}
+                                fixedHeader={true}
+                                fixedHeaderScrollHeight={'100%'}
+                                pagination
+                                customStyles={tableCustomStyles}
+                                highlightOnHover={true}
+                               
+                            />
+                </DataTableExtensions>
+
+		<table id="productstable"  style={{width:'100%'}} hidden> 
             <tr> 
                 <th class="header">Vehículo</th>
 				<th class="header">Fecha</th>  

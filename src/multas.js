@@ -9,9 +9,12 @@ import './App.css';
 import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
+
 
 const customStylesD = {
 	content: {
@@ -36,6 +39,53 @@ const customStyles = {
   };
 
 function Multas(props) {
+
+
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.id,
+			sortable: true,
+		},
+		{
+			name: 'Fecha Multa',  
+			selector: row => formatDate(row.fechamulta),
+			sortable: true,
+		},
+		{
+			name: 'Chofer',  
+			selector: row => row.nombrechofer,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		},
+		{
+			name: 'Importe',  
+			selector: row => formatNumber(row.importe),
+			sortable: true,
+		}, 
+	];
+
+	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
+
+
 	const [modalIsOpenLoad, setIsOpenLoad] = useState(false);  
 	const [listaver, setListaVer] = useState([]);
 	const [modalIsOpen, setIsOpen] = useState(false);
@@ -288,7 +338,25 @@ function filterPlacaChofer() {
 		
 	</div>
  	<div  style={{maxHeight:'22vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}> 
-    	<table id="productstable"  style={{width:'100%'}}> 
+	 <DataTableExtensions
+					columns={columns}
+					data={lista}
+					print={true}
+					export={true} 
+					>
+							<DataTable
+										columns={columns}
+										data={lista}
+										fixedHeader={true}
+										fixedHeaderScrollHeight={'100%'}
+										pagination
+										customStyles={tableCustomStyles}
+										highlightOnHover={true}
+									
+									/>
+				</DataTableExtensions>
+
+		<table id="productstable"  style={{width:'100%'}} hidden> 
         	<tr >
             	<th class="header">Folio</th>
                 <th class="header">Fecha Multa</th>

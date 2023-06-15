@@ -4,14 +4,15 @@ import { FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye } from 'react-icon
 import axios from '../node_modules/axios';
 import { NabvarRe } from './component/Navbar';
 import Documents from './component/Documents';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import './App.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
+
 
 import Modal from 'react-modal';
  
@@ -28,6 +29,43 @@ const customStyles = {
 
 function Expediente(props) {
 
+	
+	const columns = [
+		{
+			name: 'Nombre',  
+			selector: row => row.Filename,
+			sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.FileDesc,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => row.UploadDate,
+			sortable: true,
+		}, 
+		{
+			name: 'Archivo',   
+			cell: (row) => {
+				return (
+					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.FilePath}>{row.FilePath}</a>
+				)
+			}
+		},
+	];
+
+	 
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
 	}  
@@ -222,7 +260,24 @@ function Expediente(props) {
 						</div>
 
 						<div style={{height: "300px", overflow: "scroll"}}>
-							<table id="tbl-documentos" style={{width: "100%"}}>
+						<DataTableExtensions
+							columns={columns}
+							data={docsVehi}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={docsVehi}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+							<table id="tbl-documentos" style={{width: "100%"}} hidden>
 								<tr>
 									<th class="header">Nombre</th>
 									<th class="header">Descripción</th>

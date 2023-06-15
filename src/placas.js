@@ -5,12 +5,14 @@ import axios from '../node_modules/axios';
 import { NabvarRe } from './component/Navbar';
 import './App.css';
 import Modal from 'react-modal';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
+
 
 const customStylesD = {
 	content: {
@@ -37,6 +39,40 @@ const customStyles = {
 
 function Placas(props) { 
 
+	
+	const columns = [
+		{
+			name: 'Placas',  
+			selector: row => row.placas,
+			sortable: true,
+		},
+		{
+			name: 'Vehiculo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => format(row.fechainicial),
+			//sortable: true,
+		},
+		{
+			name: 'Vencimiento',  
+			selector: row => format(row.fechafinal),
+			//sortable: true,
+		},
+	];
+
+	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 	
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false); 
 	const [listap, setListaP] = useState([]);  
@@ -215,7 +251,7 @@ function Placas(props) {
 				: <></>
 				}
 				<div className='Divtablas'>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'320px', overflow:'scroll'}}>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'620px', overflow:'scroll'}}>
 						<h5 style={{textAlign:'center'}}>Historial de placas</h5>
 						<div style={{display:'flex',alignItems:'center'}}>
 							<h6 style={{marginTop: '10px'}}>Vehículos:</h6>
@@ -226,9 +262,26 @@ function Placas(props) {
 								))}                             
 							</select>
 						</div>
-				
+					
+						<DataTableExtensions
+					columns={columns}
+					data={listap}
+					print={true}
+					export={true} 
+					>
+							<DataTable
+										columns={columns}
+										data={listap}
+										fixedHeader={true}
+										fixedHeaderScrollHeight={'100%'}
+										pagination
+										customStyles={tableCustomStyles}
+										highlightOnHover={true}
+									
+									/>
+				</DataTableExtensions>
 
-						<table id="productstable"  style={{width:'100%'}}> 
+						<table id="productstable"  style={{width:'100%'}} hidden> 
                     <tr>
                         <th class="header">Placas</th>
                         <th class="header">Vehículo</th>
@@ -254,7 +307,24 @@ function Placas(props) {
 					<div style={{ width: '100%' }}>
 					<div className="card p-2 mt-2 border-secondary"  style={{ height:'280px', overflow:'scroll'}}>
 						<h5>Próximo a vencer (2 Meses) </h5>
-						<table id="productstable"  style={{width:'100%'}}> 
+						<DataTableExtensions
+					columns={columns}
+					data={listapv}
+					print={true}
+					export={true} 
+					>
+							<DataTable
+										columns={columns}
+										data={listapv}
+										fixedHeader={true}
+										fixedHeaderScrollHeight={'100%'}
+										pagination
+										customStyles={tableCustomStyles}
+										highlightOnHover={true}
+									
+									/>
+				</DataTableExtensions>
+						<table id="productstable"  style={{width:'100%'}} hidden> 
                     <tr>
                         <th class="header">Placas</th>
                         <th class="header">Vehículo</th>

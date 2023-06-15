@@ -10,10 +10,12 @@ import './App.css';
 import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import {  BsXCircleFill, BsFillPlusCircleFill } from "react-icons/bs";
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
 
 
 
@@ -41,6 +43,165 @@ const customStyles = {
   };
 
 function Refacciones(props) {
+
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.folio,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Fecha Compra',  
+			selector: row => format(row.fechacompra),
+			sortable: true,
+		},
+		{
+			name: 'Proveedor',  
+			selector: row => row.proveedor,
+			sortable: true,
+		}, 
+		{
+			name: 'Refacción',  
+			selector: row => row.refaccion,
+			sortable: true,
+		}, 
+		{
+			name: 'Descripcion',   
+			selector: row => row.descripcion,
+			sortable: true,
+		}, 
+		{
+			name: 'Precio',   
+			selector: row => formatNumber(row.precio),
+			sortable: true,
+		}, 
+		{
+			name: 'Documento',   
+			cell: (row) => {
+				return (
+					<td style={{minWidth:'100px', padding:'5px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentorefaccion}>{row.documentorefaccion}</a></td>		
+				)
+			}
+		}, 
+		{
+			name: 'Orden de Compra',   
+			selector: row => row.foliooc,
+			sortable: true,
+		}, 
+		{
+			name: 'Captura',   
+			selector: row => format(row.fecha),
+			sortable: true,
+		}, 
+		{
+			name: 'Borrar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+							<td><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccion(row.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							:<></>
+								
+				)
+			}
+		}, 
+	];const columns1 = [
+		{
+			name: 'Folio',  
+			selector: row => row.folio,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			cell: (row) => {
+				return (
+					<select  id={"vehiculoid"+row.folio}   className="form-control"  style={{width:'85%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+						<option  value="0" >Seleccione</option> 					
+						{props.vehiculos.map(row => ( 
+							<option value={row.vehiculoid}>{row.descripcion + " " + row.modelo + " " + row.numvehiculo  }</option>
+						))}
+						</select>
+				)
+			}
+		},
+		{
+			name: 'Fecha Compra',  
+			selector: row => format(row.fechacompra),
+			sortable: true,
+		},
+		{
+			name: 'Proveedor',  
+			selector: row => row.proveedor,
+			sortable: true,
+		}, 
+		{
+			name: 'Refacción',  
+			selector: row => row.refaccion,
+			sortable: true,
+		}, 
+		{
+			name: 'Descripcion',   
+			selector: row => row.descripcion,
+			sortable: true,
+		}, 
+		{
+			name: 'Precio',   
+			selector: row => formatNumber(row.precio),
+			sortable: true,
+		}, 
+		{
+			name: 'Documento',   
+			cell: (row) => {
+				return (
+					<td style={{minWidth:'100px', padding:'5px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentorefaccion}>{row.documentorefaccion}</a></td>		
+				)
+			}
+		}, 
+		{
+			name: 'Orden de Compra',   
+			selector: row => row.foliooc,
+			sortable: true,
+		}, 
+		{
+			name: 'Captura',   
+			selector: row => format(row.fecha),
+			sortable: true,
+		}, 
+		{
+			name: 'Asignar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-success btn-sm' onClick={() => asignarRefaccion(row.folio, row.vehiculoid)} style={{width:'100%' }}><BsFillPlusCircleFill /></button></td>
+							:<></>
+				)
+			}
+		}, 
+		{
+			name: 'Borrar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccionStock(row.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							:<></>
+				)
+			}
+		}, 
+	];
+
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -385,7 +546,24 @@ function Refacciones(props) {
 	</div>
 
  	<div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-        <table id="productstable"  style={{width:'100%'}}  ref={tableRef}> 
+	 <DataTableExtensions
+							columns={columns}
+							data={lista}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={lista}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+	    <table id="productstable"  style={{width:'100%'}}  ref={tableRef} hidden> 
         	<tr>
             	<th class="header">Folio</th>
                 <th class="header">Vehículo</th>
@@ -433,7 +611,24 @@ function Refacciones(props) {
 	</div>
 
 <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-<table id="tableStock"  style={{width:'100%'}}  ref={tableRef}> 
+<DataTableExtensions
+							columns={columns1}
+							data={listaStock}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns1}
+												data={listaStock}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+<table id="tableStock"  style={{width:'100%'}}  ref={tableRef} hidden> 
         	<tr>
             	<th class="header">Folio</th>
             	<th class="header">Vehiculo</th>

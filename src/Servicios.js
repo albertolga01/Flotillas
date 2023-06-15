@@ -18,7 +18,11 @@ import './App.css';
 import Modal from 'react-modal';
 
 import { useDownloadExcel } from 'react-export-table-to-excel';
- 
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
+
+
 const customStyles = {
 	content: {
 	  top: '50%',
@@ -31,6 +35,119 @@ const customStyles = {
   };
 
 function Servicios(props) {
+
+
+	const columns = [
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Servicio',  
+			selector: row => row.servicio,
+			sortable: true,
+		},
+		{
+			name: 'Odometro',  
+			cell: (row) => {
+				return (
+					<><input defaultValue={row.odometro} id={"odometro"+row.id} style={{width:'60px'}} ></input>KM</>
+					)
+			}
+		},
+		{
+			name: 'KM Próx. Servicio',  
+			selector: row => formatNull(row.kilometraje) + "KM",
+			sortable: true,
+		},
+		{
+			name: 'Precio',  
+			selector: row => "$"+row.precio,
+			sortable: true,
+		}, 
+		{
+			name: 'Fecha',  
+			selector: row => formatDate(row.fecha),
+			sortable: true,
+		}, 
+		{
+			name: 'Próximo',   
+			cell: (row) => {
+				return (
+					(row.fechaproximo != null)?
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+									<input type="date" defaultValue={row.fechaproximo} id={"fechaproximo"+row.id} ></input>
+									</td> 
+									:
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+										 
+									</td>
+				)
+			}
+		}, 
+		{
+			name: 'Factura',   
+			cell: (row) => {
+				return (
+					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentoservicio}>{row.documentoservicio}</a>
+				)
+			}
+		},
+		{
+			name: 'Cotización',   
+			cell: (row) => {
+				return (
+					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.cotizacionservicio}>{row.cotizacionservicio}</a>
+				)
+			}
+		},
+		{
+			name: 'Orden de Compra',   
+			selector: row => row.foliooc,
+			sortable: true,
+		},
+		{
+			name: 'Actualizar',   
+			cell: (row) => {
+				return (
+					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(row.vehiculoid, row.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
+				)
+			}
+		},
+		{
+			name: 'Eliminar',   
+			cell: (row) => {
+				return (
+					<td><button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarServicio(row.vehiculoid, row.id)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+				)
+			}
+		}, 
+		{
+			name: 'Gastos',   
+			cell: (row) => {
+				return (
+					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarGastos(row.id, row.vehiculo, row.servicio)} style={{width:'100%' }}><FaExternalLinkAlt /></button></td>
+				)
+			}
+		},
+	];
+
+	function formatNull(value){
+		if(value == null){
+			value = "0";
+		}
+		return value;
+	}
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -302,8 +419,24 @@ function Servicios(props) {
 										
 						
 						<div style={{height: "100%", overflow: "scroll"}}>
-						
-							<table id="tbl-documentos" style={{width: "100%"}}  ref={tableRef}>
+						<DataTableExtensions
+							columns={columns}
+							data={listas}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={listas}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>	
+							<table id="tbl-documentos" style={{width: "100%"}}  ref={tableRef} hidden>
 								<tr>
 									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Vehículo</th>
 									<th class="header" style={{textAlign:'center',fontSize:'12px'}}>Servicio</th>

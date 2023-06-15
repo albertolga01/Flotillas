@@ -12,6 +12,9 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
 
 import './App.css';
 
@@ -30,6 +33,97 @@ const customStyles = {
 
 function OtrosGastos(props) {
 
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.id,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Servicio',  
+			selector: row => row.servicio,
+			sortable: true,
+		},
+		{
+			name: 'Odometro',  
+			cell: (row) => {
+				return (
+					<><input defaultValue={row.odometro} id={"odometro"+row.id} style={{width:'60px'}} ></input>  KM </>
+				)
+			}
+		}, 
+		{
+			name: 'Precio',  
+			selector: row => "$"+row.precio,
+			sortable: true,
+		}, 
+		{
+			name: 'Fecha',   
+			selector: row => formatDate(row.fecha),
+			sortable: true,
+		}, 
+		{
+			name: 'Próximo',   
+			cell: (row) => {
+				return (
+					(row.fechaproximo != null)?
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+									<input  type="date" defaultValue={row.fechaproximo} id={"fechaproximo"+row.id} ></input>
+									</td> 
+									:
+									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+										 
+									</td>
+				)
+			}
+		},
+		{
+			name: 'Factura',   
+			cell: (row) => {
+				return (
+					<td style={{textAlign:'center', minWidth:'100px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentoservicio}>{row.documentoservicio}</a></td>
+				)
+			}
+		},
+		{
+			name: 'Cotización',   
+			cell: (row) => {
+				return (
+					<td style={{textAlign:'center', minWidth:'100px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.cotizacionservicio}>{row.cotizacionservicio}</a></td>
+				)
+			}
+		},
+		{
+			name: 'Actualizar',   
+			cell: (row) => {
+				return (
+					<button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(row.vehiculoid, row.id)} style={{width:'100%' }}><BsArrowRepeat /></button>
+				)
+			}
+		},
+		{
+			name: 'Eliminar',   
+			cell: (row) => {
+				return (
+					<button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarOtrosGastos(row.vehiculoid, row.id)} style={{width:'100%' }}><BsFillXCircleFill /></button>
+				)
+			}
+		},
+	];
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
 	}  
@@ -94,6 +188,8 @@ function OtrosGastos(props) {
 	}
 
 	async function getServicios() {
+		setListaS([]);
+		setListaSD([]);
 		var id = "getGastos";
 		var fecha = document.getElementById("input-fecha").value;
 		var fechafinal = document.getElementById("input-fecha-final").value;
@@ -293,6 +389,23 @@ function OtrosGastos(props) {
 						 
 						
 						<div style={{height: "100%", overflow: "scroll",marginTop:'30px'}}>
+						<DataTableExtensions
+							columns={columns}
+							data={listas}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={listas}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>	
 							<table id="tbl-documentos" style={{width: "100%"}}>
 								<tr>
 									<th class="header" style={{textAlign:'center'}}>Folio</th>

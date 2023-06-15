@@ -4,14 +4,14 @@ import { FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye } from 'react-icon
 import axios from 'axios';
 import { NabvarRe } from './component/Navbar';
 import DocumentsDictamenes from './component/DocumentsDictamenes';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import './App.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
 
 import Modal from 'react-modal';
  
@@ -27,6 +27,53 @@ const customStyles = {
   };
 
 function Dictamenes(props) {
+
+	const columns = [
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Tipo Dictamen',  
+			selector: row => row.nombre,
+			sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => formatDate(row.fecha),
+			sortable: true,
+		}, 
+		{
+			name: 'Vencimiento',  
+			selector: row => formatDate(row.fechafinal),
+			sortable: true,
+		}, 
+		{
+			name: 'Archivo',   
+			cell: (row) => {
+				return (
+					<td style={{ minWidth:'180px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/DocumentoDictamen/" + row.documentoverificacion}>{row.documentoverificacion}</a></td>
+				)
+			}, 
+		}, 
+	];
+
+	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -305,7 +352,24 @@ function Dictamenes(props) {
 						</div>
 
 						<div style={{height: "300px", overflow: "scroll"}}>
-							<table id="tbl-documentos" style={{width: "100%"}}>
+						<DataTableExtensions
+							columns={columns}
+							data={listas}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={listas}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+							<table id="tbl-documentos" style={{width: "100%"}} hidden>
 								<tr> 
 									<th class="header" style={{textAlign:'center'}}>Vehículo</th>
 									<th class="header" style={{textAlign:'center'}}>Tipo Dictamen</th>
@@ -347,7 +411,25 @@ function Dictamenes(props) {
 						
 					
 						<div style={{height: "300px", overflow: "scroll"}}>
-							<table id="tbl-documentos" style={{width: "100%"}}>
+						<DataTableExtensions
+							columns={columns}
+							data={listasvd}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={listasvd}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+
+							<table id="tbl-documentos" style={{width: "100%"}} hidden>
 								<tr > 
 									<th class="header" style={{textAlign:'center'}}>Vehículo</th>
 									<th class="header" style={{textAlign:'center'}}>Tipo Dictamen</th>

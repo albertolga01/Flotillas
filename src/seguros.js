@@ -5,12 +5,14 @@ import axios from '../node_modules/axios';
 import {NabvarRe} from './component/Navbar'; 
 import Modal from 'react-modal';
 import './App.css'; 
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
+
 
 const customStylesD = {
 	content: {
@@ -34,6 +36,84 @@ const customStyles = {
 	},
   };
 function Seguros(props) {
+
+	const columns = [
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'No. Seguro',  
+			selector: row => row.noseguro,
+			sortable: true,
+		},
+		{
+			name: 'Compañía',  
+			selector: row => row.compania,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => format(row.fechainicial),
+			sortable: true,
+		}, 
+		{
+			name: 'Vencimiento',  
+			selector: row => format(row.fechafinal),
+			sortable: true,
+		}, 
+		{
+			name: 'Estado',   
+			selector: row => estado(row.fechafinal),
+			sortable: true,
+		}, 
+	];
+
+	const columns1 = [
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'No. Seguro',  
+			selector: row => row.noseguro,
+			sortable: true,
+		},
+		{
+			name: 'Compañía',  
+			selector: row => row.compania,
+			sortable: true,
+		},
+		{
+			name: 'Fecha',  
+			selector: row => format(row.fechainicial),
+			sortable: true,
+		}, 
+		{
+			name: 'Vencimiento',  
+			selector: row => format(row.fechafinal),
+			sortable: true,
+		}, 
+		{
+			name: 'Restante',   
+			selector: row => dias(row.fechafinal),
+			sortable: true,
+		}, 
+	];
+
+	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
+
 
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
@@ -238,7 +318,7 @@ function format(todayy){
 	
 
 	<div className='Divtablas'>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'300px',overflow: "scroll"}}>
+					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'620px',overflow: "scroll"}}>
 						<h6>Historial de seguros</h6>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%',marginBottom:'10px' }}>
 						<option value="0">Todos</option> 
@@ -248,7 +328,24 @@ function format(todayy){
 						))}
                              
 						</select>
-						<table id="productstable"  style={{width:'100%' }}> 
+						<DataTableExtensions
+							columns={columns}
+							data={listap}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={listap}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+						<table id="productstable"  style={{width:'100%' }} hidden> 
                     <tr> 
                         <th class="header">Vehículo</th>
                         <th class="header">No. Seguro</th>
@@ -277,9 +374,26 @@ function format(todayy){
 					</form>
 
 					<div style={{ width: '100%' }}>
-					<div className="card p-2 mt-2 border-secondary"  style={{ height:'200px', overflow:'scroll'}}>
+					<div className="card p-2 mt-2 border-secondary"  style={{ height:'400px', overflow:'scroll'}}>
 						<h5>Próximo a vencer (2 meses)</h5>
-						<table id="productstable"  style={{width:'100%'}}> 
+						<DataTableExtensions
+							columns={columns1}
+							data={listapv}
+							print={true}
+							export={true} 
+							>
+									<DataTable
+												columns={columns}
+												data={listapv}
+												fixedHeader={true}
+												fixedHeaderScrollHeight={'100%'}
+												pagination
+												customStyles={tableCustomStyles}
+												highlightOnHover={true}
+											
+											/>
+						</DataTableExtensions>
+						<table id="productstable"  style={{width:'100%'}} hidden> 
                     <tr>
 					<th class="header">Vehículo</th>
                         <th class="header">No. Seguro</th>

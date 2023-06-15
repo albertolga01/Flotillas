@@ -5,12 +5,13 @@ import axios from 'axios';
 import { NabvarRe } from './component/Navbar';
 import './App.css';
 import Modal from 'react-modal';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
 
 const customStylesD = {
 	content: {
@@ -37,7 +38,64 @@ const customStyles = {
 
 function Vehiculoscomplemento(props) { 
 
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.folio,
+			sortable: true,
+		},
+		{
+			name: 'Vehículo',  
+			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			sortable: true,
+		},
+		{
+			name: 'Capacidad',  
+			selector: row => row.capacidad,
+			sortable: true,
+		},
+		{
+			name: 'Serie',  
+			selector: row => row.serie,
+			sortable: true,
+		},
+		{
+			name: 'Descripción',  
+			selector: row => row.descripcion,
+			sortable: true,
+		},
+		{
+			name: 'Factura',  
+			cell: (row) =>{
+                return(
+					<a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/DocumentoTanque/" + row.factura}>{row.factura}</a>
+                )
+            },
+			//sortable: true,//celda con a tag
+		},
+		{
+			name: 'Fecha Factura',  
+			selector: row => format(row.fechafactura),
+			//sortable: true,
+		},
+		{
+			name: 'Fecha Captura',  
+			selector: row => format(row.fechacaptura),
+			//sortable: true,
+		},
+	];
+
 	
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5'
+		  },
+		},
+	  }
+
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false); 
 	const [listap, setListaP] = useState([]);  
 	const [listapd, setListaPD] = useState([]);  
@@ -227,9 +285,26 @@ function Vehiculoscomplemento(props) {
 						</div>
 						
 						
-		
+			<DataTableExtensions
+					columns={columns}
+					data={listap}
+					print={true}
+					export={true} 
+					>
+							<DataTable
+										columns={columns}
+										data={listap}
+										fixedHeader={true}
+										fixedHeaderScrollHeight={'100%'}
+										pagination
+										customStyles={tableCustomStyles}
+										highlightOnHover={true}
+									
+									/>
+				</DataTableExtensions>
 
-						<table id="productstable" className='tabla-complementos'> 
+
+						<table id="productstable" className='tabla-complementos' hidden> 
                     <tr>
 					<th class="header">Folio</th>
                         <th class="header" style={{textAlign:'center'}}>Vehiculo</th>

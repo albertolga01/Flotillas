@@ -82,6 +82,7 @@ export default function Documents(props) {
         let formData = new FormData();
             formData.append("id", 15);
             formData.append("Filename", Filename);
+            formData.append("tipo", "1");
             formData.append("Filedesc", Filedesc);
             formData.append("IDvehiculo", IDvehiInput.value);
             formData.append("file", filedoc.files[0]);
