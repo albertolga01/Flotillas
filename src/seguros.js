@@ -42,6 +42,8 @@ function Seguros(props) {
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'No. Seguro',  
@@ -75,6 +77,8 @@ function Seguros(props) {
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'No. Seguro',  
@@ -332,7 +336,8 @@ function format(todayy){
 							columns={columns}
 							data={listap}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
 							>
 									<DataTable
 												columns={columns}
@@ -342,6 +347,8 @@ function format(todayy){
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>
@@ -380,7 +387,9 @@ function format(todayy){
 							columns={columns1}
 							data={listapv}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns}
@@ -390,6 +399,8 @@ function format(todayy){
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>

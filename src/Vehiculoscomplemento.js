@@ -43,26 +43,36 @@ function Vehiculoscomplemento(props) {
 			name: 'Folio',  
 			selector: row => row.folio,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px" 
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Capacidad',  
 			selector: row => row.capacidad,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "100px" 
 		},
 		{
 			name: 'Serie',  
 			selector: row => row.serie,
-			sortable: true,
+			sortable: true, 
+			maxWidth: "5px", 
+			width: "110px",
 		},
 		{
 			name: 'Descripción',  
 			selector: row => row.descripcion,
-			sortable: true,
+			sortable: true,		 
+			maxWidth: "5px", 
+			width: "180px",
 		},
 		{
 			name: 'Factura',  
@@ -76,12 +86,16 @@ function Vehiculoscomplemento(props) {
 		{
 			name: 'Fecha Factura',  
 			selector: row => format(row.fechafactura),
-			//sortable: true,
+			//sortable: true, 
+			maxWidth: "5px", 
+			width: "110px",
 		},
 		{
 			name: 'Fecha Captura',  
 			selector: row => format(row.fechacaptura),
-			//sortable: true,
+			//sortable: true, 
+			maxWidth: "5px", 
+			width: "110px",
 		},
 	];
 
@@ -91,8 +105,16 @@ function Vehiculoscomplemento(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
 		},
 	  }
 
@@ -289,7 +311,9 @@ function Vehiculoscomplemento(props) {
 					columns={columns}
 					data={listap}
 					print={true}
-					export={true} 
+					export={true}
+					filterPlaceholder="Filtrar" 
+
 					>
 							<DataTable
 										columns={columns}
@@ -299,6 +323,8 @@ function Vehiculoscomplemento(props) {
 										pagination
 										customStyles={tableCustomStyles}
 										highlightOnHover={true}
+										noDataComponent={"No se encontró información"}
+
 									
 									/>
 				</DataTableExtensions>

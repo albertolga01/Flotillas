@@ -38,11 +38,15 @@ function OtrosGastos(props) {
 			name: 'Folio',  
 			selector: row => row.id,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px",
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Servicio',  
@@ -72,11 +76,11 @@ function OtrosGastos(props) {
 			cell: (row) => {
 				return (
 					(row.fechaproximo != null)?
-									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+									<td style={{textAlign:'center' }}>
 									<input  type="date" defaultValue={row.fechaproximo} id={"fechaproximo"+row.id} ></input>
 									</td> 
 									:
-									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+									<td style={{textAlign:'center' }}>
 										 
 									</td>
 				)
@@ -86,7 +90,7 @@ function OtrosGastos(props) {
 			name: 'Factura',   
 			cell: (row) => {
 				return (
-					<td style={{textAlign:'center', minWidth:'100px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentoservicio}>{row.documentoservicio}</a></td>
+					<td style={{textAlign:'center', minWidth:'100px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentoservicio}>{row.documentoservicio}</a></td>
 				)
 			}
 		},
@@ -94,7 +98,7 @@ function OtrosGastos(props) {
 			name: 'Cotización',   
 			cell: (row) => {
 				return (
-					<td style={{textAlign:'center', minWidth:'100px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.cotizacionservicio}>{row.cotizacionservicio}</a></td>
+					<td style={{textAlign:'center', minWidth:'100px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.cotizacionservicio}>{row.cotizacionservicio}</a></td>
 				)
 			}
 		},
@@ -120,8 +124,16 @@ function OtrosGastos(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
 		},
 	  }
 	function openModalLoad() { 
@@ -393,7 +405,9 @@ function OtrosGastos(props) {
 							columns={columns}
 							data={listas}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns}
@@ -403,6 +417,8 @@ function OtrosGastos(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>	

@@ -46,21 +46,29 @@ function Multas(props) {
 			name: 'Folio',  
 			selector: row => row.id,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px",
 		},
 		{
 			name: 'Fecha Multa',  
 			selector: row => formatDate(row.fechamulta),
-			sortable: true,
+			sortable: true, 
+			maxWidth: "5px", 
+			width: "115px",
 		},
 		{
 			name: 'Chofer',  
 			selector: row => row.nombrechofer,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "150px", 
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
-			sortable: true,
+			sortable: true, 
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Descripción',  
@@ -71,6 +79,8 @@ function Multas(props) {
 			name: 'Importe',  
 			selector: row => formatNumber(row.importe),
 			sortable: true,
+			maxWidth: "5px", 
+			width: "100px", 
 		}, 
 	];
 
@@ -80,8 +90,16 @@ function Multas(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
 		},
 	  }
 
@@ -342,7 +360,8 @@ function filterPlacaChofer() {
 					columns={columns}
 					data={lista}
 					print={true}
-					export={true} 
+					export={true}
+					filterPlaceholder="Filtrar"
 					>
 							<DataTable
 										columns={columns}
@@ -352,6 +371,8 @@ function filterPlacaChofer() {
 										pagination
 										customStyles={tableCustomStyles}
 										highlightOnHover={true}
+										noDataComponent={"No se encontró información"}
+
 									
 									/>
 				</DataTableExtensions>

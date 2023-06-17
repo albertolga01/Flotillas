@@ -42,6 +42,8 @@ function Servicios(props) {
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Servicio',  
@@ -52,13 +54,13 @@ function Servicios(props) {
 			name: 'Odometro',  
 			cell: (row) => {
 				return (
-					<><input defaultValue={row.odometro} id={"odometro"+row.id} style={{width:'60px'}} ></input>KM</>
+					<><input defaultValue={row.odometro} id={"odometro"+row.id} style={{width:'60px'}} ></input> KM</>
 					)
 			}
 		},
 		{
 			name: 'KM Próx. Servicio',  
-			selector: row => formatNull(row.kilometraje) + "KM",
+			selector: row => formatNull(row.kilometraje) + " KM",
 			sortable: true,
 		},
 		{
@@ -76,11 +78,11 @@ function Servicios(props) {
 			cell: (row) => {
 				return (
 					(row.fechaproximo != null)?
-									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+									<td style={{textAlign:'center'}}>
 									<input type="date" defaultValue={row.fechaproximo} id={"fechaproximo"+row.id} ></input>
 									</td> 
 									:
-									<td style={{textAlign:'center',border: '2px solid rgb(171,178,185)'}}>
+									<td style={{textAlign:'center'}}>
 										 
 									</td>
 				)
@@ -111,7 +113,7 @@ function Servicios(props) {
 			name: 'Actualizar',   
 			cell: (row) => {
 				return (
-					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(row.vehiculoid, row.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
+					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(row.vehiculoid, row.id)} style={{width:'200%' }}><BsArrowRepeat /></button></td>
 				)
 			}
 		},
@@ -119,7 +121,7 @@ function Servicios(props) {
 			name: 'Eliminar',   
 			cell: (row) => {
 				return (
-					<td><button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarServicio(row.vehiculoid, row.id)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+					<td><button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarServicio(row.vehiculoid, row.id)} style={{width:'200%' }}><BsXCircleFill /></button></td>
 				)
 			}
 		}, 
@@ -127,7 +129,7 @@ function Servicios(props) {
 			name: 'Gastos',   
 			cell: (row) => {
 				return (
-					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarGastos(row.id, row.vehiculo, row.servicio)} style={{width:'100%' }}><FaExternalLinkAlt /></button></td>
+					<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarGastos(row.id, row.vehiculo, row.servicio)} style={{width:'200%' }}><FaExternalLinkAlt /></button></td>
 				)
 			}
 		},
@@ -395,7 +397,7 @@ function Servicios(props) {
 					<button className="btn btn-outline-success btn-sm" 	 >Agregar <FaCheckCircle /></button>
 				*/}
 					
-					<DocumentsServicio getServicios={getServicios} flotilla={props.flotilla} vehiculos={props.vehiculos} getServicios={getServicios}/>
+					<DocumentsServicio getServicios={getServicios} flotilla={props.flotilla} vehiculos={props.vehiculos} />
 				</div> 
 		</div>
 			:<></>
@@ -423,7 +425,8 @@ function Servicios(props) {
 							columns={columns}
 							data={listas}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar"  
 							>
 									<DataTable
 												columns={columns}
@@ -433,6 +436,8 @@ function Servicios(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+												 
 											
 											/>
 						</DataTableExtensions>	

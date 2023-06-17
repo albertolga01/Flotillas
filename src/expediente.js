@@ -237,10 +237,10 @@ function Expediente(props) {
 				</div>
 
 				<div className='Divtablas'>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'100%'}} >
+					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data" style={{height:'100%'}} >
 						<h5 style={{textAlign:'center'}}>Expediente</h5>
 						
-						<div id="display-expediente" style={{display:'flex', gap:"2vmax"}}>
+						<div id="display-expediente" style={{display:'flex', gap:"2vmax", padding:'5px'}}>
 							<span style={{marginTop: '10px'}}>Vehículo: {lista}</span>
 							
 							<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%' }}>
@@ -259,13 +259,15 @@ function Expediente(props) {
 						 
 						</div>
 
-						<div style={{height: "300px", overflow: "scroll"}}>
+						<div style={{height: "100%", overflow: "scroll"}}>
 						<button  style={{height:'38px', margintop:'5px'}} onClick={() => getDocumentosTodos()} class="btn btn-outline-success btn-sm">Filtrar</button>
 						<DataTableExtensions
 							columns={columns}
 							data={docsVehi}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns}
@@ -275,6 +277,8 @@ function Expediente(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>
@@ -296,7 +300,7 @@ function Expediente(props) {
 							</table>
 						</div>
 
-					</form>
+					</div>
 				</div>
 
 				<div style={{ margin: 'auto' , display:'none'}} >

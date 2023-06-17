@@ -12,7 +12,9 @@ import {ThreeDots } from  'react-loader-spinner'
 import { BsArrowRepeat, BsEnvelopeFill, BsFillPersonPlusFill, BsXCircleFill} from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import DataTableExtensions from "react-data-table-component-extensions";
+import 'react-data-table-component-extensions/dist/index.css';
+import DataTable from 'react-data-table-component';
 
 const customStylesD = {
 	content: {
@@ -38,6 +40,195 @@ const customStyles = {
 
 function Listavehiculos(props) {
 
+	const columns = [
+		{
+			name: 'Folio',  
+			selector: row => row.vehiculoid,
+			sortable: true,
+			maxWidth: "5px", 
+			width: "60px",
+		},
+		{
+			name: 'Vehículo',  
+			cell: (row) => {
+				return (
+					<td><textarea style={{resize: 'horizontal', width:'150px'}} type="text" rows="2" cols="50" defaultValue={row.descripcion} id={"descripcionVehiculo"+row.vehiculoid} ></textarea>{row.numvehiculo}</td>
+				)
+			},
+			width: "250px",
+			wrap: true,
+		},
+		{
+			name: 'Modelo',  
+			selector: row => row.modelo,
+			sortable: true,
+			width: "90px",
+			wrap: true,
+			
+		}, 
+		{  
+			name: 'Responsable',  
+			cell: (row) => {
+				return (
+					<><input defaultValue={row.responsable} id={"responsable"+row.vehiculoid} ></input></>
+				)
+			},
+			width: "160px",
+			wrap: true,
+		},
+		{  
+			name: 'Serie Vehículo',  
+			selector: row => row.serievehiculo,
+			sortable: true,
+			width: "160px",
+			wrap: true,
+		},
+		{  
+			name: 'Serie Motor',  
+			selector: row => row.seriemotor,
+			sortable: true,
+			width: "130px",
+			wrap: true,
+		},
+		{  
+			name: 'Tipo Uso',  
+			cell: (row) => {
+				return (
+					<><input defaultValue={row.tipouso} id={"tipouso"+row.vehiculoid}  ></input></>
+				)
+			},
+			width: "130px",
+			wrap: true,
+		},
+		{  
+			name: 'Empresa',  
+			cell: (row) => {
+				return (
+					<><select id={"empresa"+row.vehiculoid} style={{ width: '200px', height: '25px' }} onChange={(e) => setListaEmpresas(e.target.value)}>
+					<option value={row.idempresa}> {row.empresa}</option>
+					{empresas.map(row => (
+						<option value={row.id}> {row.nombre}</option>))
+					}</select></>
+				)
+			},
+			width: "210px",
+			wrap: true,
+		},
+		{  
+			name: 'Placa',  
+			selector: row => row.placas,
+			sortable: true,
+			width: "70px",
+			wrap: true,
+		},
+		{  
+			name: 'GPS',  
+			cell: (row) => {
+				return (
+					<><input defaultValue={row.gps} id={"gps"+row.vehiculoid}  style={{ width: '60px'}}></input></>
+				)
+			},
+			width: "70px",
+			wrap: true,
+		},
+		{  
+			name: 'Número',  
+			cell: (row) => {
+				return (
+					<><input defaultValue={row.numvehiculo} id={"numerovehiculo"+row.vehiculoid} style={{ width: '60px' }}></input></>
+				)
+			},
+			width: "70px",
+			wrap: true,
+		},
+		{  
+			name: 'Pernota',  
+			cell: (row) => {
+				return (
+					<><input defaultValue={row.pernota} id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></>
+				)
+			}
+		},
+		{  
+			name: 'Actualizar',
+			cell: (row) => {
+				return (
+					<button  className='btn btn-outline-success btn-sm' onClick={() => actualizarVehiculo(row.vehiculoid)} style={{minWidth:'100%' }}><BsArrowRepeat /></button>
+				)
+			},
+			width: "80px",
+			wrap: true,
+		},
+		{  
+			name: 'Correo',  
+			cell: (row) => {
+				return (
+					<button  className='btn btn-outline-success btn-sm' onClick={() => envioCorreo(row.vehiculoid)}  style={{minWidth:'100%' }}><BsEnvelopeFill /></button>
+				)
+			},
+			width: "70px",
+			wrap: true,
+		},
+		{  
+			name: 'Usuario',  
+			cell: (row) => {
+				return (
+					<button  className='btn btn-outline-success btn-sm' onClick={() => envioUsuario(row.vehiculoid)}  style={{minWidth:'100%' }}><BsFillPersonPlusFill /></button>
+				)
+			},
+			width: "70px",
+			wrap: true,
+		},
+		{  
+			name: 'Notificar',  
+			cell: (row) => {
+				return (
+					(row.notificar == "1")?
+					< input defaultChecked type="checkbox" id={"notificar"+row.vehiculoid} style={{minWidth:'50px'}}></input>
+					:
+					< input  type="checkbox" id={"notificar"+row.vehiculoid} style={{minWidth:'50px'}}></input>
+					
+					)
+			},
+			width: "80px",
+			wrap: true,
+		},
+		{  
+			name: 'Dictamenes',  
+			cell: (row) => {
+				return (
+					(row.dictamen == "1")?
+						< input defaultChecked type="checkbox" id={"dictamen"+row.vehiculoid} style={{minWidth:'50px'}}></input>
+						:
+						< input  type="checkbox" id={"dictamen"+row.vehiculoid} style={{minWidth:'50px'}}></input>
+					
+					)
+			},
+			width: "70px",
+			wrap: true,
+		},
+	];
+
+	 
+	const tableCustomStyles = {
+		headCells: {
+		  style: {
+			fontSize: '15px',
+			fontWeight: 'bold', 
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
+		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
+		},
+	  }
+
+
 	function openModalLoad() { 
 		setIsOpenLoad(true); 
 	}  
@@ -56,7 +247,7 @@ function Listavehiculos(props) {
 
 	const [listav, setListaV] = useState([]);
 	const [value, setValue] = useState([]);
-	
+	const [loading, setLoading] = useState(true);
 	
 	const [listaver, setListaVer] = useState([]);
 	const [listaUsuario, setListaUsuario] = useState([]);
@@ -157,18 +348,9 @@ function Listavehiculos(props) {
 	   return today;
 		}
 	
-	
-	
-		
-	   
-  
-
   const [lista, setLista] =  useState([]);  
   
  
-
- 
-
   async function getRefacciones(){
 	var id = "getRefacciones";
 	openModalLoad();
@@ -370,7 +552,26 @@ async function getTiposCorreo() {
 	  </div>
 	  </div>
  <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
-                <table id="productstable"  style={{width:'100%'}} > 
+ 		<DataTableExtensions
+			columns={columns}
+			data={listav}
+			print={true}
+			export={true}
+			filterPlaceholder="Filtrar" 
+			>
+				<DataTable
+					columns={columns}
+					data={listav}
+					fixedHeader={true}
+					fixedHeaderScrollHeight={'100%'}
+					pagination
+					customStyles={tableCustomStyles}
+					highlightOnHover={true}
+					noDataComponent={"No se encontró información"}
+					loading={loading}
+					/>
+		</DataTableExtensions>
+                <table id="productstable"  style={{width:'100%'}} hidden > 
                     <tr style={{borderWidth:'1px'}}>
                         <th class="header">Folio</th>
                         <th class="header">Vehículo</th>
@@ -438,10 +639,13 @@ async function getTiposCorreo() {
         ))}	
                         <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
                 </table> 
+
+
 	 </div>
  
- 
- 
+  
+<br></br>
+<br></br>
 
 				<Modal
         isOpen={modalIsOpen1}

@@ -33,6 +33,8 @@ function Dictamenes(props) {
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Tipo Dictamen',  
@@ -47,18 +49,24 @@ function Dictamenes(props) {
 		{
 			name: 'Fecha',  
 			selector: row => formatDate(row.fecha),
-			sortable: true,
+			sortable: true, 
+			maxWidth: "5px", 
+			width: "115px",
 		}, 
 		{
 			name: 'Vencimiento',  
 			selector: row => formatDate(row.fechafinal),
-			sortable: true,
+			sortable: true, 
+			maxWidth: "5px", 
+			width: "140px",
 		}, 
 		{
-			name: 'Archivo',   
+			name: 'Archivo', 
+			maxWidth: "5px", 
+			width: "200px",   
 			cell: (row) => {
 				return (
-					<td style={{ minWidth:'180px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/DocumentoDictamen/" + row.documentoverificacion}>{row.documentoverificacion}</a></td>
+					<td style={{ minWidth:'180px'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/DocumentoDictamen/" + row.documentoverificacion}>{row.documentoverificacion}</a></td>
 				)
 			}, 
 		}, 
@@ -356,7 +364,9 @@ function Dictamenes(props) {
 							columns={columns}
 							data={listas}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns}
@@ -366,6 +376,8 @@ function Dictamenes(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+												
 											
 											/>
 						</DataTableExtensions>
@@ -416,6 +428,8 @@ function Dictamenes(props) {
 							data={listasvd}
 							print={true}
 							export={true} 
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns}
@@ -425,6 +439,8 @@ function Dictamenes(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>

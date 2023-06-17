@@ -45,6 +45,8 @@ function Placas(props) {
 			name: 'Placas',  
 			selector: row => row.placas,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "85px",
 		},
 		{
 			name: 'Vehiculo',  
@@ -54,12 +56,16 @@ function Placas(props) {
 		{
 			name: 'Fecha',  
 			selector: row => format(row.fechainicial),
-			//sortable: true,
+			//sortable: true, 
+			maxWidth: "5px", 
+			width: "90px",
 		},
 		{
 			name: 'Vencimiento',  
 			selector: row => format(row.fechafinal),
-			//sortable: true,
+			//sortable: true, 
+			maxWidth: "5px", 
+			width: "100px",
 		},
 	];
 
@@ -69,8 +75,16 @@ function Placas(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
 		},
 	  }
 	
@@ -267,7 +281,9 @@ function Placas(props) {
 					columns={columns}
 					data={listap}
 					print={true}
-					export={true} 
+					export={true}
+					filterPlaceholder="Filtrar" 
+
 					>
 							<DataTable
 										columns={columns}
@@ -277,6 +293,8 @@ function Placas(props) {
 										pagination
 										customStyles={tableCustomStyles}
 										highlightOnHover={true}
+										noDataComponent={"No se encontró información"}
+
 									
 									/>
 				</DataTableExtensions>
@@ -311,7 +329,9 @@ function Placas(props) {
 					columns={columns}
 					data={listapv}
 					print={true}
-					export={true} 
+					export={true}
+					filterPlaceholder="Filtrar" 
+
 					>
 							<DataTable
 										columns={columns}
@@ -321,6 +341,8 @@ function Placas(props) {
 										pagination
 										customStyles={tableCustomStyles}
 										highlightOnHover={true}
+										noDataComponent={"No se encontró información"}
+
 									
 									/>
 				</DataTableExtensions>

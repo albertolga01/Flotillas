@@ -49,11 +49,15 @@ function Refacciones(props) {
 			name: 'Folio',  
 			selector: row => row.folio,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px"
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Fecha Compra',  
@@ -114,9 +118,12 @@ function Refacciones(props) {
 			name: 'Folio',  
 			selector: row => row.folio,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px",
 		},
 		{
-			name: 'Vehículo',  
+			name: 'Vehículo',
+			width: "15%",  
 			cell: (row) => {
 				return (
 					<select  id={"vehiculoid"+row.folio}   className="form-control"  style={{width:'85%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
@@ -154,10 +161,10 @@ function Refacciones(props) {
 			sortable: true,
 		}, 
 		{
-			name: 'Documento',   
+			name: 'Documento',    
 			cell: (row) => {
 				return (
-					<td style={{minWidth:'100px', padding:'5px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentorefaccion}>{row.documentorefaccion}</a></td>		
+					<td style={{minWidth:'100px', padding:'5px' }}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentorefaccion}>{row.documentorefaccion}</a></td>		
 				)
 			}
 		}, 
@@ -198,8 +205,16 @@ function Refacciones(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
 		},
 	  }
 
@@ -550,7 +565,9 @@ function Refacciones(props) {
 							columns={columns}
 							data={lista}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns}
@@ -560,6 +577,8 @@ function Refacciones(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>
@@ -615,7 +634,9 @@ function Refacciones(props) {
 							columns={columns1}
 							data={listaStock}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns1}
@@ -625,6 +646,8 @@ function Refacciones(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>

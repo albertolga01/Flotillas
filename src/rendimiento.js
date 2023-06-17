@@ -44,11 +44,15 @@ function Rendimiento(props) {
 			name: 'Folio',  
 			selector: row => row.folio,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px"
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Fecha Carga',  
@@ -88,6 +92,7 @@ function Rendimiento(props) {
 			name: 'Ticket',   
 			selector: row => row.ticket,
 			sortable: true,
+			
 		},
 		{
 			name: 'Rendimiento',   
@@ -100,7 +105,7 @@ function Rendimiento(props) {
 				return (
 					(props.tipo == "1")?
 								<td>
-								<button id="bttn-editar-rendimiento" style={{width:'100%'}} className='btn btn-outline-success btn-sm' onClick={() => editarCarga(row.vehiculoid, row.folio)}><BsArrowRepeat /></button>
+								<button id="bttn-editar-rendimiento" style={{width:'200%'}} className='btn btn-outline-success btn-sm' onClick={() => editarCarga(row.vehiculoid, row.folio)}><BsArrowRepeat /></button>
 								</td>                                        
 
 									:
@@ -114,7 +119,7 @@ function Rendimiento(props) {
 				return (
 					(props.tipo == "1")?
 					<td>
-					<button id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(row.folio)}><BsXCircleFill /></button>
+					<button id="bttn-eliminar-rendimiento" style={{width:'200%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(row.folio)}><BsXCircleFill /></button>
 					</td>                                        
 
 						:
@@ -129,11 +134,15 @@ function Rendimiento(props) {
 			name: 'Folio',  
 			selector: row => row.folio,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px"
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Modelo',  
@@ -186,12 +195,12 @@ function Rendimiento(props) {
 			sortable: true,
 		}, 
 		{ 
-			name: 'Uso',   
+			name: 'Eliminar',   
 			cell: (row) => {
 				return (
 					(props.tipo == "1")?
 					<td>
-					<button id="bttn-eliminar-rendimiento" style={{width:'100%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarRendimiento(row.folio)}><BsXCircleFill /></button>
+					<button id="bttn-eliminar-rendimiento" style={{width:'200%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarRendimiento(row.folio)}><BsXCircleFill /></button>
 					</td>                                        
 
 						:
@@ -206,8 +215,16 @@ function Rendimiento(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
 		},
 	  }
 			function openModalLoad() { 
@@ -555,7 +572,8 @@ function Rendimiento(props) {
 							columns={columns}
 							data={lista}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
 							>
 									<DataTable
 												columns={columns}
@@ -565,6 +583,8 @@ function Rendimiento(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>				<table id="productstable"  style={{width:'100%'}} hidden> 
@@ -626,7 +646,8 @@ function Rendimiento(props) {
 							columns={columns1}
 							data={listaRendimientoM}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
 							>
 									<DataTable
 												columns={columns1}
@@ -636,6 +657,8 @@ function Rendimiento(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>				

@@ -46,11 +46,15 @@ function Accesorios(props) {
 			name: 'Folio',  
 			selector: row => row.folio,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px"  
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Accesorio',  
@@ -83,12 +87,17 @@ function Accesorios(props) {
 			name: 'Folio',  
 			selector: row => row.folio,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px"
 		},
 		{
-			name: 'Vehículo',  
-			cell: (row) => {
+			name: 'Vehículo',
+			width: "15%",
+			cell:
+			 (row) => {
+				
 				return (
-					<select  id={"vehiculoid"+row.folio}   className="form-control"  style={{width:'85%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+					<select  id={"vehiculoid"+row.folio}   className="form-control"  style={{width:'200%',  cursor: 'pointer',marginLeft:'10px'}}>
 						<option  value="0" >Seleccione</option> 					
 						{props.vehiculos.map(row => ( 
 							<option value={row.vehiculoid}>{row.descripcion + " " + row.modelo + " " + row.numvehiculo  }</option>
@@ -96,6 +105,7 @@ function Accesorios(props) {
 						</select>
 				)
 			}
+			
 		},
 		{
 			name: 'Accesorio',  
@@ -127,7 +137,7 @@ function Accesorios(props) {
 			cell: (row) => {
 				return (
 					(props.tipo == "1") ? 
-							<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-success btn-sm' onClick={() => asignarRefaccion(row.folio, row.vehiculoid)} style={{width:'100%' }}><BsFillPlusCircleFill /></button></td>
+							<td style={{padding:'5px',textAlign:'center'}}><button className='btn btn-outline-success btn-sm' onClick={() => asignarRefaccion(row.folio, row.vehiculoid)} style={{width:'200%' }}><BsFillPlusCircleFill /></button></td>
 							:<></>
 				)
 			}
@@ -137,7 +147,7 @@ function Accesorios(props) {
 			cell: (row) => {
 				return (
 					(props.tipo == "1") ? 
-					<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccionStock(row.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+					<td style={{padding:'5px',textAlign:'center'}}><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarRefaccionStock(row.folio)} style={{width:'200%' }}><BsXCircleFill /></button></td>
 					:<></>
 				)
 			}
@@ -149,9 +159,18 @@ function Accesorios(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
 		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
+		},
+		 
 	  }
 
 	function openModalLoad() { 
@@ -367,7 +386,9 @@ async function eliminarRefaccionStock(folio){
 							columns={columns}
 							data={lista}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns}
@@ -377,6 +398,8 @@ async function eliminarRefaccionStock(folio){
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>
@@ -426,7 +449,9 @@ async function eliminarRefaccionStock(folio){
 							columns={columns1}
 							data={listastock}
 							print={true}
-							export={true} 
+							export={true}
+							filterPlaceholder="Filtrar" 
+
 							>
 									<DataTable
 												columns={columns1}
@@ -436,6 +461,8 @@ async function eliminarRefaccionStock(folio){
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noDataComponent={"No se encontró información"}
+
 											
 											/>
 						</DataTableExtensions>
@@ -456,7 +483,7 @@ async function eliminarRefaccionStock(folio){
                 	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'12px'}}>
 						<td className='id-orden' >{item.folio}</td>
 						<td style={{padding:'5px',border: '2px solid rgb(171,178,185)',textAlign:'center'}}>
-						<select  id={"vehiculoid"+item.folio}   className="form-control"  style={{width:'85%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
+						<select  id={"vehiculoid"+item.folio}   className="form-control"  style={{width:'100%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
 						<option  value="0" >Seleccione</option> 					
 						{props.vehiculos.map(item => ( 
 							<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo  }</option>

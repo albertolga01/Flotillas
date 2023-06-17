@@ -282,7 +282,9 @@ function Gastosvehiculo(props) {
 					columns={columns}
 					data={lista}
 					print={true}
-					export={true} 
+					export={true}
+					filterPlaceholder="Filtrar" 
+
 					>
                     <DataTable
                                 columns={columns}
@@ -292,6 +294,8 @@ function Gastosvehiculo(props) {
                                 pagination
                                 customStyles={tableCustomStyles}
                                 highlightOnHover={true}
+								noDataComponent={"No se encontró información"}
+
                                
                             />
          </DataTableExtensions>
@@ -321,6 +325,8 @@ function Gastosvehiculo(props) {
                 data={listaservicios}
                 print={true}
                 export={true}
+				filterPlaceholder="Filtrar" 
+
                 
                 >
                     <DataTable
@@ -331,6 +337,8 @@ function Gastosvehiculo(props) {
                                 pagination
                                 customStyles={tableCustomStyles}
                                 highlightOnHover={true}
+								noDataComponent={"No se encontró información"}
+
                                
                             />
                 </DataTableExtensions>

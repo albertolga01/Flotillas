@@ -45,21 +45,29 @@ function Siniestros(props) {
 			name: 'Folio',  
 			selector: row => row.id,
 			sortable: true,
+			maxWidth: "5px", 
+			width: "60px",
 		},
 		{
 			name: 'Fecha',  
 			selector: row => formatDate(row.fecha),
-			sortable: true,
+			sortable: true, 
+			maxWidth: "5px", 
+			width: "90px",
 		},
 		{
 			name: 'Vehículo',  
 			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
+			width: "210px",
+			wrap: true,
 		},
 		{
 			name: 'Chofer',  
 			selector: row => row.nombrechofer,
-			sortable: true,
+			sortable: true, 
+			maxWidth: "15px", 
+			width: "200px",
 		},
 		{
 			name: 'Descripción',  
@@ -70,12 +78,16 @@ function Siniestros(props) {
 			name: 'Deducible',  
 			selector: row => formatNumber(row.deducible),
 			sortable: true,
+			maxWidth: "5px", 
+			width: "100px", 
 		}, 
 		{
-			name: 'Archivo',   
+			name: 'Archivo',
+			maxWidth: "5px", 
+			width: "80px",   
 			cell: (row) => {
 				return (
-					<td ><button style={{width:'100%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(row.vehiculoid)}><BsUpload /></button></td>
+					<td ><button style={{width:'200%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(row.vehiculoid)}><BsUpload /></button></td>
 				)
 			}, 
 		}, 
@@ -87,8 +99,16 @@ function Siniestros(props) {
 		  style: {
 			fontSize: '15px',
 			fontWeight: 'bold', 
-			backgroundColor: '#e5e5e5'
+			backgroundColor: '#e5e5e5',
+			paddingLeft: '8px',
+			paddingRight: '0px',
 		  },
+		},
+		cells: {
+			style: {
+				paddingLeft: '8px', // override the cell padding for data cells
+				paddingRight: '0px',
+			},
 		},
 	  }
 
@@ -372,7 +392,9 @@ function Siniestros(props) {
 					columns={columns}
 					data={lista}
 					print={true}
-					export={true} 
+					export={true}
+					filterPlaceholder="Filtrar" 
+
 					>
 							<DataTable
 										columns={columns}
@@ -382,6 +404,8 @@ function Siniestros(props) {
 										pagination
 										customStyles={tableCustomStyles}
 										highlightOnHover={true}
+										noDataComponent={"No se encontró información"}
+
 									
 									/>
 				</DataTableExtensions>
