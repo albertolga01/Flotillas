@@ -52,7 +52,7 @@ function Listavehiculos(props) {
 			name: 'Vehículo',  
 			cell: (row) => {
 				return (
-					<td><textarea style={{resize: 'horizontal', width:'150px'}} type="text" rows="2" cols="50" defaultValue={row.descripcion} id={"descripcionVehiculo"+row.vehiculoid} ></textarea>{row.numvehiculo}</td>
+					<td><textarea style={{resize: 'horizontal', width:'150px'}} type="text" rows="2" cols="50" id={"descripcionVehiculo"+row.vehiculoid} >{row.descripcion}</textarea>{row.numvehiculo}</td>
 				)
 			},
 			width: "250px",
@@ -70,7 +70,7 @@ function Listavehiculos(props) {
 			name: 'Responsable',  
 			cell: (row) => {
 				return (
-					<><input defaultValue={row.responsable} id={"responsable"+row.vehiculoid} ></input></>
+					<><input id={"responsable"+row.vehiculoid} >{row.responsable}</input></>
 				)
 			},
 			width: "160px",
@@ -94,7 +94,7 @@ function Listavehiculos(props) {
 			name: 'Tipo Uso',  
 			cell: (row) => {
 				return (
-					<><input defaultValue={row.tipouso} id={"tipouso"+row.vehiculoid}  ></input></>
+					<><input  id={"tipouso"+row.vehiculoid}  >{row.tipouso}</input></>
 				)
 			},
 			width: "130px",
@@ -125,7 +125,7 @@ function Listavehiculos(props) {
 			name: 'GPS',  
 			cell: (row) => {
 				return (
-					<><input defaultValue={row.gps} id={"gps"+row.vehiculoid}  style={{ width: '60px'}}></input></>
+					<><input  id={"gps"+row.vehiculoid}  style={{ width: '60px'}}>{row.gps}</input></>
 				)
 			},
 			width: "70px",
@@ -135,7 +135,7 @@ function Listavehiculos(props) {
 			name: 'Número',  
 			cell: (row) => {
 				return (
-					<><input defaultValue={row.numvehiculo} id={"numerovehiculo"+row.vehiculoid} style={{ width: '60px' }}></input></>
+					<><input  id={"numerovehiculo"+row.vehiculoid} style={{ width: '60px' }}>{row.numvehiculo}</input></>
 				)
 			},
 			width: "70px",
@@ -145,7 +145,7 @@ function Listavehiculos(props) {
 			name: 'Pernota',  
 			cell: (row) => {
 				return (
-					<><input defaultValue={row.pernota} id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></>
+					<><input  id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}>{row.pernota}</input></>
 				)
 			}
 		},
