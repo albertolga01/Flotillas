@@ -70,7 +70,7 @@ function Listavehiculos(props) {
 			name: 'Responsable',  
 			cell: (row) => {
 				return (
-					<><input id={"responsable"+row.vehiculoid} >{row.responsable}</input></>
+					<><textarea id={"responsable"+row.vehiculoid} >{row.responsable}</textarea></>
 				)
 			},
 			width: "160px",
@@ -94,7 +94,7 @@ function Listavehiculos(props) {
 			name: 'Tipo Uso',  
 			cell: (row) => {
 				return (
-					<><input  id={"tipouso"+row.vehiculoid}  >{row.tipouso}</input></>
+					<><textarea  id={"tipouso"+row.vehiculoid} >{row.tipouso}</textarea></>
 				)
 			},
 			width: "130px",
@@ -125,7 +125,7 @@ function Listavehiculos(props) {
 			name: 'GPS',  
 			cell: (row) => {
 				return (
-					<><input  id={"gps"+row.vehiculoid}  style={{ width: '60px'}}>{row.gps}</input></>
+					<><textarea  id={"gps"+row.vehiculoid}  style={{ width: '60px'}}>{row.gps}</textarea></>
 				)
 			},
 			width: "70px",
@@ -135,7 +135,7 @@ function Listavehiculos(props) {
 			name: 'Número',  
 			cell: (row) => {
 				return (
-					<><input  id={"numerovehiculo"+row.vehiculoid} style={{ width: '60px' }}>{row.numvehiculo}</input></>
+					<><textarea  id={"numerovehiculo"+row.vehiculoid} style={{ width: '60px' }}>{row.numvehiculo}</textarea></>
 				)
 			},
 			width: "70px",
@@ -145,7 +145,7 @@ function Listavehiculos(props) {
 			name: 'Pernota',  
 			cell: (row) => {
 				return (
-					<><input  id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}>{row.pernota}</input></>
+					<><textarea  id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}>{row.pernota}</textarea></>
 				)
 			}
 		},
