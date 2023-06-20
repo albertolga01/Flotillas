@@ -63,7 +63,7 @@ function Rendimiento(props) {
 			name: 'Litros',  
 			cell: (row) => {
 				return (
-					<input defaultValue={formatN(row.litros)} id={"litros"+row.folio}></input>
+					<textarea  id={"litros"+row.folio}>{formatN(row.litros)}</textarea>
 				)
 			}
 		}, 
@@ -71,7 +71,7 @@ function Rendimiento(props) {
 			name: 'Importe',  
 			cell: (row) => {
 				return (
-					<input defaultValue={formatNumber(row.importe)} id={"importe"+row.folio}></input>
+					<textarea   id={"importe"+row.folio}>{formatNumber(row.importe)}</textarea>
 				)
 			}
 		}, 
@@ -79,7 +79,7 @@ function Rendimiento(props) {
 			name: 'KM Inicial',   
 			cell: (row) => {
 				return (
-					<input defaultValue={formatN(row.kilometraje)} id={"kilometraje"+row.folio}></input>
+					<textarea  id={"kilometraje"+row.folio}>{formatN(row.kilometraje)}</textarea>
 				)
 			}
 		}, 
