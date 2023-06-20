@@ -1,9 +1,7 @@
  
 import React,{useState, useEffect} from 'react';  
-import  {FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye} from 'react-icons/fa'
 import axios from '../node_modules/axios'; 
 import {NabvarRe} from './component/Navbar'; 
-import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import './App.css'; 
 import formatNumber from './formatNumber';
@@ -36,15 +34,14 @@ const customStyles = {
 	  marginRight: '-50%',
 	  transform: 'translate(-50%, -50%)',
 	},
-  };
-
+  }; 
 function Rendimiento(props) {
+ 
 	const columns = [
 		{
 			name: 'Folio',  
 			selector: row => row.folio,
-			sortable: true,
-			maxWidth: "5px", 
+			sortable: true, 
 			width: "60px"
 		},
 		{
@@ -63,15 +60,24 @@ function Rendimiento(props) {
 			name: 'Litros',  
 			cell: (row) => {
 				return (
-					<textarea  id={"litros"+row.folio}>{formatN(row.litros)}</textarea>
+					<><input 
+					value={formatN(row.litros)}
+					onChange={(e)=> {
+					document.getElementById("litros"+row.folio).value(e.target.value)
+					}} id={"litros"+row.folio}></input></>
 				)
-			}
+			},
+			wrap: true,
 		}, 
 		{
 			name: 'Importe',  
 			cell: (row) => {
 				return (
-					<textarea   id={"importe"+row.folio}>{formatNumber(row.importe)}</textarea>
+					<><input 
+					value={formatNumber(row.importe)}
+					onChange={(e)=> {
+					document.getElementById("importe"+row.folio).value(e.target.value)}}
+					id={"importe"+row.folio}></input></>
 				)
 			}
 		}, 
@@ -79,7 +85,11 @@ function Rendimiento(props) {
 			name: 'KM Inicial',   
 			cell: (row) => {
 				return (
-					<textarea  id={"kilometraje"+row.folio}>{formatN(row.kilometraje)}</textarea>
+					<><input  
+					value={formatN(row.kilometraje)}
+					onChange={(e)=> {
+					document.getElementById("kilometraje"+row.folio).value(e.target.value)}}
+					id={"kilometraje"+row.folio}>{row.kilometraje}</input></>
 				)
 			}
 		}, 

@@ -52,7 +52,11 @@ function Listavehiculos(props) {
 			name: 'Vehículo',  
 			cell: (row) => {
 				return (
-					<td><textarea style={{resize: 'horizontal', width:'150px'}} type="text" rows="2" cols="50" id={"descripcionVehiculo"+row.vehiculoid} >{row.descripcion}</textarea>{row.numvehiculo}</td>
+					<td><input
+					value={row.descripcion}
+					onChange={(e)=> {
+					document.getElementById("descripcionVehiculo"+row.vehiculoid).value(e.target.value)}}
+					 id={"descripcionVehiculo"+row.vehiculoid} ></input>{row.numvehiculo}</td>
 				)
 			},
 			width: "250px",
@@ -70,7 +74,11 @@ function Listavehiculos(props) {
 			name: 'Responsable',  
 			cell: (row) => {
 				return (
-					<><textarea id={"responsable"+row.vehiculoid} >{row.responsable}</textarea></>
+					<><input 
+					value={row.responsable}
+					onChange={(e)=> {
+					document.getElementById("responsable"+row.vehiculoid).value(e.target.value)}}
+					id={"responsable"+row.vehiculoid} ></input></>
 				)
 			},
 			width: "160px",
@@ -94,7 +102,11 @@ function Listavehiculos(props) {
 			name: 'Tipo Uso',  
 			cell: (row) => {
 				return (
-					<><textarea  id={"tipouso"+row.vehiculoid} >{row.tipouso}</textarea></>
+					<><input 
+					alue={row.tipouso}
+					onChange={(e)=> {
+					document.getElementById("tipouso"+row.vehiculoid).value(e.target.value)}}
+					  id={"tipouso"+row.vehiculoid}></input></>
 				)
 			},
 			width: "130px",
@@ -125,7 +137,11 @@ function Listavehiculos(props) {
 			name: 'GPS',  
 			cell: (row) => {
 				return (
-					<><textarea  id={"gps"+row.vehiculoid}  style={{ width: '60px'}}>{row.gps}</textarea></>
+					<><input 
+					value={row.gps}
+					onChange={(e)=> {
+					document.getElementById("gps"+row.vehiculoid).value(e.target.value)}}
+					 id={"gps"+row.vehiculoid}  style={{ width: '60px'}}></input></>
 				)
 			},
 			width: "70px",
@@ -135,7 +151,11 @@ function Listavehiculos(props) {
 			name: 'Número',  
 			cell: (row) => {
 				return (
-					<><textarea  id={"numerovehiculo"+row.vehiculoid} style={{ width: '60px' }}>{row.numvehiculo}</textarea></>
+					<><input 
+					value={row.numvehiculo}
+					onChange={(e)=> {
+					document.getElementById("numerovehiculo"+row.vehiculoid).value(e.target.value)}}
+					 id={"numerovehiculo"+row.vehiculoid} style={{ width: '60px' }}></input></>
 				)
 			},
 			width: "70px",
@@ -145,7 +165,11 @@ function Listavehiculos(props) {
 			name: 'Pernota',  
 			cell: (row) => {
 				return (
-					<><textarea  id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}>{row.pernota}</textarea></>
+					<><input  
+					value={row.pernota}
+					onChange={(e)=> {
+					document.getElementById("pernota"+row.vehiculoid).value(e.target.value)}}
+					id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></>
 				)
 			}
 		},
