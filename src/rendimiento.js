@@ -89,7 +89,7 @@ function Rendimiento(props) {
 					value={formatN(row.kilometraje)}
 					onChange={(e)=> {
 					document.getElementById("kilometraje"+row.folio).value(e.target.value)}}
-					id={"kilometraje"+row.folio}>{row.kilometraje}</input></>
+					id={"kilometraje"+row.folio}></input></>
 				)
 			}
 		}, 
@@ -530,9 +530,9 @@ function Rendimiento(props) {
 					fd.append("id", "editarCarga")
 					fd.append("idcarga", folio) 
 					fd.append("vehiculoid", vehiculoid) 
-					fd.append("importe", (document.getElementById("importe"+folio).value).replace("$", "")) 
-					fd.append("kilometraje", document.getElementById("kilometraje"+folio).value) 
-					fd.append("litros", document.getElementById("litros"+folio).value) 
+					fd.append("importe", (document.getElementById("importe"+folio).value).replaceAll("$", "").replaceAll(",", "")) 
+					fd.append("kilometraje", document.getElementById("kilometraje"+folio).value.replaceAll(",", "")) 
+					fd.append("litros", document.getElementById("litros"+folio).value.replaceAll(",", "")) 
 					const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
 					console.log("editarCarga: " +res.data);
 					notify(res.data.trim());
