@@ -38,59 +38,41 @@ const customStyles = {
 	},
   };
 
-function Siniestros(props) {
+function Bajavehiculos(props) {
 
 	const columns = [
-		{
-			name: 'Folio',  
-			selector: row => row.id,
-			sortable: true,
-			maxWidth: "5px", 
-			width: "60px",
-		},
-		{
-			name: 'Fecha',  
-			selector: row => formatDate(row.fecha),
-			sortable: true, 
-			maxWidth: "5px", 
-			width: "90px",
-		},
+		
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			selector: row => row.descripcion +" "+ row.numvehiculo,
 			sortable: true,
-			width: "210px",
+			width: "250px",
 			wrap: true,
 		},
 		{
-			name: 'Chofer',  
-			selector: row => row.nombrechofer,
+			name: 'Modelo',  
+			selector: row => row.modelo,
+			sortable: true,  
+		},
+		{
+			name: 'serie',  
+			selector: row => row.serievehiculo,
+			sortable: true,  
+		},
+		{
+			name: 'Empresa',  
+			selector: row => row.nombre,
 			sortable: true, 
-			maxWidth: "15px", 
-			width: "200px",
+			maxWidth: "5px", 
+			width: "300px",
 		},
 		{
-			name: 'Descripción',  
-			selector: row => row.descripcion,
-			sortable: true,
-		},
-		{
-			name: 'Deducible',  
-			selector: row => formatNumber(row.deducible),
-			sortable: true,
+			name: 'Uso',  
+			selector: row => row.tipouso,
+			sortable: true, 
 			maxWidth: "5px", 
-			width: "100px", 
-		}, 
-		{
-			name: 'Archivo',
-			maxWidth: "5px", 
-			width: "80px",   
-			cell: (row) => {
-				return (
-					<td ><button style={{width:'200%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(row.vehiculoid, row.id)}><BsUpload /></button></td>
-				)
-			}, 
-		}, 
+			width: "90px",
+		} 
 	];
 
 	
@@ -116,8 +98,6 @@ function Siniestros(props) {
 	const [modalIsOpenArchivo, setIsOpenArchivo] = React.useState(false);
 	const [listadocumentos, setListaDocumentos] =  useState([]);
 	const [folioVehiculo, setFolioVehiculo] = useState([]); 
-
-	const [idsiniestro, setIdSiniestro] = useState([]); 
 
 	const [modalIsOpenLoad, setIsOpenLoad] = useState(false);  
 	const [listaver, setListaVer] = useState([]);
@@ -155,13 +135,13 @@ function Siniestros(props) {
 	useEffect(()=> {
 		// getCargas(); 
 		 getSiniestros();
-		 getChoferes();
+		 //getChoferes();
 	   }, [])
 	
-	   async function getDocumentos(folio, idsiniestro){
+	   async function getDocumentos(folio){
 		var id = "getDocumentos";
 		setListaDocumentos([]);
-		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&folio='+folio+'&idsiniestro='+idsiniestro); 
+		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&folio='+folio); 
 		//console.log(rese.data);
 		setListaDocumentos(rese.data);    
 	}
@@ -175,9 +155,8 @@ function Siniestros(props) {
 		fd.append("Filename", descripcion);
 		fd.append("tipo", "2");
 		fd.append("Filedesc", descripcion);
-		fd.append("IDvehiculo", folioVehiculo); 
+		fd.append("IDvehiculo", folioVehiculo) 
 		fd.append("file", documento.files[0]);
-		fd.append("idsiniestro", idsiniestro);
 		
 		setListaDocumentos([]);
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
@@ -188,27 +167,23 @@ function Siniestros(props) {
 	}
 	async function addSiniestro() {
 		
-		var choferNombre = document.getElementById("choferNombre").value;
 		var vehiculoid = document.getElementById("vehiculoid").value;
 		var fecha = document.getElementById("fechasiniestro").value;
 		var descripcion = document.getElementById("descripcion").value;
-		var deducible = document.getElementById("deducible").value;
 		 
 		
 		let fd = new FormData()
-			fd.append("id", "addSiniestro")
-			fd.append("idchofer",choferNombre)
+			fd.append("id", "addBajaVehiculo")
 			fd.append("vehiculoid", vehiculoid)
 			fd.append("fecha", fecha) 
 			fd.append("descripcion", descripcion) 
-			fd.append("deducible", deducible) 
 
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		 
 		notify(res.data.trim());
-		if(res.data.trim() == "Siniestro agregado correctamente"){
+		if(res.data.trim() == "Baja de vehículo agregada correctamente"){
 			closeModal();
-	getSiniestros();
+		getSiniestros();
 
 		}
 	}
@@ -223,20 +198,20 @@ function Siniestros(props) {
   
 	function afterOpenModal() {
 	  // references are now sync'd and can be accessed.
-	  subtitle.style.color = '#f00';
+	  //subtitle.style.color = '#f00';
 	}
   
 	function closeModal() {
 	  setIsOpen(false);
 	}
 
-	function formatDate(date){
+	/*function formatDate(date){
 		var index = date.search(" ");
 		date = date.substring(0, 10);
 		date = date.split("-");
 		var formatedDate = date[2] +"/"+ date[1] +"/"+ date[0];
 		return(formatedDate);
-	}
+	}*/
 
 	function format(todayy){
 		var today = new Date(todayy);
@@ -267,7 +242,7 @@ function Siniestros(props) {
 	  
 		function afterOpenModal() {
 		  // references are now sync'd and can be accessed.
-		  subtitle.style.color = '#f00';
+		  //subtitle.style.color = '#f00';
 		}
 	  
 		function closeModal1() {
@@ -289,7 +264,7 @@ function Siniestros(props) {
 		} 
 
 		async function getSiniestros(){
-			var id = "getSiniestros";
+			var id = "getBajaVehiculo";
 			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 		
 			setLista(res.data);
@@ -297,7 +272,7 @@ function Siniestros(props) {
 			console.log(res.data);
 
 		}
-		
+		/*
 		async function getCargasDia(){
 			
 			var id = "getSiniestroDia";
@@ -308,7 +283,7 @@ function Siniestros(props) {
 			console.log(res.data);
 
 		}
-		
+		*/
 		function filterPlacaVehiculo() {
 			var tipo = document.getElementById('vehiculof').value;  
 			if(tipo == "0"){ 
@@ -319,11 +294,10 @@ function Siniestros(props) {
 			}
 		}
 
-		function agregarDoc(folio, idsiniestro){
-			setIdSiniestro(idsiniestro);
+		function agregarDoc(folio){
 			openModalA();
 			setFolioVehiculo(folio);
-			getDocumentos(folio, idsiniestro);
+			getDocumentos(folio);
 		
 		}
 
@@ -336,14 +310,16 @@ function Siniestros(props) {
   
     <div className="container ">
       <div className='titulos'>
-	  	<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Siniestros"/>    
+	  	<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Baja de vehiculos"/>    
 	  </div>
 
 	<div className='apartado-modal'>
+		{/**
 		{(props.tipo == "1") ? 
-			<button onClick={openModal} class="btn btn-outline-success btn-sm" id='botonMulta'>Agregar Siniestro</button>
+			<button onClick={openModal} class="btn btn-outline-success btn-sm" id='botonMulta'>Agregar Baja</button>
 			:<></>
-		}
+		} 
+		*/}
 		<Modal
         	isOpen={modalIsOpen}
         	onAfterOpen={afterOpenModal}
@@ -351,9 +327,9 @@ function Siniestros(props) {
         	style={customStyles}
         	contentLabel="Example Modal"
       	>
-        	<h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color:'black'}}>Nuevo Siniestro</h2>    
-			<div>Chofer</div>		  
-			<input id="choferNombre" type="text" style={{width:'100%', marginTop:'5px'}}/>	 
+        	<h2 style={{color:'black'}}>Baja de vehículo</h2>    
+			
+			
 
         	<div>Vehiculo</div>
 		  	<select id="vehiculoid" style={{width:'100%', marginTop:'5px'}}>
@@ -361,12 +337,11 @@ function Siniestros(props) {
                 	<option value={item.vehiculoid}>{item.descripcion + " " + item.modelo + " " + item.numvehiculo }</option>
   		  		))}
 		  	</select>
-		  	<div>Fecha del siniestro</div>
+		  	<div>Fecha de baja</div>
 		  	<input id="fechasiniestro" type="date" style={{width:'100%', marginTop:'5px'}}/>
 		  	<div>Descripción</div>
 		  	<input  id="descripcion" type="text" style={{width:'100%', marginTop:'5px'}}/> 
-		  	<div>Deducible</div>
-		  	<input id="deducible" type="text" style={{width:'100%', marginTop:'5px'}}/>		      
+		  	       
 			<br></br>
 			<br></br>
 			<button onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -375,11 +350,12 @@ function Siniestros(props) {
 	</div>
 
 	<div className='apartado-filtro'>
+		{/**
 		<div style={{display:'flex',alignItems:'center'}}>
 			<h6 className='h6Multas' >Filtrar por fecha de siniestro:</h6>	
 			<input id="input-fecha" type="date" onChange={() => getCargasDia()} style={{width: '65%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
 		</div>
-
+		**/}
 		<div style={{display:'flex',alignItems:'center'}}>		
 			<h6 className='h6Multas'>Vehículos:</h6>	
 			<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'65%', marginTop:'5px', cursor: 'pointer',marginLeft:'10px'}}>
@@ -416,22 +392,16 @@ function Siniestros(props) {
 		<table id="productstable"  style={{width:'100%'}} hidden> 
             <tr>
 				<th class="header">Folio</th>
-				<th class="header">Fecha</th>
-				<th class="header">Vehículo</th>
-				<th class="header">Chofer</th>
-				<th class="header">Descripción</th>
-				<th class="header">Deducible</th>
+				<th class="header">Vehículo</th> 
+				<th class="header">Descripción</th> 
 				<th class="header">Archivo</th>                         
             </tr>
                 {  
                 	lista.map(item => ( 
                     	<tr  id="tabletr" style={{border: '2px solid #ABB2B9',fontSize:'11px'}}>
-                    		<td style={{border: '2px solid rgb(171,178,185)'}} className='id-orden' >{item.id}</td>
-							<td style={{border: '2px solid rgb(171,178,185)'}}>{formatDate(item.fecha)}</td>
+                    		<td style={{border: '2px solid rgb(171,178,185)'}} className='id-orden' >{item.id}</td> 
 							<td style={{border: '2px solid rgb(171,178,185)'}}>{item.vehiculo  + " " + item.modelo + " " + item.numvehiculo}</td>
-							<td style={{border: '2px solid rgb(171,178,185)'}}>{item.nombrechofer}</td>
-                    		<td style={{border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td>
-                    		<td style={{border: '2px solid rgb(171,178,185)'}}>{formatNumber(item.deducible)}</td>
+                    		<td style={{border: '2px solid rgb(171,178,185)'}}>{item.descripcion}</td> 
 							<td ><button style={{width:'100%'}} className='btn btn-outline-primary btn-sm' onClick={() => agregarDoc(item.vehiculoid)}><BsUpload /></button></td>                     
                     		<td></td>                    
                 		</tr>                
@@ -589,4 +559,4 @@ function Siniestros(props) {
 
 
 
-export default Siniestros;
+export default Bajavehiculos;

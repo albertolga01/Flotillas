@@ -231,6 +231,17 @@ function Listavehiculos(props) {
 			width: "70px",
 			wrap: true,
 		},
+		{
+			name: 'Borrar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+							<td><button className='btn btn-outline-danger btn-sm' onClick={() => bajaVehiculo(row.vehiculoid)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							:<></>
+								
+				)
+			}
+		},
 	];
 
 	 
@@ -280,8 +291,10 @@ function Listavehiculos(props) {
 		getEmpresas();
 		getTiposCorreo();
 		getUsuarios();
+		
 	}, [])
 
+	
 
 	async function getEmpresas() {
 		var id = "getEmpresas";
@@ -291,6 +304,22 @@ function Listavehiculos(props) {
 		//var Data = JSON.stringify(rese.data);
 		//console.log(Data[0]);
 	}
+
+
+	async function bajaVehiculo(vehiculoid){
+		if(window.confirm('¿Desea dar de bajar el vehículo?')){ 
+			let fd = new FormData() 
+			fd.append("id", "bajaVehiculo") 
+			fd.append("vehiculoid", vehiculoid)  
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+			notify(res.data.trim());
+			getVehiculos();
+		}
+	
+		
+	}
+	 
+
 /*
 	async function addRefaccion() {
 		
@@ -335,6 +364,7 @@ function Listavehiculos(props) {
 		setListaV(res.data);
 		closeModalLoad();
 		console.log(res.data);
+		
 	} 
 
 
@@ -614,6 +644,7 @@ async function getTiposCorreo() {
 						<th class="header">Usuario</th>
 						<th class="header">Notificar</th>
 						<th class="header">Dictamenes</th>
+						<th class="header">Baja</th>
 
                     </tr>
 

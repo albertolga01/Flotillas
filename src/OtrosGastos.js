@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DataTableExtensions from "react-data-table-component-extensions";
 import 'react-data-table-component-extensions/dist/index.css';
-import DataTable from 'react-data-table-component';
+import DataTable from 'react-data-table-component-footer';
 
 import './App.css';
 
@@ -32,6 +32,7 @@ const customStyles = {
   };
 
 function OtrosGastos(props) {
+	const [total, setTotal] = useState(0); 
 
 	const columns = [
 		{
@@ -43,7 +44,7 @@ function OtrosGastos(props) {
 		},
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			selector: row => (row.vehiculo + " " + row.modelo +" "+ row.numvehiculo),
 			sortable: true,
 			width: "210px",
 			wrap: true,
@@ -62,13 +63,14 @@ function OtrosGastos(props) {
 			}
 		}, 
 		{
-			name: 'Precio',  
-			selector: row => "$"+row.precio,
+			name: 'Precio',
+			selector:  (row) => row.precio,  
+			//selector: row => "$"+row.precio,
 			sortable: true,
 		}, 
 		{
 			name: 'Fecha',   
-			selector: row => formatDate(row.fecha),
+			selector: row => row.fecha,
 			sortable: true,
 		}, 
 		{
@@ -119,6 +121,17 @@ function OtrosGastos(props) {
 			}
 		},
 	];
+
+	const footer = {
+		
+		Folio: "",
+		Vehiculo: "-",
+		fecha: "",
+		descripcion: "",
+		precio: formatNumber(total)
+		
+	  };
+
 	const tableCustomStyles = {
 		headCells: {
 		  style: {
@@ -181,6 +194,7 @@ function OtrosGastos(props) {
 
 	const [registros, setRegistros] = useState([]);
 
+	
 
 	let id = 0;
 	let tipo = 0;
@@ -200,6 +214,7 @@ function OtrosGastos(props) {
 	}
 
 	async function getServicios() {
+		setTotal(0);
 		setListaS([]);
 		setListaSD([]);
 		var id = "getGastos";
@@ -209,6 +224,7 @@ function OtrosGastos(props) {
 		openModalLoad();
 		const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&fecha='+fecha+'&fechafinal='+fechafinal+'&vehiculo='+vehiculo+'&tipo='+props.tipo+'&userid='+props.userid);
 		closeModalLoad();
+		setTotal(res.data.map(datum => Number(datum.precio)).reduce((a, b) => a + b, 0));
 		setListaS(res.data);
 		setListaSD(res.data);
 		console.log(res.data); 
@@ -413,6 +429,7 @@ function OtrosGastos(props) {
 												columns={columns}
 												data={listas}
 												fixedHeader={true}
+												footer={footer}
 												fixedHeaderScrollHeight={'100%'}
 												pagination
 												customStyles={tableCustomStyles}

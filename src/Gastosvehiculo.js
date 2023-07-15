@@ -14,7 +14,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DataTableExtensions from "react-data-table-component-extensions";
 import 'react-data-table-component-extensions/dist/index.css';
-import DataTable from 'react-data-table-component';
+//import DataTable from 'react-data-table-component';
+
+import DataTable from "react-data-table-component-footer";
+
 
 
 
@@ -41,6 +44,10 @@ const customStyles = {
   };
 
 function Gastosvehiculo(props) {
+	const [total, setTotal] = useState(0); 
+	const [totalServicios, setTotalServicios] = useState(0); 
+
+	const [lista, setLista] =  useState([]);  
 
 
 	const columns = [
@@ -61,10 +68,34 @@ function Gastosvehiculo(props) {
 		},
 		{
 			name: 'Precio',  
-			selector: row => formatNumber(row.precio),
+			selector:  (row) => row.precio,
+			//format: (row) => formatNumber(row.precio),s
 			sortable: true,
+			sum: true
 		},
+
+		
 	];
+	const totalSum = () => {
+		let x = 0;  
+		if(lista.length > 0){
+			x = lista.map(datum => datum.precio).reduce((a, b) => a + b)
+		} 
+		return x;
+		;
+	  };
+	const footer = {
+		
+		vehiculo: "",
+		fecha: "",
+		descripcion: "",
+		precio: formatNumber(total)
+		
+	  };
+
+	 
+
+	  
 	
 	const columns1 = [
 		{
@@ -84,10 +115,20 @@ function Gastosvehiculo(props) {
 		},
 		{
 			name: 'Precio',  
-			selector: row => formatNumber(row.precio),
+			selector:  (row) => row.precio,
+			//selector: row => formatNumber(row.precio),
 			sortable: true,
 		},
 	];
+
+	const footer1 = {
+		
+		vehiculo: "",
+		fecha: "",
+		descripcion: "",
+		precio: formatNumber(totalServicios)
+		
+	  };
 	
 	
 	const tableCustomStyles = {
@@ -121,6 +162,8 @@ function Gastosvehiculo(props) {
 	}, [])
  
 	async function gastosVehiculo(){
+		setTotal(0);
+		setTotalServicios(0);
 		var vehiculoid = document.getElementById("vehiculof").value;
 		var fechainicio = document.getElementById("input-fecha").value;
 		var fechafinal = document.getElementById("input-fecha-final").value;
@@ -137,6 +180,10 @@ function Gastosvehiculo(props) {
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);
 		console.log(res.data);
 		setLista(res.data);
+ 
+		
+		setTotal(res.data.map(datum => Number(datum.precio)).reduce((a, b) => a + b, 0));
+
 
 
 		let fd1 = new FormData()
@@ -151,6 +198,7 @@ function Gastosvehiculo(props) {
 		const res1 = await axios.post(process.env.REACT_APP_API_URL, fd1);
 		console.log(res1.data);
 		setListaServicios(res1.data);
+		setTotalServicios(res1.data.map(datum => Number(datum.precio)).reduce((a, b) => a + b, 0));
 		closeModalLoad();
 	}
 
@@ -219,7 +267,6 @@ function Gastosvehiculo(props) {
 	  
   
 
-  	const [lista, setLista] =  useState([]);  
 	const [listapd, setListaPD] = useState([]);  
 	const [listaservicios, setListaServicios] = useState([]);  
 
@@ -260,8 +307,7 @@ function Gastosvehiculo(props) {
     	<div className='titulos'>
 			<NabvarRe departamento={props.departamento} dptoid={props.dptoid} titulo="Gastos por vehículo" className="titulos"/>   
 		</div>
-	
-
+	 
 	<div style={{display:'flex',alignItems:'center',flexWrap:'wrap'}}>
 		<label style={{fontSize:'14px',fontWeight:'500'}} className="label-filtro">Filtrar por fecha: </label> 
 		<input id="input-fecha" type="date"  style={{width: '120px', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'5px'}}/>
@@ -289,6 +335,7 @@ function Gastosvehiculo(props) {
                     <DataTable
                                 columns={columns}
                                 data={lista}
+								footer={footer}
                                 fixedHeader={true}
                                 fixedHeaderScrollHeight={'100%'}
                                 pagination
@@ -333,6 +380,7 @@ function Gastosvehiculo(props) {
                                 columns={columns}
                                 data={listaservicios}
                                 fixedHeader={true}
+								footer={footer1}
                                 fixedHeaderScrollHeight={'100%'}
                                 pagination
                                 customStyles={tableCustomStyles}

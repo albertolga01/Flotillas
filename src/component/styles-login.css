@@ -241,7 +241,12 @@ body{
     width:  26px;
     filter: invert(100%);
 }
-
+#sideimg17{
+    content: url("../resources/sell-car.svg");
+    height: 33px;
+    width:  33px;
+    filter: invert(100%);
+}
 .sideselected{
     background-color: #001f6b;
 }
