@@ -340,10 +340,30 @@ function OtrosGastos(props) {
 			fd.append("folio", id)  
 			const res = await axios.post(process.env.REACT_APP_API_URL, fd);   
 			notify(res.data.trim());
+			actualizarBajaCompras(id, "servicios");
 			getServicios();
 		}
 	
 	}
+
+	async function actualizarBajaCompras(folio, tipo){ 
+		
+		let fd1 = new FormData()  
+		fd1.append("id", "obtenerFolioProducto")  
+		fd1.append("folio", folio)  
+		fd1.append("tipo", tipo) 
+		const res1 = await axios.post(process.env.REACT_APP_API_URL, fd1);  
+		console.log((res1.data)); 
+		let response = (res1.data);
+		if(response != "0"){
+			let fd = new FormData()   	
+			fd.append("id", "actualizarBajaCompras") 
+			fd.append("folio", response) 
+			const res = await axios.post('https://compras.grupopetromar.com/apirest/index1.php/', fd);  
+			console.log((res.data).trim()); 
+		}
+
+	}			
 
 	async function actualizarGastos(id, vehiculo, servicio){
 		if(window.confirm('Marcar registro como otros gastos: ' + vehiculo + ' ' + servicio)){ 
@@ -434,6 +454,7 @@ function OtrosGastos(props) {
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noHeader
 												noDataComponent={"No se encontró información"}
 
 											

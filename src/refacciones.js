@@ -1,5 +1,5 @@
  
-import React,{useState, useEffect, useRef} from 'react';  
+import React,{useState, useEffect, useRef, useCallback} from 'react';  
 import  {FaCheckCircle, FaTrash, FaEdit, FaRedditAlien, FaEye} from 'react-icons/fa'
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import axios from '../node_modules/axios'; 
@@ -43,8 +43,19 @@ const customStyles = {
   };
 
 function Refacciones(props) {
+	const [selectedRows, setSelectedRows] = useState([]);	
+
+	const handleChange = useCallback(state => {
+		setSelectedRows(state.selectedRows);
+}, []);
+
+useEffect(() => {
+		
+			console.log('state', selectedRows);
+		}, [selectedRows]);
 
 	const columns = [
+		
 		{
 			name: 'Folio',  
 			selector: row => row.folio,
@@ -88,7 +99,7 @@ function Refacciones(props) {
 			name: 'Documento',   
 			cell: (row) => {
 				return (
-					<td style={{minWidth:'100px', padding:'5px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentorefaccion}>{row.documentorefaccion}</a></td>		
+					<td style={{minWidth:'100px', padding:'5px'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentorefaccion}>{row.documentorefaccion}</a></td>		
 				)
 			}
 		}, 
@@ -286,11 +297,30 @@ function Refacciones(props) {
 			fd.append("folio", folio)  
 			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
 			notify(res.data.trim()); 
+			actualizarBajaCompras(folio, "refaccion");
 			getRefacciones();
 		}
 	
 		
 	}
+		async function actualizarBajaCompras(folio, tipo){ 
+		
+			let fd1 = new FormData()  
+			fd1.append("id", "obtenerFolioProducto")  
+			fd1.append("folio", folio)  
+			fd1.append("tipo", tipo) 
+			const res1 = await axios.post(process.env.REACT_APP_API_URL, fd1);  
+			console.log((res1.data)); 
+			let response = (res1.data);
+			if(response != "0"){
+				let fd = new FormData()   	
+				fd.append("id", "actualizarBajaCompras") 
+				fd.append("folio", response) 
+				const res = await axios.post('https://compras.grupopetromar.com/apirest/index1.php/', fd);  
+				console.log((res.data).trim()); 
+			}
+  
+		}							
 
 	async function eliminarRefaccionStock(folio){
 		if(window.confirm('Eliminar refacción de stock con folio: ' + folio)){ 
@@ -299,6 +329,7 @@ function Refacciones(props) {
 			fd.append("folio", folio)  
 			const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
 			notify(res.data.trim()); 
+			actualizarBajaCompras(folio, "stockRefaccion");
 			getRefaccionesStock();
 		} 
 
@@ -359,6 +390,9 @@ function Refacciones(props) {
 	  today = dd + '/' + mm + '/' + yyyy;
 	   return today;
 		}
+
+
+		
 	
   const [listaStock, setListaStock] =  useState([]);  
   
@@ -468,6 +502,21 @@ function Refacciones(props) {
 	setIsOpen1(false);
   }
 
+  async function eliminarRefaccionesSeleccionadas(){ 
+	
+	let fd = new FormData()
+	fd.append("id", "eliminarRefaccionesSeleccionadas")
+	for(let i = 0; i<selectedRows.length; i++){
+		fd.append("idrefacciones[]", selectedRows[i].folio) 
+	}
+
+	openModalLoad();
+	const res = await axios.post(process.env.REACT_APP_API_URL, fd);
+	closeModalLoad();
+	getRefacciones(); 
+	setSelectedRows([]);
+  }
+
  
  
   function filterDictamenVehiculo() {
@@ -557,9 +606,13 @@ function Refacciones(props) {
 		</div>
 		<div style={{display:'flex',alignItems:'center'}}>
 			<button onClick={() => getRefaccionesDia()} class="btn btn-outline-success btn-xl">Buscar</button>
-		</div>
+		</div> 
 	</div>
+	<div className='apartado-modal' align="right">
+		
+	<button className="btn btn-outline-danger btn-sm" onClick={() => eliminarRefaccionesSeleccionadas()} style={{margin:'5px', height:'45px'}} id='boton-Buscar'>Eliminar</button>
 
+	</div> 
  	<div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
 	 <DataTableExtensions
 							columns={columns}
@@ -578,6 +631,8 @@ function Refacciones(props) {
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
 												noDataComponent={"No se encontró información"}
+												selectableRows 
+												onSelectedRowsChange={handleChange}
 
 											
 											/>
@@ -629,6 +684,7 @@ function Refacciones(props) {
 		<button className="btn btn-outline-success btn-sm" onClick={() => getRefaccionesStock()} style={{marginLeft:'5px'}} id='boton-Buscar'>Buscar</button>
 	</div>
 
+	
 <div  style={{maxHeight:'43vmax', overflowY: 'scroll', width:'100%', marginTop:'10px'}}>
 <DataTableExtensions
 							columns={columns1}

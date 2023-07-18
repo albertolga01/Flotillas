@@ -1,5 +1,5 @@
  
-import React,{useState, useEffect} from 'react';  
+import React,{useState, useEffect, useRef} from 'react';  
 import axios from '../node_modules/axios'; 
 import {NabvarRe} from './component/Navbar'; 
 import Modal from 'react-modal';
@@ -12,7 +12,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DataTableExtensions from "react-data-table-component-extensions";
 import 'react-data-table-component-extensions/dist/index.css';
-import DataTable from 'react-data-table-component';
+//import DataTable from 'react-data-table-component';
+import { useDownloadExcel } from 'react-export-table-to-excel';
+import DataTable from 'react-data-table-component-footer';
+
 
 const customStylesD = {
 	content: {
@@ -36,32 +39,36 @@ const customStyles = {
 	},
   }; 
 function Rendimiento(props) {
+
+	const [total, setTotal] = useState(0); 
+	const [totalLitros, setTotalLitros] = useState(0); 
  
 	const columns = [
 		{
 			name: 'Folio',  
-			selector: row => row.folio,
+			selector: (row) => row.folio,
 			sortable: true, 
 			width: "60px"
 		},
 		{
-			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			name: 'Vehiculo',  
+			selector: row => row.vehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Fecha Carga',  
-			selector: row => formatDate(row.fechacarga),
+			selector: row => row.fechacarga,
 			sortable: true,
 		},
 		{
-			name: 'Litros',  
+			name: 'Litros',   
+			selector: 'litros',
 			cell: (row) => {
 				return (
 					<><input 
-					value={formatN(row.litros)}
+					value={row.litros}
 					onChange={(e)=> {
 					document.getElementById("litros"+row.folio).value(e.target.value)
 					}} id={"litros"+row.folio}></input></>
@@ -138,6 +145,10 @@ function Rendimiento(props) {
 			}
 		},
 	];
+
+	const footer = {
+		 folio: totalLitros
+	  };
 
 	const columns1 = [
 		{
@@ -264,6 +275,14 @@ function Rendimiento(props) {
 				return test.getMonth() !== month;
 			}
 
+
+			const tableRef = useRef(null);
+			const { onDownload } = useDownloadExcel({
+				currentTableRef: tableRef.current,
+				filename: 'Rendimiento',
+				sheet: 'Rendimiento'
+			})
+
 			async function addCarga() {
 				
 				var vehiculoid = document.getElementById("vehiculoid").value;
@@ -375,7 +394,7 @@ function Rendimiento(props) {
 
 		
 				function formatDate(date){
-					var index = date.search(" ");
+					//var index = date.search(" ");
 					date = date.substring(0, 10);
 					date = date.split("-");
 					var formatedDate = date[2] +"/"+ date[1] +"/"+ date[0];
@@ -425,7 +444,9 @@ function Rendimiento(props) {
 			getCargas(); 
 		}, [])
 
-		async function getCargas(){ 
+		async function getCargas(){
+			setTotal(0);
+			setTotalLitros(0);
 			setLista([]);
 				setListaPD([]);
 				var id = "getCargas";
@@ -433,7 +454,8 @@ function Rendimiento(props) {
 
 				const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 				closeModalLoad();
-			
+				setTotal(res.data.map(datum => Number(datum.litros)).reduce((a, b) => a + b, 0));
+				setTotalLitros(res.data.map(datum => Number(datum.litros)).reduce((a, b) => a + b, 0));
 				setLista(res.data);
 				setListaPD(res.data);
 				console.log(res.data);
@@ -591,8 +613,11 @@ function Rendimiento(props) {
 												fixedHeader={true}
 												fixedHeaderScrollHeight={'100%'}
 												pagination
+												dense	
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
+												noHeader
+												footer={footer}
 												noDataComponent={"No se encontró información"}
 
 											
@@ -645,11 +670,15 @@ function Rendimiento(props) {
 				<br></br>
 				<div className='apartado-modal'>
 					<button onClick={openModalNv} class="btn btn-outline-success btn-sm" id='botonMulta'>Nuevo Registro</button>
+					<button onClick={onDownload} class="btn btn-outline-success btn-sm" style={{ marginLeft: '10px', width:'150px',marginTop:'10px'}}> Exportar excel </button>   
+
 				</div>	
 				<div className='apartado-filtro'>
 					<div style={{display:'flex',alignItems:'center'}}>
 						<h6 className='h6Multas' >Fecha:</h6>
 						<input id="input-fecha-rendimiento-mensual" type="date" onChange={() => getRendimientoMensual()}  style={{width: '32%', height:'25px', fontSize: '16px', cursor: 'pointer',marginLeft:'10px'}}/>
+								
+
 					</div>	
 				</div>
 				<DataTableExtensions
@@ -664,6 +693,7 @@ function Rendimiento(props) {
 												data={listaRendimientoM}
 												fixedHeader={true}
 												fixedHeaderScrollHeight={'100%'}
+												noHeader
 												pagination
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
@@ -672,7 +702,7 @@ function Rendimiento(props) {
 											
 											/>
 						</DataTableExtensions>				
-				<table id="productstable"  style={{width:'100%'}} hidden> 
+				<table id="productstable"  style={{width:'100%'}} ref={tableRef} hidden> 
 					<tr>
 						<th class="header">Folio</th>
 						<th class="header">Vehículo</th>

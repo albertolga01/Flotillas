@@ -87,7 +87,7 @@ function Gastosvehiculo(props) {
 	const footer = {
 		
 		vehiculo: "",
-		fecha: "",
+		fecha: "", 
 		descripcion: "",
 		precio: formatNumber(total)
 		
@@ -338,6 +338,7 @@ function Gastosvehiculo(props) {
 								footer={footer}
                                 fixedHeader={true}
                                 fixedHeaderScrollHeight={'100%'}
+								noHeader
                                 pagination
                                 customStyles={tableCustomStyles}
                                 highlightOnHover={true}

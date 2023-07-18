@@ -9,7 +9,7 @@ import './App.css';
 import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
-import {  BsXCircleFill, BsFillPlusCircleFill } from "react-icons/bs";
+import {  BsXCircleFill, BsFillPlusCircleFill, BsArrowRepeat } from "react-icons/bs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DataTableExtensions from "react-data-table-component-extensions";
@@ -81,6 +81,100 @@ function Accesorios(props) {
 			selector: row => formatNumber(row.precio),
 			sortable: true,
 		},
+		{
+			name: 'Estado',   
+			selector: 'Estado',
+			cell: (row) => {
+				return (
+					<><input 
+					defaultValue={row.estado}
+					id={"Estado"+row.folio}></input></>
+				)
+			},
+			wrap: true,
+		},
+		{
+			name: 'Cantidad',   
+			selector: 'Cantidad',
+			cell: (row) => {
+				return (
+					<><input 
+					defaultValue={row.cantidad}
+					id={"Cantidad"+row.folio}></input></>
+				)
+			},
+			wrap: true,
+		},
+		{
+			name: 'Accesorio Descripción',   
+			selector: 'AccesorioDescripcion',
+			cell: (row) => {
+				return (
+					<><input 
+					defaultValue={row.descripcionAccesorio}
+					id={"AccesorioDescripcion"+row.folio}></input></>
+				)
+			},
+			wrap: true,
+		},
+		{
+			name: 'Marca',
+			cell: (row) => {
+				return (
+					<><input 
+					defaultValue={row.marca} 
+					id={"Marca"+row.folio}></input></>
+				)
+			},
+			wrap: true,
+		},
+		{
+			name: 'Observaciones',    
+			cell: (row) => {
+				return (
+					<td><input 
+					defaultValue={row.observaciones} 
+					id={"Observaciones"+row.folio}></input></td>
+				)
+			},
+			wrap: true,
+			width: "160px",
+		},
+		{
+			name: 'Fecha Revisión',   
+			selector: 'FechaRevision',
+			cell: (row) => {
+				return (
+					<><input
+					defaultValue={row.fechaRevision}
+					//document.getElementById("Observaciones"+row.precio).value(e.target.value)
+					type="date" id={"FechaRevision"+row.folio} 
+
+					/*onChange={() => actualizarFecha(item.folio)} value={(item.fechatermino).substring(0,10)}*//></>
+				)
+			},
+			wrap: true,
+		},
+		{
+			name: 'Editar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+							<td style={{padding:'5px',textAlign:'center'}}><button className='btn btn-outline-success btn-sm' onClick={() => EditarAccesorio(row.folio)} style={{width:'200%' }}><BsArrowRepeat /></button></td>
+							:<></>
+				)
+			}
+		},
+		{
+			name: 'Eliminar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+					<td style={{padding:'5px',textAlign:'center'}}><button className='btn btn-outline-danger btn-sm' onClick={() => eliminarAccesorio(row.folio)} style={{width:'200%' }}><BsXCircleFill /></button></td>
+					:<></>
+				)
+			}
+		},  
 	];
 	const columns1 = [
 		{
@@ -194,7 +288,6 @@ function Accesorios(props) {
 		getAccesoriosStock();
 	}, [])
 
-	 
 
 	async function gastosVehiculo(){
 		var vehiculoid = document.getElementById("vehiculof").value;
@@ -322,6 +415,30 @@ function Accesorios(props) {
 	
 }
 
+
+async function EditarAccesorio(folio){
+	if(!props.userid == "1"){
+		notify("No tiene permiso para editar registros");
+	}else{
+		if(window.confirm('Actualizar los campos del accesorio: ' + folio)){ 
+			let fd = new FormData() 
+			fd.append("id", "EditarAccesorio")
+			fd.append("folio", folio)
+			fd.append("Estado", document.getElementById("Estado"+folio).value) 
+			fd.append("Cantidad", document.getElementById("Cantidad"+folio).value) 
+			fd.append("AccesorioDescripcion", document.getElementById("AccesorioDescripcion"+folio).value)
+			fd.append("Marca", document.getElementById("Marca"+folio).value)
+			fd.append("Observaciones", document.getElementById("Observaciones"+folio).value)
+			fd.append("FechaRevision", document.getElementById("FechaRevision"+folio).value)
+			const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+			console.log("EditarAccesorio: " +res.data);
+			notify(res.data.trim());
+			//getCargas();
+			gastosVehiculo();
+		} 
+	}
+}
+
 async function asignarRefaccion(folio){
 	var vehiculoid = document.getElementById("vehiculoid"+folio).value;
 	if(vehiculoid == "0"){
@@ -349,10 +466,46 @@ async function eliminarRefaccionStock(folio){
 		fd.append("folio", folio)  
 		const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
 		notify(res.data.trim()); 
+		actualizarBajaCompras(folio, "accesoriosStock")
 		getAccesoriosStock();
 	} 
 
 }
+
+async function eliminarAccesorio(folio){
+	if(window.confirm('Eliminar el accesorio con folio: ' + folio)){ 
+		let fd = new FormData() 
+		fd.append("id", "eliminarAccesorio") 
+		fd.append("folio", folio)  
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+		notify(res.data.trim()); 
+		actualizarBajaCompras(folio, "accesorios")
+		gastosVehiculo();
+	} 
+
+}
+
+
+
+async function actualizarBajaCompras(folio, tipo){ 
+		
+	let fd1 = new FormData()  
+	fd1.append("id", "obtenerFolioProducto")  
+	fd1.append("folio", folio)  
+	fd1.append("tipo", tipo) 
+	const res1 = await axios.post(process.env.REACT_APP_API_URL, fd1);  
+	console.log((res1.data)); 
+	let response = (res1.data);
+	if(response != "0"){
+		let fd = new FormData()   	
+		fd.append("id", "actualizarBajaCompras") 
+		fd.append("folio", response) 
+		const res = await axios.post('https://compras.grupopetromar.com/apirest/index1.php/', fd);  
+		console.log((res.data).trim()); 
+	}
+
+}			
+
 
   // Dynamically create select list
   let options = [];
