@@ -42,8 +42,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	const [userid, setUserid] = useState("null");
 	const [name, setName] = useState("null");
 	const [listadepartamento, setListadepartamento] = useState([]);
-	const [nombredepartamento, setNombreDepartamento] = useState([]);
-	const [dptos, setDeptos] = useState([]);
+	const [nombredepartamento, setNombreDepartamento] = useState([]); 
 	const [departamento, setDepartamento] = useState("null");
 	const [tipo, setTipo] = useState("null");
 	const [isLoggedIn, setisLoggedIn] = useState(isLoggedIna);
@@ -51,7 +50,7 @@ import 'react-toastify/dist/ReactToastify.css';
 	const [defSelected, setDefSelected] = useState([]);
 	
 	useEffect(() => {
-		getDepartamentos();
+		//getDepartamentos();
 		getTiposCorreo();
 	}, [])
 
@@ -77,7 +76,7 @@ import 'react-toastify/dist/ReactToastify.css';
     
     const [modalIsOpenLoad, setIsOpenLoad] = React.useState(false);
 	const [listac, setListaC] = useState([]); 
-
+/*
 	async function getDepartamentos() {
 		var id = "3";
 		const rese = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id);
@@ -86,7 +85,7 @@ import 'react-toastify/dist/ReactToastify.css';
 		var Data = JSON.stringify(rese.data);
 		// console.log(Data[0]);
 	}
-
+*/
 	async function getImagenes(e) {
 		e.preventDefault();
 		var select = document.getElementById("select");
