@@ -8,6 +8,7 @@ import formatNumber from './formatNumber';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";  
 import {ThreeDots } from  'react-loader-spinner'
 import { BsXCircleFill, BsPencilSquare, BsArrowRepeat} from "react-icons/bs";
+import {FiCheck} from "react-icons/fi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DataTableExtensions from "react-data-table-component-extensions";
@@ -18,6 +19,17 @@ import DataTable from 'react-data-table-component-footer';
 
 
 const customStylesD = {
+	content: {
+	  top: '50%',
+	  left: '50%',
+	  right: 'auto',
+	  bottom: 'auto',
+	  marginRight: '-50%',
+	  transform: 'translate(-50%, -50%)',
+	},
+  };
+
+  const customStylesEditarCarga = {
 	content: {
 	  top: '50%',
 	  left: '50%',
@@ -43,12 +55,13 @@ function Rendimiento(props) {
 	const [total, setTotal] = useState(0); 
 	const [totalLitros, setTotalLitros] = useState(0); 
  
+	
 	const columns = [
 		{
 			name: 'Folio',  
 			selector: (row) => row.folio,
 			sortable: true, 
-			width: "60px"
+			width: "50px"
 		},
 		{
 			name: 'Vehiculo',  
@@ -61,60 +74,44 @@ function Rendimiento(props) {
 			name: 'Fecha Carga',  
 			selector: row => row.fechacarga,
 			sortable: true,
+			width: "90px",
 		},
 		{
 			name: 'Litros',   
-			selector: 'litros',
-			cell: (row) => {
-				return (
-					<><input 
-					value={row.litros}
-					onChange={(e)=> {
-					document.getElementById("litros"+row.folio).value(e.target.value)
-					}} id={"litros"+row.folio}></input></>
-				)
-			},
+			selector: (row) => row.litros,
+			width: "65px",
 			wrap: true,
 		}, 
 		{
 			name: 'Importe',  
-			cell: (row) => {
-				return (
-					<><input 
-					value={formatNumber(row.importe)}
-					onChange={(e)=> {
-					document.getElementById("importe"+row.folio).value(e.target.value)}}
-					id={"importe"+row.folio}></input></>
-				)
-			}
+			selector: (row) => formatNumber(row.importe),
+			width: "80px",
+			wrap: true,
 		}, 
 		{
-			name: 'KM Inicial',   
-			cell: (row) => {
-				return (
-					<><input  
-					value={formatN(row.kilometraje)}
-					onChange={(e)=> {
-					document.getElementById("kilometraje"+row.folio).value(e.target.value)}}
-					id={"kilometraje"+row.folio}></input></>
-				)
-			}
+			name: 'KM Inicial',
+			selector: (row) => formatN(row.kilometraje),
+			width: "80px",
+			wrap: true,
 		}, 
 		{
-			name: 'KM Final',   
+			name: 'KM Final', 
 			selector: row => formatN(row.kilometrajefinal),
 			sortable: true,
+			width: "65px",
 		},
 		{
 			name: 'Ticket',   
 			selector: row => row.ticket,
 			sortable: true,
+			width: "65px",
 			
 		},
 		{
 			name: 'Rendimiento',   
 			selector: row => formatN(((row.kilometrajefinal - row.kilometraje)/ row.litros)) + " Kms / Litro",
 			sortable: true,
+			width: "160px",
 		},
 		{
 			name: 'Editar',   
@@ -122,13 +119,14 @@ function Rendimiento(props) {
 				return (
 					(props.tipo == "1")?
 								<td>
-								<button id="bttn-editar-rendimiento" style={{width:'200%'}} className='btn btn-outline-success btn-sm' onClick={() => editarCarga(row.vehiculoid, row.folio)}><BsArrowRepeat /></button>
+								<button id="bttn-editar-rendimiento" style={{width:'150%'}} className='btn btn-outline-success btn-sm' onClick={() => openModalEditar(row.vehiculoid, row.folio, row.fechacarga, row.importe, row.kilometraje, row.litros, folio)}><BsArrowRepeat /></button>
 								</td>                                        
 
 									:
 									<td></td>
 				)
-			}
+			},
+			width: "65px",
 		},
 		{
 			name: 'Eliminar',   
@@ -136,18 +134,51 @@ function Rendimiento(props) {
 				return (
 					(props.tipo == "1")?
 					<td>
-					<button id="bttn-eliminar-rendimiento" style={{width:'200%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(row.folio)}><BsXCircleFill /></button>
+					<button id="bttn-eliminar-rendimiento" style={{width:'150%'}} className='btn btn-outline-danger btn-sm' onClick={() => eliminarCarga(row.folio)}><BsXCircleFill /></button>
 					</td>                                        
 
 						:
 						<td></td>
 				)
-			}
+			},
+			width: "65px",
+		},
+		{
+			name: 'Revisado',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1")?
+					<td>
+					<button id="bttn-revisado-rendimiento" style={{width:'110%'}} className='btn btn-outline-success btn-sm' onClick={() => ConfirmarCarga(row.folio)}>Confirmar</button>
+					</td>                                        
+
+						:
+						<td></td>
+				)
+			},
+			width: "85px",
 		},
 	];
 
+	const conditionalRowStyles = [ 
+		{ 
+		 when: row => row.revisado > 0, 
+		 style: { 
+			 backgroundColor: 'rgba(0, 160, 0, 0.8)', 
+			 color: 'white', 
+			 '&:hover': { 
+			  cursor: 'not-allowed',
+			 }, 
+
+		 },
+		} 
+	   ];
+
+
 	const footer = {
-		 folio: totalLitros
+		 vehiculo:"",
+		 fechacarga:"",
+		 litros: totalLitros
 	  };
 
 	const columns1 = [
@@ -248,6 +279,7 @@ function Rendimiento(props) {
 			},
 		},
 	  }
+			
 			function openModalLoad() { 
 				setIsOpenLoad(true); 
 			}  
@@ -349,10 +381,51 @@ function Rendimiento(props) {
 				
 			}
 
-			
+			async function editarCarga(){
+				if(!props.userid == "1"){
+					notify("No tiene permiso para editar registros");
+				}else{
+						let fd = new FormData() 
+						fd.append("id", "editarCarga")
+						fd.append("idcarga", folio) 
+						fd.append("vehiculoid", vehiculo) 
+						fd.append("importe", (document.getElementById("importeE").value)) 
+						fd.append("kilometraje", document.getElementById("kilometrajeE").value) 
+						fd.append("litros", document.getElementById("litrosE").value) 
+						const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
+						//console.log("editarCarga: " +res.data);
+						notify(res.data.trim());
+						getCargas(); 
+						closeModalEditar();
+						setfolio([]);
+						setVehiculo([]);
+				}
+			}
 
 			let subtitle;
 			const [modalIsOpen, setIsOpen] = React.useState(false);
+			const [modalIsOpenEditar, setIsOpenEditar] = React.useState(false);
+			const [vehiculo, setVehiculo] = React.useState(false);
+			const [folio, setfolio] = React.useState([]);
+			const [fechacarga, setfechacarga] = React.useState([]);
+			const [litros, setlitros] = React.useState([]);
+			const [kilometraje, setkilometraje] = React.useState([]);
+			const [importe, setimporte] = React.useState([]);
+
+
+			function openModalEditar(vehiculo,folio, fechacarga,importe,kilometraje,litros) { 
+				setVehiculo(vehiculo);
+				setfolio(folio);
+				setfechacarga(fechacarga);
+				setimporte(importe);
+				setkilometraje(kilometraje);
+				setlitros(litros);
+				setIsOpenEditar(true); 
+			}  
+			
+			function closeModalEditar() { 
+				setIsOpenEditar(false); 
+			}
 		
 			function openModal() {
 			setIsOpen(true);
@@ -455,7 +528,11 @@ function Rendimiento(props) {
 				const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 				closeModalLoad();
 				setTotal(res.data.map(datum => Number(datum.litros)).reduce((a, b) => a + b, 0));
-				setTotalLitros(res.data.map(datum => Number(datum.litros)).reduce((a, b) => a + b, 0));
+				//setTotalLitros(res.data.map(datum => Number(datum.litros)).reduce((a, b) => a + b, 0))
+				for(let i =0; i < res.data.length; i++){
+					console.log(res.data[i].litros);
+				}
+				setTotalLitros(res.data.reduce((a,v) =>  a = a + Number(v.litros) , 0 ).toFixed(2));
 				setLista(res.data);
 				setListaPD(res.data);
 				console.log(res.data);
@@ -495,6 +572,7 @@ function Rendimiento(props) {
 		async function getCargasDia(){
 			setLista([]);
 			setListaPD([]);
+			setTotal(0);
 			var id = "getCargasDia";
 			var fecha = document.getElementById("input-fecha").value;
 			var fechafinal = document.getElementById("input-fecha-final").value;
@@ -502,6 +580,7 @@ function Rendimiento(props) {
 			openModalLoad();
 			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&fechafinal='+fechafinal+'&idflotilla='+props.flotilla+'&vehiculoid='+vehiculoid+'&userid='+props.userid+'&tipo='+props.tipo);
 			closeModalLoad();
+			setTotalLitros(res.data.reduce((a,v) =>  a = a + Number(v.litros) , 0 ).toFixed(2));
 			setLista(res.data);
 			setListaPD(res.data);
 			console.log(res.data);
@@ -542,26 +621,21 @@ function Rendimiento(props) {
 					getRendimientoMensual();
 				}
 		}
-		
-		async function editarCarga(vehiculoid, folio){
-			if(!props.userid == "1"){
-				notify("No tiene permiso para editar registros");
-			}else{
-				if(window.confirm('Actualizar los campos de la carga con folio: ' + folio)){ 
-					let fd = new FormData() 
-					fd.append("id", "editarCarga")
-					fd.append("idcarga", folio) 
-					fd.append("vehiculoid", vehiculoid) 
-					fd.append("importe", (document.getElementById("importe"+folio).value).replaceAll("$", "").replaceAll(",", "")) 
-					fd.append("kilometraje", document.getElementById("kilometraje"+folio).value.replaceAll(",", "")) 
-					fd.append("litros", document.getElementById("litros"+folio).value.replaceAll(",", "")) 
-					const res = await axios.post(process.env.REACT_APP_API_URL, fd); 
-					console.log("editarCarga: " +res.data);
-					notify(res.data.trim());
-					getCargas();
-				} 
+
+		async function ConfirmarCarga(folio){
+					
+			if(window.confirm('Desea confirmar el registro de carga ' + folio)){ 
+				let fd = new FormData() 
+				fd.append("id", "confirmarCarga")
+				fd.append("folio", folio) 
+				const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+				notify(res.data.trim());
+				getCargas();
+				getRendimientoMensual();
 			}
-		}
+	}
+		
+		
 		// Dynamically create select list
 		let options = [];
 		
@@ -618,7 +692,8 @@ function Rendimiento(props) {
 												highlightOnHover={true}
 												noHeader
 												footer={footer}
-												noDataComponent={"No se encontró información"}
+												noDataComponent={"No se encontró información"} 
+												conditionalRowStyles={conditionalRowStyles}
 
 											
 											/>
@@ -875,6 +950,32 @@ function Rendimiento(props) {
 		<br></br>
 				<button style={{width:'45%', marginLeft:'20px'}} onClick={closeModal} class="btn btn-outline-danger btn-sm ">Cancelar</button>  
 				<button style={{width:'45%', marginLeft:'25px'}} onClick={() => addCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
+			</Modal>
+
+			<Modal
+				isOpen={modalIsOpenEditar}
+				onAfterOpen={afterOpenModal}
+				onRequestClose={closeModalEditar}
+				style={customStylesEditarCarga}
+				contentLabel="Example Modal"
+			>
+				<h2  style={{color:'black'}}>Editar carga: {folio} </h2> 
+				<div>Vehículo</div> 
+				<label id="vehiculoidE" style={{width:'100%', marginTop:'5px'}}></label>
+				<div>Fecha de carga</div> 
+				<label style={{width:'100%', marginTop:'5px'}}>{fechacarga}</label>
+				<div>Kilometraje </div> 
+				<input defaultValue={kilometraje} id={"kilometrajeE"} type="number" style={{width:'100%', marginTop:'5px'}}/> 
+				<div>Litros</div>
+				<input defaultValue={litros} id={"litrosE"} type="number" style={{width:'100%', marginTop:'5px'}}/>
+				<div>Importe</div>
+				<input defaultValue={importe} id={"importeE"} type="number" style={{width:'100%', marginTop:'5px'}} /> 
+					
+				
+		<br></br>
+		<br></br>
+				<button style={{width:'45%', marginLeft:'5px'}} onClick={closeModalEditar} class="btn btn-outline-danger btn-sm ">Cancelar</button>  
+				<button style={{width:'45%' , marginLeft:'10px'}} onClick={() => editarCarga()} class="btn btn-outline-success btn-sm" >Guardar</button>
 			</Modal>
 
 			<Modal

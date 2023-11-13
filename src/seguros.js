@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import DataTableExtensions from "react-data-table-component-extensions";
 import 'react-data-table-component-extensions/dist/index.css';
 import DataTable from 'react-data-table-component';
+import { BsXCircleFill} from "react-icons/bs";
+
 
 
 const customStylesD = {
@@ -69,6 +71,17 @@ function Seguros(props) {
 			name: 'Estado',   
 			selector: row => estado(row.fechafinal),
 			sortable: true,
+		}, 
+		{
+			name: 'Eliminar',   
+			cell: (row) => {
+				return (
+					(props.tipo == "1") ? 
+							<td><button className='btn btn-outline-danger btn-sm' onClick={() => bajaSeguroVehiculo(row.folio)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							:<></>
+								
+				)
+			}
 		}, 
 	];
 
@@ -149,6 +162,8 @@ function Seguros(props) {
 	getPlacasV();
 }, [])  
 async function getSeguros() {
+	setListaP([]);
+	setListaPD([]);
 	var id = "getSeguros";
 	const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+ id+'&idflotilla='+props.flotilla+'&tipo='+props.tipo+'&userid='+props.userid);
 	setListaP(res.data);
@@ -170,12 +185,21 @@ function filterPlacaVehiculo() {
 	var result = listapd.filter((x) => (x.vehiculoid === tipo)); 
 	setListaP(result); 
 	}
-}
-
-
-  useEffect(()=> { 
-  }, [])
+} 
  
+  async function bajaSeguroVehiculo(folio){
+	if(window.confirm('¿Desea dar de bajar el registro del vehículo?')){ 
+		let fd = new FormData() 
+		fd.append("id", "bajaSeguroVehiculo") 
+		fd.append("folio", folio)  
+		const res = await axios.post(process.env.REACT_APP_API_URL, fd);  
+		notify(res.data.trim());
+		//setListaP(res.data);
+		getSeguros();
+	}
+
+	
+	}
 
   async function addSeguro() {
 		
@@ -322,7 +346,7 @@ function format(todayy){
 	
 
 	<div className='Divtablas'>
-					<form className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'620px',overflow: "scroll"}}>
+					<div className="card p-2 mt-2 border-secondary" encType="multipart/form-data"  style={{ height:'620px',overflow: "scroll"}}>
 						<h6>Historial de seguros</h6>
 						<select  id="vehiculof"  onChange={() => filterPlacaVehiculo()} className="form-control"  style={{width:'100%',marginBottom:'10px' }}>
 						<option value="0">Todos</option> 
@@ -335,9 +359,9 @@ function format(todayy){
 						<DataTableExtensions
 							columns={columns}
 							data={listap}
-							print={true}
-							export={true}
-							filterPlaceholder="Filtrar" 
+							print={false}
+							export={false}
+							filter={false} 
 							>
 									<DataTable
 												columns={columns}
@@ -348,6 +372,7 @@ function format(todayy){
 												customStyles={tableCustomStyles}
 												highlightOnHover={true}
 												noDataComponent={"No se encontró información"}
+												noHeader
 
 											
 											/>
@@ -378,7 +403,7 @@ function format(todayy){
                     
                         <input id='input-cotizacion' type='file' style={{display:'none'}}></input>
                 </table> 
-					</form>
+					</div>
 
 					<div style={{ width: '100%' }}>
 					<div className="card p-2 mt-2 border-secondary"  style={{ height:'400px', overflow:'scroll'}}>

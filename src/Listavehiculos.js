@@ -59,7 +59,7 @@ function Listavehiculos(props) {
 					 id={"descripcionVehiculo"+row.vehiculoid} ></input>*/
 					<><input 
 					defaultValue={row.descripcion}
-					id={"descripcionVehiculo"+row.vehiculoid}></input>{"   " +row.numvehiculo}
+					id={"descripcionVehiculo"+row.vehiculoid}></input>&nbsp;&nbsp;{row.numvehiculo}
 					 </>
 
 				)
@@ -71,7 +71,7 @@ function Listavehiculos(props) {
 			name: 'Modelo',  
 			selector: row => row.modelo,
 			sortable: true,
-			width: "90px",
+			width: "80px",
 			wrap: true,
 			
 		}, 
@@ -86,12 +86,13 @@ function Listavehiculos(props) {
 					id={"responsable"+row.vehiculoid} ></input></>*/
 					
 					<><input 
+					style={{width:'100%'}}
 					defaultValue={row.responsable}
 					id={"responsable"+row.vehiculoid}></input>
 					 </>
 				)
 			},
-			width: "160px",
+			width: "120px",
 			wrap: true,
 		},
 		{  
@@ -105,7 +106,7 @@ function Listavehiculos(props) {
 			name: 'Serie Motor',  
 			selector: row => row.seriemotor,
 			sortable: true,
-			width: "130px",
+			width: "140px",
 			wrap: true,
 		},
 		{  
@@ -119,12 +120,13 @@ function Listavehiculos(props) {
 					  id={"tipouso"+row.vehiculoid}></input></>
 					 */
 					   <><input 
+					   style={{width:'85%'}}
 					defaultValue={row.tipouso}
 					id={"tipouso"+row.vehiculoid}></input>
 					 </>
 				)
 			},
-			width: "160px",
+			width: "185px",
 			wrap: true,
 		},
 		{  
@@ -180,12 +182,13 @@ function Listavehiculos(props) {
 					 */
 					 
 					 <><input 
-					 defaultValue={row.numvehiculo} style={{ width: '60px'}}
+					 
+					 defaultValue={row.numvehiculo} style={{ width: '70%'}}
 					 id={"numerovehiculo"+row.vehiculoid}></input>
 					  </>
 				)
 			},
-			width: "70px",
+			width: "145px",
 			wrap: true,
 		},
 		{  
@@ -199,11 +202,12 @@ function Listavehiculos(props) {
 					id={"pernota"+row.vehiculoid} style={{minWidth:'100%', height:'31px' }}></input></>
 					*/
 					<><input 
-					defaultValue={row.pernota} style={{ width: '60px'}}
+					defaultValue={row.pernota} style={{ width: '100%'}}
 					id={"pernota"+row.vehiculoid}></input>
 					 </>
-				)
-			}
+				) 
+			},
+			width: "145px",
 		},
 		{  
 			name: 'Actualizar',
@@ -268,11 +272,13 @@ function Listavehiculos(props) {
 			cell: (row) => {
 				return (
 					(props.tipo == "1") ? 
-							<td><button className='btn btn-outline-danger btn-sm' onClick={() => bajaVehiculo(row.vehiculoid)} style={{width:'100%' }}><BsXCircleFill /></button></td>
+							<td><button className='btn btn-outline-danger btn-sm' onClick={() => bajaVehiculo(row.vehiculoid)} style={{minWidth:'100%' }}><BsXCircleFill /></button></td>
 							:<></>
 								
 				)
-			}
+			},
+			width: "70px",
+			wrap: true,
 		},
 	];
 
