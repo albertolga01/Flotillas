@@ -92,7 +92,7 @@ function Servicios(props) {
 			name: 'Factura',   
 			cell: (row) => {
 				return (
-					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.documentoservicio}>{row.documentoservicio}</a>
+					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/DocumentoServicio/" + row.documentoservicio}>{row.documentoservicio}</a>
 				)
 			}
 		},
@@ -100,7 +100,7 @@ function Servicios(props) {
 			name: 'Cotización',   
 			cell: (row) => {
 				return (
-					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.cotizacionservicio}>{row.cotizacionservicio}</a>
+					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/DocumentoServicio/" + row.cotizacionservicio}>{row.cotizacionservicio}</a>
 				)
 			}
 		},
@@ -475,8 +475,8 @@ function Servicios(props) {
 									</td>
 									}
 									
-									<td style={{textAlign:'center', minWidth:'130px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
-									<td style={{textAlign:'center', minWidth:'130px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
+									<td style={{textAlign:'center', minWidth:'130px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/DocumentoServicio/" + item.documentoservicio}>{item.documentoservicio}</a></td>
+									<td style={{textAlign:'center', minWidth:'130px',border: '2px solid rgb(171,178,185)'}}><a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/DocumentoServicio/" + item.cotizacionservicio}>{item.cotizacionservicio}</a></td>
 									<td style={{border: '2px solid rgb(171,178,185)'}}>{item.foliooc}</td>
 									<td><button  className='btn btn-outline-success btn-sm' onClick={() => actualizarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsArrowRepeat /></button></td>
 									<td><button  className='btn btn-outline-danger btn-sm' onClick={() => eliminarServicio(item.vehiculoid, item.id)} style={{width:'100%' }}><BsXCircleFill /></button></td>
@@ -548,7 +548,7 @@ function Servicios(props) {
 										<td style={{textAlign:'center'}}>{item.vehiculo}</td>
 										<td style={{textAlign:'center'}} >{item.odometro}</td>
 										<td style={{textAlign:'center'}}>{format(item.fecha)}</td> 
-										<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/documentos/" + item.documentoservicio}>{item.documentoservicio}</a></td>
+										<td style={{textAlign:'center'}}><a target="_blank" rel="noreferrer" href={"https://flotillas.grupopetromar.com/apirestflotilla/DocumentoServicio/" + item.documentoservicio}>{item.documentoservicio}</a></td>
 							
 									
 										
