@@ -58,41 +58,41 @@ useEffect(() => {
 		
 		{
 			name: 'Folio',  
-			selector: row => row.folio,
+			cell: row => row.folio,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "60px"
 		},
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Fecha Compra',  
-			selector: row => format(row.fechacompra),
+			cell: row => format(row.fechacompra),
 			sortable: true,
 		},
 		{
 			name: 'Proveedor',  
-			selector: row => row.proveedor,
+			cell: row => row.proveedor,
 			sortable: true,
 		}, 
 		{
 			name: 'Refacción',  
-			selector: row => row.refaccion,
+			cell: row => row.refaccion,
 			sortable: true,
 		}, 
 		{
 			name: 'Descripcion',   
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,
 		}, 
 		{
 			name: 'Precio',   
-			selector: row => formatNumber(row.precio),
+			cell: row => formatNumber(row.precio),
 			sortable: true,
 		}, 
 		{
@@ -105,12 +105,12 @@ useEffect(() => {
 		}, 
 		{
 			name: 'Orden de Compra',   
-			selector: row => row.foliooc,
+			cell: row => row.foliooc,
 			sortable: true,
 		}, 
 		{
 			name: 'Captura',   
-			selector: row => format(row.fecha),
+			cell: row => format(row.fecha),
 			sortable: true,
 		}, 
 		{
@@ -127,7 +127,7 @@ useEffect(() => {
 	];const columns1 = [
 		{
 			name: 'Folio',  
-			selector: row => row.folio,
+			cell: row => row.folio,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "60px",
@@ -148,27 +148,27 @@ useEffect(() => {
 		},
 		{
 			name: 'Fecha Compra',  
-			selector: row => format(row.fechacompra),
+			cell: row => format(row.fechacompra),
 			sortable: true,
 		},
 		{
 			name: 'Proveedor',  
-			selector: row => row.proveedor,
+			cell: row => row.proveedor,
 			sortable: true,
 		}, 
 		{
 			name: 'Refacción',  
-			selector: row => row.refaccion,
+			cell: row => row.refaccion,
 			sortable: true,
 		}, 
 		{
 			name: 'Descripcion',   
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,
 		}, 
 		{
 			name: 'Precio',   
-			selector: row => formatNumber(row.precio),
+			cell: row => formatNumber(row.precio),
 			sortable: true,
 		}, 
 		{
@@ -181,12 +181,12 @@ useEffect(() => {
 		}, 
 		{
 			name: 'Orden de Compra',   
-			selector: row => row.foliooc,
+			cell: row => row.foliooc,
 			sortable: true,
 		}, 
 		{
 			name: 'Captura',   
-			selector: row => format(row.fecha),
+			cell: row => format(row.fecha),
 			sortable: true,
 		}, 
 		{

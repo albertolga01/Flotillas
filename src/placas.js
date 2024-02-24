@@ -43,26 +43,26 @@ function Placas(props) {
 	const columns = [
 		{
 			name: 'Placas',  
-			selector: row => row.placas,
+			cell: row => row.placas,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "85px",
 		},
 		{
 			name: 'Vehiculo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 		},
 		{
 			name: 'Fecha',  
-			selector: row => format(row.fechainicial),
+			cell: row => format(row.fechainicial),
 			//sortable: true, 
 			maxWidth: "5px", 
 			width: "90px",
 		},
 		{
 			name: 'Vencimiento',  
-			selector: row => format(row.fechafinal),
+			cell: row => format(row.fechafinal),
 			//sortable: true, 
 			maxWidth: "5px", 
 			width: "100px",

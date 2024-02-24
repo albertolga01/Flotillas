@@ -43,7 +43,7 @@ function Listavehiculos(props) {
 	const columns = [
 		{
 			name: 'Folio',  
-			selector: row => row.vehiculoid,
+			cell: row => row.vehiculoid,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "60px",
@@ -69,7 +69,7 @@ function Listavehiculos(props) {
 		},
 		{
 			name: 'Modelo',  
-			selector: row => row.modelo,
+			cell: row => row.modelo,
 			sortable: true,
 			width: "80px",
 			wrap: true,
@@ -97,14 +97,14 @@ function Listavehiculos(props) {
 		},
 		{  
 			name: 'Serie Vehículo',  
-			selector: row => row.serievehiculo,
+			cell: row => row.serievehiculo,
 			sortable: true,
 			width: "160px",
 			wrap: true,
 		},
 		{  
 			name: 'Serie Motor',  
-			selector: row => row.seriemotor,
+			cell: row => row.seriemotor,
 			sortable: true,
 			width: "140px",
 			wrap: true,
@@ -113,17 +113,17 @@ function Listavehiculos(props) {
 			name: 'Tipo Uso',  
 			cell: (row) => {
 				return (
-					/*<><input 
+					<><input 
 					value={row.tipouso}
 					onChange={(e)=> {
 					document.getElementById("tipouso"+row.vehiculoid).value(e.target.value)}}
 					  id={"tipouso"+row.vehiculoid}></input></>
-					 */
+					 /*
 					   <><input 
 					   style={{width:'85%'}}
 					defaultValue={row.tipouso}
 					id={"tipouso"+row.vehiculoid}></input>
-					 </>
+					 </>*/
 				)
 			},
 			width: "185px",
@@ -145,7 +145,7 @@ function Listavehiculos(props) {
 		},
 		{  
 			name: 'Placa',  
-			selector: row => row.placas,
+			cell: row => row.placas,
 			sortable: true,
 			width: "70px",
 			wrap: true,

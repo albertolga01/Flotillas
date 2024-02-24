@@ -41,35 +41,35 @@ function Vehiculoscomplemento(props) {
 	const columns = [
 		{
 			name: 'Folio',  
-			selector: row => row.folio,
+			cell: row => row.folio,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "60px" 
 		},
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Capacidad',  
-			selector: row => row.capacidad,
+			cell: row => row.capacidad,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "100px" 
 		},
 		{
 			name: 'Serie',  
-			selector: row => row.serie,
+			cell: row => row.serie,
 			sortable: true, 
 			maxWidth: "5px", 
 			width: "110px",
 		},
 		{
 			name: 'Descripción',  
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,		 
 			maxWidth: "5px", 
 			width: "180px",
@@ -85,14 +85,14 @@ function Vehiculoscomplemento(props) {
 		},
 		{
 			name: 'Fecha Factura',  
-			selector: row => format(row.fechafactura),
+			cell: row => format(row.fechafactura),
 			//sortable: true, 
 			maxWidth: "5px", 
 			width: "110px",
 		},
 		{
 			name: 'Fecha Captura',  
-			selector: row => format(row.fechacaptura),
+			cell: row => format(row.fechacaptura),
 			//sortable: true, 
 			maxWidth: "5px", 
 			width: "110px",

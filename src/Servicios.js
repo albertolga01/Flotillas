@@ -40,14 +40,14 @@ function Servicios(props) {
 	const columns = [
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Servicio',  
-			selector: row => row.servicio,
+			cell: row => row.servicio,
 			sortable: true,
 		},
 		{
@@ -60,17 +60,17 @@ function Servicios(props) {
 		},
 		{
 			name: 'KM Próx. Servicio',  
-			selector: row => formatNull(row.kilometraje) + " KM",
+			cell: row => formatNull(row.kilometraje) + " KM",
 			sortable: true,
 		},
 		{
 			name: 'Precio',  
-			selector: row => "$"+row.precio,
+			cell: row => "$"+row.precio,
 			sortable: true,
 		}, 
 		{
 			name: 'Fecha',  
-			selector: row => formatDate(row.fecha),
+			cell: row => formatDate(row.fecha),
 			sortable: true,
 		}, 
 		{
@@ -106,7 +106,7 @@ function Servicios(props) {
 		},
 		{
 			name: 'Orden de Compra',   
-			selector: row => row.foliooc,
+			cell: row => row.foliooc,
 			sortable: true,
 		},
 		{

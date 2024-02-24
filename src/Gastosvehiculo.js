@@ -53,22 +53,22 @@ function Gastosvehiculo(props) {
 	const columns = [
 		{
 			name: 'Vehiculo',  
-			selector: row => row.vehiculo,
+			cell: row => row.vehiculo,
 			sortable: true,
 		},
 		{
 			name: 'Fecha',  
-			selector: row => format(row.fecha),
+			cell: row => format(row.fecha),
 			//sortable: true,
 		},
 		{
 			name: 'Descripción',  
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,
 		},
 		{
 			name: 'Precio',  
-			selector:  (row) => row.precio,
+			cell:  (row) => row.precio,
 			//format: (row) => formatNumber(row.precio),s
 			sortable: true,
 			sum: true
@@ -100,22 +100,22 @@ function Gastosvehiculo(props) {
 	const columns1 = [
 		{
 			name: 'Vehiculo',  
-			selector: row => row.vehiculo,
+			cell: row => row.vehiculo,
 			sortable: true,
 		},
 		{
 			name: 'Fecha',  
-			selector: row => format(row.fecha),
+			cell: row => format(row.fecha),
 			//sortable: true,
 		},
 		{
 			name: 'Descripción',  
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,
 		},
 		{
 			name: 'Precio',  
-			selector:  (row) => row.precio,
+			cell:  (row) => row.precio,
 			//selector: row => formatNumber(row.precio),
 			sortable: true,
 		},

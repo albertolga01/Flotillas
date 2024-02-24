@@ -44,31 +44,31 @@ function Bajavehiculos(props) {
 		
 		{
 			name: 'Vehículo',  
-			selector: row => row.descripcion +" "+ row.numvehiculo,
+			cell: row => row.descripcion +" "+ row.numvehiculo,
 			sortable: true,
 			width: "250px",
 			wrap: true,
 		},
 		{
 			name: 'Modelo',  
-			selector: row => row.modelo,
+			cell: row => row.modelo,
 			sortable: true,  
 		},
 		{
 			name: 'serie',  
-			selector: row => row.serievehiculo,
+			cell: row => row.serievehiculo,
 			sortable: true,  
 		},
 		{
 			name: 'Empresa',  
-			selector: row => row.nombre,
+			cell: row => row.nombre,
 			sortable: true, 
 			maxWidth: "5px", 
 			width: "300px",
 		},
 		{
 			name: 'Uso',  
-			selector: row => row.tipouso,
+			cell: row => row.tipouso,
 			sortable: true, 
 			maxWidth: "5px", 
 			width: "90px",

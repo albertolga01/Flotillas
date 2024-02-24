@@ -44,41 +44,41 @@ function Accesorios(props) {
 	const columns = [
 		{
 			name: 'Folio',  
-			selector: row => row.folio,
+			cell: row => row.folio,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "60px"  
 		},
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Accesorio',  
-			selector: row => row.accesorio,
+			cell: row => row.accesorio,
 			sortable: true,
 		},
 		{
 			name: 'Descripción',  
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,
 		}, 
 		{
 			name: 'Proveedor',  
-			selector: row => row.proveedor,
+			cell: row => row.proveedor,
 			sortable: true,
 		}, 
 		{
 			name: 'Fecha',   
-			selector: row => format(row.fecha),
+			cell: row => format(row.fecha),
 			sortable: true,
 		}, 
 		{
 			name: 'Precio',   
-			selector: row => formatNumber(row.precio),
+			cell: row => formatNumber(row.precio),
 			sortable: true,
 		},
 		{
@@ -179,7 +179,7 @@ function Accesorios(props) {
 	const columns1 = [
 		{
 			name: 'Folio',  
-			selector: row => row.folio,
+			cell: row => row.folio,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "60px"
@@ -203,27 +203,27 @@ function Accesorios(props) {
 		},
 		{
 			name: 'Accesorio',  
-			selector: row => row.accesorio,
+			cell: row => row.accesorio,
 			sortable: true,
 		},
 		{
 			name: 'Descripción',  
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,
 		}, 
 		{
 			name: 'Proveedor',  
-			selector: row => row.proveedor,
+			cell: row => row.proveedor,
 			sortable: true,
 		}, 
 		{
 			name: 'Fecha',   
-			selector: row => format(row.fecha),
+			cell: row => format(row.fecha),
 			sortable: true,
 		}, 
 		{
 			name: 'Precio',   
-			selector: row => formatNumber(row.precio),
+			cell: row => formatNumber(row.precio),
 			sortable: true,
 		},  
 		{

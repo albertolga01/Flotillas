@@ -11,11 +11,13 @@ import { BsXCircleFill, BsPencilSquare, BsArrowRepeat} from "react-icons/bs";
 import {FiCheck} from "react-icons/fi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataTable from 'react-data-table-component';
 import DataTableExtensions from "react-data-table-component-extensions";
 import 'react-data-table-component-extensions/dist/index.css';
-//import DataTable from 'react-data-table-component';
 import { useDownloadExcel } from 'react-export-table-to-excel';
-import DataTable from 'react-data-table-component-footer';
+
+
+
 
 
 const customStylesD = {
@@ -59,57 +61,98 @@ function Rendimiento(props) {
 	const columns = [
 		{
 			name: 'Folio',  
-			selector: (row) => row.folio,
+			cell: (row) => row.folio,
 			sortable: true, 
 			width: "50px"
 		},
 		{
 			name: 'Vehiculo',  
-			selector: row => row.vehiculo,
+			cell: row => {
+				const vehiculo = row.vehiculo || "";
+				const modelo = row.modelo || "";
+				const numvehiculo = row.numvehiculo || "";
+			
+				if (!vehiculo || !modelo || !numvehiculo) {
+				  return "";
+				}
+			
+				return `${vehiculo} ${modelo} ${numvehiculo}`;
+			  },
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Fecha Carga',  
-			selector: row => row.fechacarga,
+			cell: row => row.fechacarga,
 			sortable: true,
 			width: "90px",
 		},
 		{
 			name: 'Litros',   
-			selector: (row) => row.litros,
+			cell: (row) => row.litros,
 			width: "65px",
 			wrap: true,
 		}, 
 		{
 			name: 'Importe',  
-			selector: (row) => formatNumber(row.importe),
+			cell: (row) => {
+				const importe = row.importe;
+				if (!importe) {
+				  return ""; 
+				}
+				return formatNumber(importe);
+			  },
 			width: "80px",
 			wrap: true,
 		}, 
 		{
 			name: 'KM Inicial',
-			selector: (row) => formatN(row.kilometraje),
+			cell: (row) => {
+				const kilometraje = row.kilometraje;
+				if (!kilometraje) {
+				  return ""; 
+				}
+				return formatN(kilometraje);
+			  },
 			width: "80px",
 			wrap: true,
 		}, 
 		{
 			name: 'KM Final', 
-			selector: row => formatN(row.kilometrajefinal),
+			cell: row => {
+				const kmFinal = Number(row.kilometrajefinal);
+				if (!isNaN(kmFinal)) {
+				  return formatN(kmFinal);
+				} else {
+				 
+				  return ""; 
+				}
+			  },
 			sortable: true,
 			width: "65px",
 		},
 		{
 			name: 'Ticket',   
-			selector: row => row.ticket,
+			cell: row => row.ticket,
 			sortable: true,
 			width: "65px",
 			
 		},
 		{
 			name: 'Rendimiento',   
-			selector: row => formatN(((row.kilometrajefinal - row.kilometraje)/ row.litros)) + " Kms / Litro",
+			cell: row => {
+				const litros = Number(row.litros);
+				const kmInicial = Number(row.kilometraje);
+				const kmFinal = Number(row.kilometrajefinal);
+			
+				if (!isNaN(litros) && !isNaN(kmInicial) && !isNaN(kmFinal) && litros !== 0) {
+				  const rendimiento = ((kmFinal - kmInicial) / litros).toFixed(2);
+				  return `${formatN(rendimiento)} Kms / Litro`;
+				} else {
+				  return "";
+				}
+			  },
 			sortable: true,
 			width: "160px",
 		},
@@ -697,7 +740,22 @@ function Rendimiento(props) {
 
 											
 											/>
-						</DataTableExtensions>				<table id="productstable"  style={{width:'100%'}} hidden> 
+						</DataTableExtensions>
+						<div className="data-table-extensions-action">
+          <button
+            type="button"
+            onClick={() => onDownload()}
+            className="download drop"
+            fdprocessedid="x3bsls"
+          ></button>
+          <div className="dropdown drop">
+            <button type="button">Csv File</button>
+            <button type="button">Excel File</button>
+          </div>
+          <button type="button" className="print" fdprocessedid="8cejt"></button>
+        </div>				
+						
+						<table id="productstable"  style={{width:'100%'}} hidden> 
 					<tr>
 						<th class="header">Folio</th>
 						<th class="header">Vehículo</th>

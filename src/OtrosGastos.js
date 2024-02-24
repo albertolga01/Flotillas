@@ -37,21 +37,21 @@ function OtrosGastos(props) {
 	const columns = [
 		{
 			name: 'Folio',  
-			selector: row => row.id,
+			cell: row => row.id,
 			sortable: true,
 			maxWidth: "5px", 
 			width: "60px",
 		},
 		{
 			name: 'Vehículo',  
-			selector: row => (row.vehiculo + " " + row.modelo +" "+ row.numvehiculo),
+			cell: row => (row.vehiculo + " " + row.modelo +" "+ row.numvehiculo),
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Servicio',  
-			selector: row => row.servicio,
+			cell: row => row.servicio,
 			sortable: true,
 		},
 		{
@@ -64,13 +64,13 @@ function OtrosGastos(props) {
 		}, 
 		{
 			name: 'Precio',
-			selector:  (row) => row.precio,  
+			cell:  (row) => row.precio,  
 			//selector: row => "$"+row.precio,
 			sortable: true,
 		}, 
 		{
 			name: 'Fecha',   
-			selector: row => row.fecha,
+			cell: row => row.fecha,
 			sortable: true,
 		}, 
 		{

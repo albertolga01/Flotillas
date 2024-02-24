@@ -42,34 +42,34 @@ function Seguros(props) {
 	const columns = [
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'No. Seguro',  
-			selector: row => row.noseguro,
+			cell: row => row.noseguro,
 			sortable: true,
 		},
 		{
 			name: 'Compañía',  
-			selector: row => row.compania,
+			cell: row => row.compania,
 			sortable: true,
 		},
 		{
 			name: 'Fecha',  
-			selector: row => format(row.fechainicial),
+			cell: row => format(row.fechainicial),
 			sortable: true,
 		}, 
 		{
 			name: 'Vencimiento',  
-			selector: row => format(row.fechafinal),
+			cell: row => format(row.fechafinal),
 			sortable: true,
 		}, 
 		{
 			name: 'Estado',   
-			selector: row => estado(row.fechafinal),
+			cell: row => estado(row.fechafinal),
 			sortable: true,
 		}, 
 		{
@@ -88,34 +88,34 @@ function Seguros(props) {
 	const columns1 = [
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'No. Seguro',  
-			selector: row => row.noseguro,
+			cell: row => row.noseguro,
 			sortable: true,
 		},
 		{
 			name: 'Compañía',  
-			selector: row => row.compania,
+			cell: row => row.compania,
 			sortable: true,
 		},
 		{
 			name: 'Fecha',  
-			selector: row => format(row.fechainicial),
+			cell: row => format(row.fechainicial),
 			sortable: true,
 		}, 
 		{
 			name: 'Vencimiento',  
-			selector: row => format(row.fechafinal),
+			cell: row => format(row.fechafinal),
 			sortable: true,
 		}, 
 		{
 			name: 'Restante',   
-			selector: row => dias(row.fechafinal),
+			cell: row => dias(row.fechafinal),
 			sortable: true,
 		}, 
 	];
@@ -360,7 +360,7 @@ function format(todayy){
 							columns={columns}
 							data={listap}
 							print={false}
-							export={false}
+							export={true}
 							filter={false} 
 							>
 									<DataTable

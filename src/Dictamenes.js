@@ -31,31 +31,31 @@ function Dictamenes(props) {
 	const columns = [
 		{
 			name: 'Vehículo',  
-			selector: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
+			cell: row => row.vehiculo + " " + row.modelo +" "+ row.numvehiculo,
 			sortable: true,
 			width: "210px",
 			wrap: true,
 		},
 		{
 			name: 'Tipo Dictamen',  
-			selector: row => row.nombre,
+			cell: row => row.nombre,
 			sortable: true,
 		},
 		{
 			name: 'Descripción',  
-			selector: row => row.descripcion,
+			cell: row => row.descripcion,
 			sortable: true,
 		},
 		{
 			name: 'Fecha',  
-			selector: row => formatDate(row.fecha),
+			cell: row => formatDate(row.fecha),
 			sortable: true, 
 			maxWidth: "5px", 
 			width: "115px",
 		}, 
 		{
 			name: 'Vencimiento',  
-			selector: row => formatDate(row.fechafinal),
+			cell: row => formatDate(row.fechafinal),
 			sortable: true, 
 			maxWidth: "5px", 
 			width: "140px",

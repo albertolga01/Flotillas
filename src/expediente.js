@@ -33,22 +33,22 @@ function Expediente(props) {
 	const columns = [
 		{
 			name: 'Nombre',  
-			selector: row => row.Filename,
+			cell: row => row.Filename,
 			sortable: true,
 		},
 		{
 			name: 'Descripción',  
-			selector: row => row.FileDesc,
+			cell: row => row.FileDesc,
 			sortable: true,
 		},
 		{
 			name: 'Fecha',  
-			selector: row => row.UploadDate,
+			cell: row => row.UploadDate,
 			sortable: true,
 		}, 
 		{
 			name: 'Archivo',   
-			cell: (row) => {
+			cell: row => {
 				return (
 					<a target="_blank" rel="noreferrer" href={"http://flotillas.grupopetromar.com/apirestflotilla/documentos/" + row.FilePath}>{row.FilePath}</a>
 				)
