@@ -81,6 +81,72 @@ function Accesorios(props) {
 			cell: row => formatNumber(row.precio),
 			sortable: true,
 		},
+		{  
+			name: '',  
+			cell: (row) => {
+				return (
+					<td hidden>
+                    {row.estado} 
+                	</td>
+				)
+			},
+			width: "10px",
+		},
+		{  
+			name: '',  
+			cell: (row) => {
+				return (
+					<td hidden>
+                    {row.cantidad} 
+                	</td>
+				)
+			},
+			width: "10px",
+		},
+		{  
+			name: '',  
+			cell: (row) => {
+				return (
+					<td hidden>
+                    {row.descripcionAccesorio} 
+                	</td>
+				)
+			},
+			width: "10px",
+		},
+		{  
+			name: '',  
+			cell: (row) => {
+				return (
+					<td hidden>
+                    {row.marca} 
+                	</td>
+				)
+			},
+			width: "10px",
+		},
+		{  
+			name: '',  
+			cell: (row) => {
+				return (
+					<td hidden>
+                    {row.observaciones} 
+                	</td>
+				)
+			},
+			width: "10px",
+		},
+		{  
+			name: '',  
+			cell: (row) => {
+				return (
+					<td hidden>
+                    {row.fechaRevision} 
+                	</td>
+				)
+			},
+			width: "10px",
+		},
 		{
 			name: 'Estado',   
 			selector: 'Estado',
@@ -91,6 +157,7 @@ function Accesorios(props) {
 					id={"Estado"+row.folio}></input></>
 				)
 			},
+			width: "200px",
 			wrap: true,
 		},
 		{
@@ -103,6 +170,7 @@ function Accesorios(props) {
 					id={"Cantidad"+row.folio}></input></>
 				)
 			},
+			width: "200px",
 			wrap: true,
 		},
 		{
@@ -115,6 +183,7 @@ function Accesorios(props) {
 					id={"AccesorioDescripcion"+row.folio}></input></>
 				)
 			},
+			width: "200px",
 			wrap: true,
 		},
 		{
@@ -126,6 +195,7 @@ function Accesorios(props) {
 					id={"Marca"+row.folio}></input></>
 				)
 			},
+			width: "200px",
 			wrap: true,
 		},
 		{

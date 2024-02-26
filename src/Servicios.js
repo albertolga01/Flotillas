@@ -51,6 +51,17 @@ function Servicios(props) {
 			sortable: true,
 		},
 		{
+			name: '',  
+			cell: (row) => {
+					return (
+						<td hidden>
+						{row.odometro} 
+						</td>
+					)
+				},
+				width: "10px",
+		},
+		{
 			name: 'Odometro',  
 			cell: (row) => {
 				return (
@@ -73,6 +84,17 @@ function Servicios(props) {
 			cell: row => formatDate(row.fecha),
 			sortable: true,
 		}, 
+		{
+			name: '',  
+			cell: (row) => {
+					return (
+						<td hidden>
+						{row.fechaproximo} 
+						</td>
+					)
+				},
+				width: "10px",
+		},
 		{
 			name: 'Próximo',   
 			cell: (row) => {

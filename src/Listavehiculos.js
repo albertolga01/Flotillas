@@ -49,6 +49,17 @@ function Listavehiculos(props) {
 			width: "60px",
 		},
 		{
+			name: '',  
+			cell: (row) => {
+					return (
+						<td hidden>
+						{row.descripcion} 
+						</td>
+					)
+				},
+				width: "10px",
+		},
+		{
 			name: 'Vehículo',  
 			cell: (row) => {
 				return (
@@ -96,6 +107,17 @@ function Listavehiculos(props) {
 			wrap: true,
 		},
 		{  
+			name: '',  
+			cell: (row) => {
+				return (
+					<td hidden>
+                    {row.responsable} 
+                	</td>
+				)
+			},
+			width: "10px",
+		},
+		{  
 			name: 'Serie Vehículo',  
 			cell: row => row.serievehiculo,
 			sortable: true,
@@ -108,6 +130,17 @@ function Listavehiculos(props) {
 			sortable: true,
 			width: "140px",
 			wrap: true,
+		},
+		{
+			name: '',  
+			cell: (row) => {
+					return (
+						<td hidden>
+						{row.tipouso} 
+						</td>
+					)
+				},
+				width: "10px",
 		},
 		{  
 			name: 'Tipo Uso',  
@@ -149,6 +182,28 @@ function Listavehiculos(props) {
 			sortable: true,
 			width: "70px",
 			wrap: true,
+		},
+		{
+			name: '',  
+			cell: (row) => {
+					return (
+						<td hidden>
+						{row.gps} 
+						</td>
+					)
+				},
+				width: "10px",
+		},
+		{
+			name: '',  
+			cell: (row) => {
+					return (
+						<td hidden>
+						{row.pernota} 
+						</td>
+					)
+				},
+				width: "10px",
 		},
 		{  
 			name: 'GPS',  

@@ -741,19 +741,6 @@ function Rendimiento(props) {
 											
 											/>
 						</DataTableExtensions>
-						<div className="data-table-extensions-action">
-          <button
-            type="button"
-            onClick={() => onDownload()}
-            className="download drop"
-            fdprocessedid="x3bsls"
-          ></button>
-          <div className="dropdown drop">
-            <button type="button">Csv File</button>
-            <button type="button">Excel File</button>
-          </div>
-          <button type="button" className="print" fdprocessedid="8cejt"></button>
-        </div>				
 						
 						<table id="productstable"  style={{width:'100%'}} hidden> 
 					<tr>

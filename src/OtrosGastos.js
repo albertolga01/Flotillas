@@ -55,6 +55,17 @@ function OtrosGastos(props) {
 			sortable: true,
 		},
 		{
+			name: '',  
+			cell: (row) => {
+					return (
+						<td hidden>
+						{row.odometro} 
+						</td>
+					)
+				},
+				width: "10px",
+		},
+		{
 			name: 'Odometro',  
 			cell: (row) => {
 				return (
