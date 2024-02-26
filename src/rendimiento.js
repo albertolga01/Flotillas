@@ -53,10 +53,12 @@ const customStyles = {
 	  transform: 'translate(-50%, -50%)',
 	},
   }; 
+  
 function Rendimiento(props) {
 
 	const [total, setTotal] = useState(0); 
 	const [totalLitros, setTotalLitros] = useState(0); 
+	const [totalImporte, setTotalImporte] = useState(0); 
  
 	
 	const columns = [
@@ -222,8 +224,11 @@ function Rendimiento(props) {
 	const footer = {
 		 vehiculo:"",
 		 fechacarga:"",
-		 litros: totalLitros
+		 litros: totalLitros,
+		 importe: totalImporte
 	  };
+	  
+	  console.log('totalImporte:', totalImporte);
 
 	const columns1 = [
 		{
@@ -564,6 +569,7 @@ function Rendimiento(props) {
 		async function getCargas(){
 			setTotal(0);
 			setTotalLitros(0);
+			setTotalImporte(0);
 			setLista([]);
 				setListaPD([]);
 				var id = "getCargas";
@@ -577,11 +583,11 @@ function Rendimiento(props) {
 					console.log(res.data[i].litros);
 				}
 				setTotalLitros(res.data.reduce((a,v) =>  a = a + Number(v.litros) , 0 ).toFixed(2));
+				setTotalImporte(res.data.reduce((a,v) =>  a = a + Number(v.importe) , 0 ).toFixed(2));
 				setLista(res.data);
 				setListaPD(res.data);
 				console.log(res.data);
 			
-
 		}
 		
 		async function getRendimientoMensual(){ 
@@ -625,6 +631,7 @@ function Rendimiento(props) {
 			const res = await axios.get(process.env.REACT_APP_API_URL+'?id='+id+'&fecha='+fecha+'&fechafinal='+fechafinal+'&idflotilla='+props.flotilla+'&vehiculoid='+vehiculoid+'&userid='+props.userid+'&tipo='+props.tipo);
 			closeModalLoad();
 			setTotalLitros(res.data.reduce((a,v) =>  a = a + Number(v.litros) , 0 ).toFixed(2));
+			setTotalImporte(res.data.reduce((a,v) =>  a = a + Number(v.importe) , 0 ).toFixed(2));
 			setLista(res.data);
 			setListaPD(res.data);
 			console.log(res.data);
