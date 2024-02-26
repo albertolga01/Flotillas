@@ -11,10 +11,11 @@ import { BsXCircleFill, BsPencilSquare, BsArrowRepeat} from "react-icons/bs";
 import {FiCheck} from "react-icons/fi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import DataTable from 'react-data-table-component';
+
 import DataTableExtensions from "react-data-table-component-extensions";
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDownloadExcel } from 'react-export-table-to-excel';
+import DataTable from 'react-data-table-component-footer';
 
 
 
